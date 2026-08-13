@@ -9,11 +9,6 @@ from aspyconfig import get_config
 from aspyconfig.utils.os_utils import get_os_username
 
 from aspynotifications.config.app_config import AspynotificationsAppConfig
-from aspynotifications.config.destination_config import (
-    EmailDestinationConfig,
-    SlackChannelDestinationConfig,
-    TeamsConversationDestinationConfig,
-)
 from aspynotifications.entities.destination import Destination
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
@@ -21,17 +16,7 @@ from aspynotifications.factories.destinations_store_factory import (
 from aspynotifications.services.destinations_service import DestinationsService
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_NAME = "aspynotifications"
-PLUGINS_CONFIG_DIR = (
-    PROJECT_ROOT
-    / "packages"
-    / "aspynotifications"
-    / "src"
-    / "aspynotifications"
-    / "resources"
-    / "config"
-)
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -51,7 +36,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--type",
         required=True,
-        choices=("email", "channel", "conversation"),
+        choices=("email", "slack_channel", "teams_conversation"),
     )
     parser.add_argument("--template", required=True)
     parser.add_argument("--routable", action="store_true")
@@ -64,13 +49,12 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
-    """Load default, local, optional, and generated plugin configuration."""
+    """Load default, local, and optional application configuration."""
 
     config = get_config()
     user_config_paths = [f"monoconfig/default/{PACKAGE_NAME}"]
     if config_dir is not None:
         user_config_paths.append(str(config_dir))
-    user_config_paths.append(str(PLUGINS_CONFIG_DIR))
 
     local_config_paths = []
     local_config_name = get_os_username()
@@ -87,16 +71,12 @@ def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
     return config.to_pydantic(AspynotificationsAppConfig)
 
 
-def build_destination_config(destination_type: str, raw_config: str):
-    """Validate the type-specific destination configuration."""
+def load_destination_config(arguments: argparse.Namespace) -> dict:
+    """Load the endpoint configuration and supply its discriminator."""
 
-    config_data = json.loads(raw_config)
-    config_by_type = {
-        "email": EmailDestinationConfig,
-        "channel": SlackChannelDestinationConfig,
-        "conversation": TeamsConversationDestinationConfig,
-    }
-    return config_by_type[destination_type].model_validate(config_data)
+    destination_config = json.loads(arguments.destination_config)
+    destination_config.setdefault("type", arguments.type)
+    return destination_config
 
 
 async def create_destination(arguments: argparse.Namespace) -> Destination:
@@ -116,10 +96,7 @@ async def create_destination(arguments: argparse.Namespace) -> Destination:
         destination_type=arguments.type,
         template=arguments.template,
         routable=arguments.routable,
-        config=build_destination_config(
-            arguments.type,
-            arguments.destination_config,
-        ),
+        config=load_destination_config(arguments),
     )
 
 

@@ -1,10 +1,8 @@
 import uuid
+from typing import Any
 
 from aspynotifications.config.app_config import DestinationsServiceConfig
-from aspynotifications.config.destination_config import (
-    DestinationConfig,
-    DestinationType,
-)
+from aspynotifications.config.destination_config import DestinationType
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
@@ -26,7 +24,7 @@ class DestinationsService:
         destination_type: DestinationType,
         template: str,
         routable: bool,
-        config: DestinationConfig,
+        config: dict[str, Any],
     ) -> Destination:
         destination = Destination(
             id=str(uuid.uuid4()),

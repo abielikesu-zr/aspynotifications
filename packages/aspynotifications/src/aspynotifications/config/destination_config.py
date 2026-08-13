@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -6,48 +6,29 @@ from pydantic import BaseModel, ConfigDict, Field
 class EmailDestinationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    to: list[str] = Field(
-        default_factory=list,
-        description="Primary email recipients",
-    )
-    cc: list[str] = Field(
-        default_factory=list,
-        description="Carbon-copy email recipients",
-    )
-    bcc: list[str] = Field(
-        default_factory=list,
-        description="Blind-carbon-copy email recipients",
-    )
+    type: Literal["email"] = "email"
+    to: list[str] = Field(default_factory=list)
+    cc: list[str] = Field(default_factory=list)
+    bcc: list[str] = Field(default_factory=list)
 
 
 class SlackChannelDestinationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    channel_id: str = Field(
-        ...,
-        min_length=1,
-        description="Slack channel identifier",
-    )
+    type: Literal["slack_channel"] = "slack_channel"
+    channel_id: str = Field(..., min_length=1)
 
 
 class TeamsConversationDestinationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    service_url: str = Field(
-        ...,
-        min_length=1,
-        description="Microsoft Bot Framework service URL",
-    )
-    conversation_id: str = Field(
-        ...,
-        min_length=1,
-        description="Microsoft Teams conversation identifier",
-    )
+    type: Literal["teams_conversation"] = "teams_conversation"
+    service_url: str = Field(..., min_length=1)
+    conversation_id: str = Field(..., min_length=1)
 
 
-DestinationType = Literal["email", "channel", "conversation"]
-DestinationConfig = (
-    EmailDestinationConfig
-    | SlackChannelDestinationConfig
-    | TeamsConversationDestinationConfig
-)
+DestinationType = Literal["email", "slack_channel", "teams_conversation"]
+DestinationConfig = Annotated[
+    EmailDestinationConfig | SlackChannelDestinationConfig | TeamsConversationDestinationConfig,
+    Field(discriminator="type"),
+]
