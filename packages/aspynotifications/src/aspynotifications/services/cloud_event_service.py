@@ -7,7 +7,6 @@
 #     def __init__(self, config: dict, store: ICloudEventStorePort):
 #         self._config = CloudEventServiceConfig.model_validate(config)
 #         self._store = store
-from typing import Dict, List, Optional
 
 import structlog
 
@@ -18,8 +17,7 @@ logger = structlog.get_logger(__name__)
 
 
 class CloudEventService:
-
-    def __init__(self, config: Dict, store: ICloudEventStorePort):
+    def __init__(self, config: dict, store: ICloudEventStorePort):
         self._config = config
         self._store = store
 
@@ -47,7 +45,7 @@ class CloudEventService:
     async def get_cloud_event_by_id(
         self,
         event_id: str,
-    ) -> Optional[CloudEvent]:
+    ) -> CloudEvent | None:
         log = logger.bind(function="get_cloud_event_by_id")
         try:
             cloud_event = await self._store.get_cloud_event(event_id)
@@ -68,7 +66,7 @@ class CloudEventService:
             )
             raise
 
-    async def list_cloud_events(self) -> List[CloudEvent]:
+    async def list_cloud_events(self) -> list[CloudEvent]:
         log = logger.bind(function="list_cloud_events")
         try:
             cloud_events = await self._store.list_cloud_events()

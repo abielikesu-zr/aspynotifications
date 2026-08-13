@@ -52,7 +52,7 @@ class NotificationPolicyFileStoreAdapter(
                 f"Error saving notification policy {policy.id} to FS: {e!s}"
             ) from e
 
-    async def get_notification_policy(
+    async def get_notification_policy_by_id(
         self,
         policy_id: str,
     ) -> NotificationPolicy | None:

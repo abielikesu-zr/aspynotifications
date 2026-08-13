@@ -1,43 +1,41 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field
 
 
 class TemplateSource(BaseModel):
-    inline: Optional[str] = Field(
+    inline: str | None = Field(
         default=None,
         description="Inline template content",
     )
-    file: Optional[str] = Field(
+    file: str | None = Field(
         default=None,
         description="Path to template file",
     )
 
 
 class EmailTemplate(BaseModel):
-    subject: Optional[TemplateSource] = Field(
+    subject: TemplateSource | None = Field(
         default=None,
         description="Email subject template",
     )
-    html: Optional[TemplateSource] = Field(
+    html: TemplateSource | None = Field(
         default=None,
         description="Email HTML template",
     )
-    text: Optional[TemplateSource] = Field(
+    text: TemplateSource | None = Field(
         default=None,
         description="Email text template",
     )
 
 
 class SlackTemplate(BaseModel):
-    blocks: Optional[TemplateSource] = Field(
+    blocks: TemplateSource | None = Field(
         default=None,
         description="Slack blocks template",
     )
 
 
 class TeamsTemplate(BaseModel):
-    adaptive_card: Optional[TemplateSource] = Field(
+    adaptive_card: TemplateSource | None = Field(
         default=None,
         description="Teams adaptive card template",
     )
@@ -48,15 +46,15 @@ class Template(BaseModel):
         ...,
         description="Unique logical template name",
     )
-    email: Optional[EmailTemplate] = Field(
+    email: EmailTemplate | None = Field(
         default=None,
         description="Email template representations",
     )
-    slack: Optional[SlackTemplate] = Field(
+    slack: SlackTemplate | None = Field(
         default=None,
         description="Slack template representations",
     )
-    teams: Optional[TeamsTemplate] = Field(
+    teams: TeamsTemplate | None = Field(
         default=None,
         description="Teams template representations",
     )

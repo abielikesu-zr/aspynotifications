@@ -1,5 +1,3 @@
-from typing import Dict, List, Optional
-
 import structlog
 
 from aspynotifications.entities.template import Template
@@ -9,8 +7,7 @@ logger = structlog.get_logger(__name__)
 
 
 class TemplateService:
-
-    def __init__(self, config: Dict, store: ITemplateStorePort):
+    def __init__(self, config: dict, store: ITemplateStorePort):
         self._config = config
         self._store = store
 
@@ -48,7 +45,7 @@ class TemplateService:
             )
             raise
 
-    async def get_template_by_name(self, name: str) -> Optional[Template]:
+    async def get_template_by_name(self, name: str) -> Template | None:
         log = logger.bind(function="get_template_by_name")
         try:
             template = await self._store.get_template(name)
@@ -69,7 +66,7 @@ class TemplateService:
             )
             raise
 
-    async def list_templates(self) -> List[Template]:
+    async def list_templates(self) -> list[Template]:
         log = logger.bind(function="list_templates")
         try:
             templates = await self._store.list_templates()

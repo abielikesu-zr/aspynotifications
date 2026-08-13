@@ -66,3 +66,69 @@ aspynotifications:
     # Type: Literal['keep']
 
     keep: "keep"
+
+  # Type: StorageAdapterConfig
+  template_store:
+
+    # Configuration for the storage adapter
+
+    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
+    # Switch Variable: g_app_a_template_store_adapter_type
+    adapter:
+
+      
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/aspynotifications/template_store"
+
+      
+
+  # Type: TemplateServiceConfig
+  template_service:
+
+    # Type: Literal['yes']
+
+    keep: 'yes'
+
+  # Type: StorageAdapterConfig
+  cloud_event_store:
+
+    # Configuration for the storage adapter
+
+    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
+    # Switch Variable: g_app_a_cloud_event_store_adapter_type
+    adapter:
+
+      
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/aspynotifications/cloud_event_store"
+
+      
+
+  # Type: CloudEventServiceConfig
+  cloud_event_service:
+
+    # Type: Literal['yes']
+
+    keep: 'yes'
