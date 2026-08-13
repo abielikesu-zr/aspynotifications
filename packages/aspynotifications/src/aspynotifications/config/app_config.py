@@ -1,10 +1,11 @@
-from typing import Union
-
 from aspyadapters.config.storage_adapter_config import (
     LocalFSAdapterConfig,
     MongoDBAdapterConfig,
+    StorageAdapterConfig,  # Reusing the base adapter config
 )
 from pydantic import BaseModel, ConfigDict, Field
+
+from aspynotifications.config.notification_config import NotificationPolicyServiceConfig
 
 
 class DestinationsStoreAdapterConfig(BaseModel):
@@ -12,7 +13,7 @@ class DestinationsStoreAdapterConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    adapter: Union[LocalFSAdapterConfig, MongoDBAdapterConfig] = Field(
+    adapter: LocalFSAdapterConfig | MongoDBAdapterConfig = Field(
         ...,
         discriminator="type",
         description="Configuration for the selected destination store adapter",
@@ -26,6 +27,9 @@ class DestinationsServiceConfig(BaseModel):
 
 
 class AspynotificationsAppParams(BaseModel):
+    policy_store: StorageAdapterConfig
+    policy_service: NotificationPolicyServiceConfig
+
     destinations_store: DestinationsStoreAdapterConfig
     destinations_service: DestinationsServiceConfig = Field(
         default_factory=DestinationsServiceConfig

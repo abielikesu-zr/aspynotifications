@@ -4,7 +4,6 @@ from aspyplugs.templates.typed_plugin_factory import TypedPluginFactory
 from aspynotifications.config.app_config import DestinationsStoreAdapterConfig
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
-
 logger = structlog.get_logger(__name__)
 
 

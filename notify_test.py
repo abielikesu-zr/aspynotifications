@@ -62,6 +62,8 @@ def main():
         },
     }
     policy = NotificationPolicy(
+        id="111",
+        subject="node-*",
         name="production-node-failure",
         envelope_policies=[
             AspyPolicy(

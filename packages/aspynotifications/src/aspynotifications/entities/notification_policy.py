@@ -8,10 +8,12 @@ class NotificationPolicy(BaseModel):
     and which destinations should receive it.
 
     Attributes:
+        id: Stable unique identifier for the notification policy.
         name: Unique or human-readable name of the notification policy.
+        subject: NATS-style subject pattern used for the initial match.
         envelope_policies: Policies evaluated against the CloudEvent envelope.
         destination_policies: Policies evaluated against the full policy
-            context when determining whether the notification applies.
+            context.
         destinations: Notification destinations to use when the policy matches.
     """
 
@@ -20,9 +22,19 @@ class NotificationPolicy(BaseModel):
         validate_assignment=True,
     )
 
+    id: str = Field(
+        min_length=1,
+        description="Stable unique identifier for the notification policy.",
+    )
+
     name: str = Field(
         min_length=1,
-        description="Unique or human-readable notification policy name.",
+        description="Human-readable name of the notification policy.",
+    )
+
+    subject: str = Field(
+        min_length=1,
+        description="NATS-style subject pattern used for the initial match.",
     )
 
     envelope_policies: list[AspyPolicy] = Field(
