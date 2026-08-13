@@ -7,7 +7,6 @@ var/
 .venv
 .venv-build
 .aspy_cache
-__pycache__/
 **/*.egg-info/
 .make-env
 .vscode/settings.json
@@ -15,3 +14,6 @@ app.log
 dist/
 .zshrc
 packages/**/requirements*.*
+__pycache__/
+*.py[cod]
+*.dist-info/
