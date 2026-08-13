@@ -2,4 +2,5 @@
 aspynotifications:
   # Type: DestinationsServiceConfig
 
-  destinations_service: {}
+  destinations_service:
+    keep: "keep"

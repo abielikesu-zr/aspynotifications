@@ -1,3 +1,5 @@
+from typing import Literal
+
 from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -8,6 +10,8 @@ class DestinationsServiceConfig(BaseModel):
     """Typed configuration for DestinationsService."""
 
     model_config = ConfigDict(extra="forbid")
+
+    keep: Literal["keep"] = "keep"
 
 
 class AspynotificationsAppParams(BaseModel):
