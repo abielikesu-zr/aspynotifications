@@ -7,5 +7,7 @@ var/
 .venv
 .venv-build
 .aspy_cache
+__pycache__/
 .make-env
 .vscode/settings.json
+app.log
