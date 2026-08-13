@@ -1,4 +1,7 @@
+import uuid
+
 from aspynotifications.config.app_config import DestinationsServiceConfig
+from aspynotifications.config.destination_config import DestinationConfig, DestinationType
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
@@ -13,7 +16,25 @@ class DestinationsService:
     async def ping(self) -> bool:
         return await self._store.ping()
 
-    async def create_destination(self, destination: Destination) -> Destination:
+    async def create_destination(
+        self,
+        name: str,
+        provider: str,
+        destination_type: DestinationType,
+        template: str,
+        routable: bool,
+        config: DestinationConfig,
+    ) -> Destination:
+        destination = Destination(
+            id=str(uuid.uuid4()),
+            name=name,
+            provider=provider,
+            type=destination_type,
+            template=template,
+            routable=routable,
+            config=config,
+        )
+
         existing = await self.get_destination_by_id(destination.id)
         if existing is not None:
             raise ValueError(f"Destination ID already exists: {destination.id}")

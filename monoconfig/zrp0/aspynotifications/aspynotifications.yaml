@@ -1,0 +1,5 @@
+# Type: AspynotificationsAppParams
+aspynotifications:
+  # Type: DestinationsServiceConfig
+
+  destinations_service: {}

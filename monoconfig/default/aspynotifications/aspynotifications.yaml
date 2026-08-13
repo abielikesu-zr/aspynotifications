@@ -29,4 +29,4 @@ aspynotifications:
 
   # Type: DestinationsServiceConfig
 
-  destinations_service: "REPLACE_ME"
+  destinations_service: {}

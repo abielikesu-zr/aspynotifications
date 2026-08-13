@@ -27,7 +27,9 @@ class DestinationsServiceConfig(BaseModel):
 
 class AspynotificationsAppParams(BaseModel):
     destinations_store: DestinationsStoreAdapterConfig
-    destinations_service: DestinationsServiceConfig
+    destinations_service: DestinationsServiceConfig = Field(
+        default_factory=DestinationsServiceConfig
+    )
 
 
 class AspynotificationsAppConfig(BaseModel):
