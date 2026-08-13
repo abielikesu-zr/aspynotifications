@@ -8,3 +8,4 @@ var/
 .venv-build
 .aspy_cache
 .make-env
+.vscode/settings.json
