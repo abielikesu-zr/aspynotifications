@@ -1,5 +1,5 @@
 # Type: AspynotificationsAppParams
-destinations:
+aspynotifications:
 
   # Type: DestinationsStoreAdapterConfig
   destinations_store:
@@ -7,7 +7,7 @@ destinations:
     # Configuration for the selected destination store adapter
 
     # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_d_destinations_store_adapter_type
+    # Switch Variable: g_app_a_destinations_store_adapter_type
     adapter:
 
       

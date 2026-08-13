@@ -1,5 +1,5 @@
 # Type: AspynotificationsAppParams
-destinations:
+aspynotifications:
 
   # Type: DestinationsStoreAdapterConfig
   destinations_store:
@@ -7,10 +7,10 @@ destinations:
     # Configuration for the selected destination store adapter
 
     # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_d_destinations_store_adapter_type
+    # Switch Variable: g_app_a_destinations_store_adapter_type
     adapter:
 
-      {% if  g_app_d_destinations_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+      {% if  g_app_a_destinations_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
 
         type: 'LOCALFS'
 
@@ -23,9 +23,9 @@ destinations:
 
           # Type: str
 
-          data_dir: "{{  g_app_d_destinations_store_localfs_data_dir | default(None)   }}"
+          data_dir: "{{  g_app_a_destinations_store_localfs_data_dir | default(None)   }}"
 
-      {% elif  g_app_d_destinations_store_adapter_type == 'MONGODB' %}
+      {% elif  g_app_a_destinations_store_adapter_type == 'MONGODB' %}
 
         type: 'MONGODB'
 
@@ -38,40 +38,40 @@ destinations:
 
           # Type: str
 
-          uri: "{{  g_app_d_destinations_store_mongodb_uri | default(None)   }}"
+          uri: "{{  g_app_a_destinations_store_mongodb_uri | default(None)   }}"
 
           # Database name
 
           # Type: str
 
-          database: "{{  g_app_d_destinations_store_mongodb_database | default(None)   }}"
+          database: "{{  g_app_a_destinations_store_mongodb_database | default(None)   }}"
 
           # Username for authentication, if required
 
           # Type: str | None
 
-          username: "{{  g_app_d_destinations_store_mongodb_username | default(None)   }}"
+          username: "{{  g_app_a_destinations_store_mongodb_username | default(None)   }}"
 
           # Password for authentication, if required
 
           # Type: str | None
 
-          password: "{{  g_app_d_destinations_store_mongodb_password | default(None)   }}"
+          password: "{{  g_app_a_destinations_store_mongodb_password | default(None)   }}"
 
           # Authentication source database, if required
 
           # Type: str | None
 
-          auth_source: "{{  g_app_d_destinations_store_mongodb_auth_source | default(None)   }}"
+          auth_source: "{{  g_app_a_destinations_store_mongodb_auth_source | default(None)   }}"
 
           # Use TLS/SSL connection
 
           # Type: bool
 
-          tls: "{{  (g_app_d_destinations_store_mongodb_tls | default(False)) is sameas true  }}"
+          tls: "{{  (g_app_a_destinations_store_mongodb_tls | default(False)) is sameas true  }}"
 
       {% endif %}
 
   # Type: DestinationsServiceConfig
 
-  destinations_service: "{{  g_app_d_destinations_service | default(None)   }}"
+  destinations_service: "{{  g_app_a_destinations_service | default(None)   }}"

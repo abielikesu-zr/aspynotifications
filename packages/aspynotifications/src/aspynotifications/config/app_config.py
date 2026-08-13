@@ -33,4 +33,4 @@ class AspynotificationsAppParams(BaseModel):
 class AspynotificationsAppConfig(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    destinations: AspynotificationsAppParams
+    aspynotifications: AspynotificationsAppParams
