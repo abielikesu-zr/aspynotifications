@@ -4,6 +4,8 @@
     # via -r requirements.in
 -e ../../../aspy/packages/aspyplugs
     # via -r requirements.in
+-e ../../../aspyconfig
+    # via -r requirements.in
 aio-pika==9.5.8
     # via aspyadapters
 aiofiles==24.1.0
@@ -19,9 +21,13 @@ certifi==2026.7.22
     #   httpcore
     #   httpx
 click==8.2.1
-    # via aspyplugs
-dependency-injector==4.49.1
-    # via -r requirements.in
+    # via
+    #   aspyconfig
+    #   aspyplugs
+dependency-injector==4.48.3
+    # via
+    #   -r requirements.in
+    #   aspyconfig
 dnspython==2.8.0
     # via pymongo
 h11==0.16.0
@@ -35,10 +41,18 @@ idna==3.18
     #   anyio
     #   httpx
     #   yarl
+importlib-resources==6.5.2
+    # via aspyconfig
+markdown-it-py==4.2.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
 motor==3.7.1
     # via aspyadapters
 multidict==6.7.1
     # via yarl
+packaging==25.0
+    # via aspyconfig
 pamqp==3.3.0
     # via aiormq
 propcache==0.5.2
@@ -50,21 +64,31 @@ pydantic==2.11.10
     #   aspyplugs
 pydantic-core==2.33.2
     # via pydantic
+pygments==2.20.0
+    # via rich
 pymongo==4.17.0
     # via motor
+python-dotenv==1.1.1
+    # via aspyconfig
 pyyaml==6.0.3
     # via
     #   aspyadapters
+    #   aspyconfig
     #   aspyplugs
 redis==7.2.2
     # via aspyadapters
+rich==14.1.0
+    # via aspyconfig
 structlog==25.4.0
     # via
     #   -r requirements.in
     #   aspyadapters
+    #   aspyconfig
     #   aspyplugs
 toml==0.10.2
-    # via aspyplugs
+    # via
+    #   aspyconfig
+    #   aspyplugs
 typing-extensions==4.16.0
     # via
     #   anyio

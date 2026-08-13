@@ -15,7 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 custom = [
-  "aspyadapters",  "aspyplugs"]
+  "aspyadapters",  "aspyplugs",  "aspyconfig",  "BROKEN_LINK_999"]
 
 
 [tool.setuptools.packages.find]

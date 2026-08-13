@@ -4,3 +4,4 @@ structlog==25.4.0
 dependency_injector
 -e ../../../aspy/packages/aspyadapters
 -e ../../../aspy/packages/aspyplugs
+-e ../../../aspyconfig
