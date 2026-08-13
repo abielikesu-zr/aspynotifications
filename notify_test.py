@@ -1,13 +1,9 @@
 from typing import Any
 
-from aspynotifications.adapters.cloud_event_context_transformer import (
-    CloudEventPolicyContextTransformer,
+from aspynotifications.containers.notifications_container import (
+    AspyNotificationsContainer,
 )
 from aspynotifications.entities.notification_policy import NotificationPolicy
-from aspynotifications.services.notification_policy_service import (
-    NotificationPolicyService,
-)
-from aspypolicies import get_policy_service
 from aspypolicies.entities.aspy_policy import AspyPolicy
 
 
@@ -95,13 +91,9 @@ def main():
         ],
     )
 
-    policy_service = get_policy_service()
-    context_transformer = CloudEventPolicyContextTransformer()
+    container = AspyNotificationsContainer()
 
-    matcher = NotificationPolicyService(
-        policy_service=policy_service,
-        context_transformer=context_transformer,
-    )
+    matcher = container.notification_policy_service()
 
     events = [
         (
@@ -140,5 +132,6 @@ def main():
             print(f"Evaluated: {result.expression}")
 
 
+# python notify_test.py
 if __name__ == "__main__":
     main()
