@@ -11,4 +11,12 @@ aspyplugs_static:
         - type: MONGODB
           module: aspynotifications.adapters.destinations_mongo_adapter
           eager: false
+      - name: notification_policy_store
+        adapters:
+        - type: LOCALFS
+          module: aspynotifications.adapters.policy_file_store
+          eager: false
+        - type: MONGODB
+          module: aspynotifications.adapters.policy_mongo_store
+          eager: false
       user_decorators: []

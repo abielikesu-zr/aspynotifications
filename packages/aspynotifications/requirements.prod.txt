@@ -37,6 +37,10 @@ click==8.2.1
     #   aspyplugs
 dependency-injector==4.48.3
     # via
+<<<<<<< HEAD
+=======
+    #   -r requirements.prod.in
+>>>>>>> aed2a8c (policies)
     #   aspyconfig
     #   aspypolicies
 dnspython==2.8.0
