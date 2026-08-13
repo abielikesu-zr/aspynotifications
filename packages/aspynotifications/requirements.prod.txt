@@ -22,7 +22,9 @@ aspycontext==0.1.0
 aspylogger==0.1.0
     # via aspyplugs
 aspyplugs==0.1.0
-    # via -r requirements.prod.in
+    # via
+    #   -r requirements.prod.in
+    #   aspypolicies
 aspypolicies==0.1.0
     # via -r requirements.prod.in
 certifi==2026.7.22
@@ -33,10 +35,10 @@ click==8.2.1
     # via
     #   aspyconfig
     #   aspyplugs
-colorama==0.4.6
-    # via click
 dependency-injector==4.48.3
-    # via aspyconfig
+    # via
+    #   aspyconfig
+    #   aspypolicies
 dnspython==2.8.0
     # via pymongo
 h11==0.16.0
@@ -72,6 +74,7 @@ pydantic==2.11.10
     #   aspyadapters
     #   aspylogger
     #   aspyplugs
+    #   aspypolicies
 pydantic-core==2.33.2
     # via pydantic
 pygments==2.20.0
@@ -96,6 +99,7 @@ structlog==25.4.0
     #   aspyconfig
     #   aspylogger
     #   aspyplugs
+    #   aspypolicies
 toml==0.10.2
     # via
     #   aspyconfig
