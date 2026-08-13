@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from aspynotifications.entities.template import Template
 
-from notify_renderer_jinja import Jinja2TemplateRenderer
+from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
+from aspynotifications.entities.template import Template
 
 
 class EmailNotificationAdapter:

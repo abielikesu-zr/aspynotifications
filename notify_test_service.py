@@ -13,9 +13,9 @@ from aspynotifications.entities.template import (
     Template,
     TemplateSource,
 )
+from aspynotifications.services.notify_renderer import NotificationTemplateRenderer
 from aspypolicies.entities.aspy_policy import AspyPolicy
 
-from notify_renderer import NotificationTemplateRenderer
 from notify_test_helpers import (
     ensure_destination,
     ensure_policy,

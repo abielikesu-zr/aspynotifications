@@ -1,11 +1,10 @@
 import structlog
-from pydantic import BaseModel, ValidationError
 from aspyadapters.adapters.generic_local_fs import GenericLocalFSAdapter
 from aspyplugs.registry import register_plugin
+from pydantic import BaseModel, ValidationError
 
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
-
 
 logger = structlog.get_logger(__name__)
 
@@ -99,7 +98,9 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Persistence error listing destinations from local filesystem",
                 error=str(error),
             )
-            raise Exception("Error listing destinations from local filesystem") from error
+            raise Exception(
+                "Error listing destinations from local filesystem"
+            ) from error
 
     async def delete_destination(self, destination_id: str) -> None:
         try:

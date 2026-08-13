@@ -1,11 +1,10 @@
 from typing import Any
 
+from aspynotifications.adapters.notify_renderer_email import EmailNotificationAdapter
+from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
+from aspynotifications.adapters.notify_renderer_slack import SlackNotificationAdapter
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.template import Template
-
-from notify_renderer_email import EmailNotificationAdapter
-from notify_renderer_jinja import Jinja2TemplateRenderer
-from notify_renderer_slack import SlackNotificationAdapter
 
 
 class NotificationTemplateRenderer:
