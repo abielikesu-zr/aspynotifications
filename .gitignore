@@ -8,6 +8,7 @@ var/
 .venv-build
 .aspy_cache
 __pycache__/
+**/*.egg-info/
 .make-env
 .vscode/settings.json
 app.log

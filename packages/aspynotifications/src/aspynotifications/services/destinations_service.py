@@ -1,7 +1,10 @@
 import uuid
 
 from aspynotifications.config.app_config import DestinationsServiceConfig
-from aspynotifications.config.destination_config import DestinationConfig, DestinationType
+from aspynotifications.config.destination_config import (
+    DestinationConfig,
+    DestinationType,
+)
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
