@@ -15,6 +15,7 @@ from aspynotifications.entities.template import (
 )
 from aspypolicies.entities.aspy_policy import AspyPolicy
 
+from notify_renderer import NotificationTemplateRenderer
 from notify_test_helpers import (
     ensure_destination,
     ensure_policy,
@@ -169,25 +170,23 @@ async def main() -> None:
         },
     ]
 
-    # ---------- exercise the full service path ----------
+    renderer_service = NotificationTemplateRenderer(template_root=".")
+
     for case in events:
         print()
         print("=" * 60)
         print(f"Testing: {case['name']}")
         print("=" * 60)
+        context = policy_service.event_to_context(case["event"])
+        print(f"Subject: {context['envelope']['subject']}")
 
-        event = case["event"]
-        print(f"Subject: {event['subject']}")
-
-        matches = await policy_service.find_matching_policies(event)
-
+        matches = await policy_service.find_matching_policies(case["event"])
         if not matches:
             print("✗ NO MATCH")
             continue
 
         for policy in matches:
             print(f"✓ MATCH → {policy.name}")
-            print(f"  Destinations: {policy.destinations}")
 
             destinations = await get_policy_destinations(
                 destinations_service,
@@ -195,56 +194,19 @@ async def main() -> None:
             )
 
             for destination in destinations:
-                print(f"  Destination: {destination.name}")
-                print(f"  Type: {destination.type}")
-                print(f"  Template: {destination.template}")
-                print(f"  Provider: {destination.provider}")
-
                 template = await template_service.get_template_by_name(
                     destination.template
                 )
-
                 if template is None:
                     print(f"  Template not found: {destination.template}")
                     continue
 
-                print(f"  Template name: {template.name}")
-
-                if template.email is not None:
-                    print("  Email:")
-
-                    if template.email.subject is not None:
-                        source = template.email.subject
-                        if source.inline is not None:
-                            print(f"    subject: inline={source.inline}")
-                        elif source.file is not None:
-                            print(f"    subject: file={source.file}")
-
-                    if template.email.html is not None:
-                        source = template.email.html
-                        if source.file is not None:
-                            print(f"    html: file = {source.file}")
-
-                    if template.email.text is not None:
-                        source = template.email.text
-                        if source.file is not None:
-                            print(f"    text: file = {source.file}")
-
-                if template.slack is not None:
-                    print("  Slack:")
-
-                    if template.slack.blocks is not None:
-                        source = template.slack.blocks
-                        if source.file is not None:
-                            print(f"    blocks: file = {source.file}")
-
-                if template.teams is not None:
-                    print("  Teams:")
-
-                    if template.teams.adaptive_card is not None:
-                        source = template.teams.adaptive_card
-                        if source.file is not None:
-                            print(f"    adaptive_card: file = {source.file}")
+                result = renderer_service.render(
+                    destination=destination,
+                    template=template,
+                    context=context,  # ← just pass the event
+                )
+                print(f"  Rendered → {destination.provider} ({destination.name})")
 
 
 if __name__ == "__main__":
