@@ -3,6 +3,14 @@ aspyplugs_static:
     aspynotifications:
       load_at_startup: []
       lazy_loaded:
+      - name: cloud_event_store
+        adapters:
+        - type: LOCALFS
+          module: aspynotifications.adapters.cloud_event.cloud_event_file_adapter
+          eager: false
+        - type: MONGODB
+          module: aspynotifications.adapters.cloud_event.cloud_event_mongo_adapter
+          eager: false
       - name: destinations_store
         adapters:
         - type: LOCALFS
@@ -18,13 +26,6 @@ aspyplugs_static:
           eager: false
         - type: MONGODB
           module: aspynotifications.adapters.policy_mongo_store
-      - name: cloud_event_store
-        adapters:
-        - type: LOCALFS
-          module: aspynotifications.adapters.cloud_event.cloud_event_file_adapter
-          eager: false
-        - type: MONGODB
-          module: aspynotifications.adapters.cloud_event.cloud_event_mongo_adapter
           eager: false
       - name: template_store
         adapters:

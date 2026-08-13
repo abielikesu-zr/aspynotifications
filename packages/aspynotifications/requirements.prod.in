@@ -1,10 +1,6 @@
 # Auto-generated requirements.in for aspynotifications
 pydantic==2.11.10
 structlog==25.4.0
-dependency-injector
-aspyconfig
-aspyadapters
-aspypolicies
 dependency_injector
 aspyadapters
 aspyplugs

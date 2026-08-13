@@ -1,13 +1,6 @@
 # Auto-generated requirements.in for aspynotifications
 pydantic==2.11.10
 structlog==25.4.0
-<<<<<<< HEAD
-dependency-injector
--e ../../../aspyconfig
--e ../../../aspy/packages/aspyadapters
--e ../../../aspy/packages/aspypolicies
-=======
 dependency_injector
 -e ../../../aspy/packages/aspyadapters
->>>>>>> cc95327 (Feature: Cloud event and template)
 -e ../../../aspy/packages/aspyplugs
