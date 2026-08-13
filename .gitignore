@@ -1,0 +1,10 @@
+.aspyapps
+.bashrc
+Makefile
+build.sh
+publish.sh
+var/
+.venv
+.venv-build
+.aspy_cache
+.make-env
