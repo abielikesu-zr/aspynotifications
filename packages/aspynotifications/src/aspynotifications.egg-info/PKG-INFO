@@ -6,5 +6,8 @@ Author-email: AS <abielikesu@yahoo.com>
 License-Expression: LicenseRef-Proprietary
 Requires-Python: <3.13,>=3.12
 Requires-Dist: pydantic==2.11.10
+Requires-Dist: structlog==25.4.0
 Provides-Extra: custom
 Requires-Dist: aspyadapters; extra == "custom"
+Requires-Dist: aspyplugs; extra == "custom"
+Requires-Dist: aspyconfig; extra == "custom"

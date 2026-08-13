@@ -25,12 +25,12 @@ class DestinationsServiceConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-class AppConfigParams(BaseModel):
+class AspynotificationsAppParams(BaseModel):
     destinations_store: DestinationsStoreAdapterConfig
     destinations_service: DestinationsServiceConfig
 
 
-class AppConfig(BaseModel):
+class AspynotificationsAppConfig(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    destinations: AppConfigParams
+    destinations: AspynotificationsAppParams

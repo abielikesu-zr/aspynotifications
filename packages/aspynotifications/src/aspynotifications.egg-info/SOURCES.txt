@@ -20,5 +20,6 @@ src/aspynotifications/factories/destinations_store_factory.py
 src/aspynotifications/ports/__init__.py
 src/aspynotifications/ports/destinations_store_port.py
 src/aspynotifications/resources/config/aspynotifications_plugins.yaml
+src/aspynotifications/resources/licenses/third-party-licenses.README
 src/aspynotifications/services/__init__.py
 src/aspynotifications/services/destinations_service.py

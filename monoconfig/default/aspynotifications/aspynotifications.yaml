@@ -1,0 +1,32 @@
+# Type: AspynotificationsAppParams
+destinations:
+
+  # Type: DestinationsStoreAdapterConfig
+  destinations_store:
+
+    # Configuration for the selected destination store adapter
+
+    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
+    # Switch Variable: g_app_d_destinations_store_adapter_type
+    adapter:
+
+      
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/aspynotifications/destinations_store"
+
+      
+
+  # Type: DestinationsServiceConfig
+
+  destinations_service: "REPLACE_ME"

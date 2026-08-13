@@ -1,0 +1,6 @@
+aspynotifications:
+  deploy:
+    templates:
+    - src: aspynotifications.yaml.j2
+      dest: '{{ install_dir }}/config/aspynotifications.yaml'
+      permissions: '0600'

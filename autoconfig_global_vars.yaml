@@ -1,0 +1,8 @@
+plugins:
+  - LOCALFS
+
+global_vars:
+  data_dir: "./var"
+
+placeholders:
+  localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"

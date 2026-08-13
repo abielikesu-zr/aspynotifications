@@ -1,0 +1,18 @@
+metadata:
+  generator: third-party-license-extractor v1.0
+dependencies:
+- module: '@aspy-aspyadapters'
+  license_snippet: own
+  full_license: own
+- module: '@aspy-aspyplugs'
+  license_snippet: own
+  full_license: own
+- module: '@aspyconfig-aspyconfig'
+  license_snippet: own
+  full_license: own
+- module: pydantic
+  license_snippet: MIT
+  full_license: MIT
+- module: structlog
+  license_snippet: MIT
+  full_license: MIT OR Apache-2.0

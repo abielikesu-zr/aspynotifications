@@ -1,0 +1,77 @@
+# Type: AspynotificationsAppParams
+destinations:
+
+  # Type: DestinationsStoreAdapterConfig
+  destinations_store:
+
+    # Configuration for the selected destination store adapter
+
+    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
+    # Switch Variable: g_app_d_destinations_store_adapter_type
+    adapter:
+
+      {% if  g_app_d_destinations_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "{{  g_app_d_destinations_store_localfs_data_dir | default(None)   }}"
+
+      {% elif  g_app_d_destinations_store_adapter_type == 'MONGODB' %}
+
+        type: 'MONGODB'
+
+        # MongoDB-specific configuration
+
+        # Type: MongoDBConfig
+        config:
+
+          # MongoDB connection URI
+
+          # Type: str
+
+          uri: "{{  g_app_d_destinations_store_mongodb_uri | default(None)   }}"
+
+          # Database name
+
+          # Type: str
+
+          database: "{{  g_app_d_destinations_store_mongodb_database | default(None)   }}"
+
+          # Username for authentication, if required
+
+          # Type: str | None
+
+          username: "{{  g_app_d_destinations_store_mongodb_username | default(None)   }}"
+
+          # Password for authentication, if required
+
+          # Type: str | None
+
+          password: "{{  g_app_d_destinations_store_mongodb_password | default(None)   }}"
+
+          # Authentication source database, if required
+
+          # Type: str | None
+
+          auth_source: "{{  g_app_d_destinations_store_mongodb_auth_source | default(None)   }}"
+
+          # Use TLS/SSL connection
+
+          # Type: bool
+
+          tls: "{{  (g_app_d_destinations_store_mongodb_tls | default(False)) is sameas true  }}"
+
+      {% endif %}
+
+  # Type: DestinationsServiceConfig
+
+  destinations_service: "{{  g_app_d_destinations_service | default(None)   }}"
