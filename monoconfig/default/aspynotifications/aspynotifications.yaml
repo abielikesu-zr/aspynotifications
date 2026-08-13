@@ -1,7 +1,7 @@
 # Type: AspynotificationsAppParams
 aspynotifications:
 
-  # Type: DestinationsStoreAdapterConfig
+  # Type: StorageAdapterConfig
   destinations_store:
 
     # Configuration for the selected destination store adapter
