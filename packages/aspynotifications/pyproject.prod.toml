@@ -11,7 +11,7 @@ authors = [
 license = "LicenseRef-Proprietary"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-  "pydantic==2.11.10"]
+  "pydantic==2.11.10",  "aspyadapters>=0.1.0, <0.2.0"]
 
 
 

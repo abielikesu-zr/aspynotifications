@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: aspynotifications
+Version: 0.1.0
+Summary: Package aspynotifications
+Author-email: AS <abielikesu@yahoo.com>
+License-Expression: LicenseRef-Proprietary
+Requires-Python: <3.13,>=3.12
+Requires-Dist: pydantic==2.11.10
+Provides-Extra: custom
+Requires-Dist: aspyadapters; extra == "custom"

@@ -1,0 +1,14 @@
+aspyplugs_static:
+  root_modules:
+    aspynotifications:
+      load_at_startup: []
+      lazy_loaded:
+      - name: destinations_store
+        adapters:
+        - type: LOCALFS
+          module: aspynotifications.adapters.destinations_file_adapter
+          eager: false
+        - type: MONGODB
+          module: aspynotifications.adapters.destinations_mongo_adapter
+          eager: false
+      user_decorators: []
