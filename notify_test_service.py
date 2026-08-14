@@ -5,6 +5,7 @@ from aspylogger.services.logging_setup import bootstrap_logging
 from aspynotifications import (
     get_destinations_service,
     get_notification_policy_service,
+    get_notification_provider_service,
     get_template_service,
 )
 from aspynotifications.entities.template import (
@@ -18,6 +19,7 @@ from aspypolicies.entities.aspy_policy import AspyPolicy
 
 from notify_test_helpers import (
     ensure_destination,
+    ensure_notification_provider,
     ensure_policy,
     ensure_template,
     get_policy_destinations,
@@ -33,6 +35,29 @@ async def main() -> None:
     policy_service = get_notification_policy_service()
     destinations_service = get_destinations_service()
     template_service = get_template_service()
+    notification_provider_service = get_notification_provider_service()
+
+    await ensure_notification_provider(
+        notification_provider_service,
+        name="corporate-mail",
+        provider_type="GMAIL",
+        config={
+            "from_address": "notifications@example.com",
+            "from_name": "Notifications",
+            "credentials": {
+                "service_account_email": "notifications-service@example.iam.gserviceaccount.com",
+                "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+                "delegated_user": "notifications@example.com",
+            },
+        },
+    )
+
+    await ensure_notification_provider(
+        notification_provider_service,
+        name="operations-slack",
+        provider_type="SLACK",
+        config={},
+    )
 
     # ---------- ensure policies exist ----------
     await ensure_policy(
@@ -91,7 +116,7 @@ async def main() -> None:
     await ensure_destination(
         destinations_service,
         name="operations-email",
-        provider="smtp",
+        provider="corporate-mail",
         destination_type="email",
         template="email-notification",
         routable=True,
@@ -104,7 +129,7 @@ async def main() -> None:
     await ensure_destination(
         destinations_service,
         name="payments-slack",
-        provider="slack",
+        provider="operations-slack",
         destination_type="slack_channel",
         template="slack-notification",
         routable=True,
@@ -201,12 +226,25 @@ async def main() -> None:
                     print(f"  Template not found: {destination.template}")
                     continue
 
-                result = renderer_service.render(
+                _ = renderer_service.render(
                     destination=destination,
                     template=template,
-                    context=context,  # ← just pass the event
+                    context=context,
                 )
-                print(f"  Rendered → {destination.provider} ({destination.name})")
+
+                provider = await notification_provider_service.get_notification_provider_by_name(
+                    destination.provider
+                )
+
+                if provider is None:
+                    print(f"  Provider not found: {destination.provider}")
+                    continue
+
+                print(
+                    f"  Rendered → provider={provider.name}, "
+                    f"type={provider.provider.type} "
+                    f"({destination.name})"
+                )
 
 
 if __name__ == "__main__":
