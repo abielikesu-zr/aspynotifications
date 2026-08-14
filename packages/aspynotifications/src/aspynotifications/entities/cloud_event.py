@@ -65,7 +65,7 @@ class EventData(BaseModel):
 
 class CloudEvent(BaseModel):
     specversion: str = Field(
-        default=None,
+        default="1.0",
         description="CloudEvents specification version",
     )
     type: str = Field(
@@ -85,7 +85,6 @@ class CloudEvent(BaseModel):
         description="Event timestamp in ISO format",
     )
     subject: str = Field(
-        default=None,
         description="Thing the event concerns",
     )
     datacontenttype: DataContentType = Field(
@@ -94,7 +93,7 @@ class CloudEvent(BaseModel):
     )
 
     severity: Severity = Field(
-        default='Info',
+        default="INFO",
         description="CloudEvent severity extension attribute",
     )
 

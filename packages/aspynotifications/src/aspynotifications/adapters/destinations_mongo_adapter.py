@@ -1,14 +1,13 @@
 import structlog
-from pydantic import BaseModel, ValidationError
 from aspyadapters.adapters.generic_mongo_db_adapter import (
     GenericMongoAdapter,
     NotFoundError,
 )
 from aspyplugs.registry import register_plugin
+from pydantic import BaseModel, ValidationError
 
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
-
 
 logger = structlog.get_logger(__name__)
 
@@ -32,7 +31,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 destination_id=destination.id,
                 error=str(error),
             )
-            raise Exception(
+            raise Exception(  # noqa: TRY002
                 f"Error saving destination {destination.id} to MongoDB"
             ) from error
 
@@ -56,7 +55,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 destination_id=destination_id,
                 error=str(error),
             )
-            raise Exception(
+            raise Exception(  # noqa: TRY002
                 f"Error retrieving destination {destination_id} from MongoDB"
             ) from error
 
@@ -65,7 +64,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
         destination_name: str,
     ) -> Destination | None:
         try:
-            return await self.find_one(criteria={"name": destination_name})
+            return await self.find_one(criteria={"name": destination_name})  # type: ignore[func-returns-value]
         except ValidationError as error:
             logger.error(
                 "Corrupted destination data in MongoDB",
@@ -81,7 +80,9 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 destination_name=destination_name,
                 error=str(error),
             )
-            raise Exception("Error retrieving destination by name from MongoDB") from error
+            raise Exception(  # noqa: TRY002
+                "Error retrieving destination by name from MongoDB"
+            ) from error
 
     async def list_destinations(self) -> list[Destination]:
         try:
@@ -91,7 +92,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error listing destinations from MongoDB",
                 error=str(error),
             )
-            raise Exception("Error listing destinations from MongoDB") from error
+            raise Exception("Error listing destinations from MongoDB") from error  # noqa: TRY002
 
     async def delete_destination(self, destination_id: str) -> None:
         try:
@@ -102,7 +103,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 destination_id=destination_id,
                 error=str(error),
             )
-            raise Exception(
+            raise Exception(  # noqa: TRY002
                 f"Error deleting destination {destination_id} from MongoDB"
             ) from error
 

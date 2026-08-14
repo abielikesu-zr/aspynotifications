@@ -11,6 +11,7 @@ from aspyconfig import get_config as aspy_get_config
 from aspyconfig.utils.os_utils import get_os_username
 from aspylogger.services.logging_setup import configure_logging
 from nats import connect
+from nats.aio.client import Client
 from nats.js import JetStreamContext
 from pydantic import ValidationError
 
@@ -49,7 +50,7 @@ class BaseWorkerRunner:
     ) -> None:
         self.worker_factory = worker_factory
         self.worker: CloudEventsWorker | None = None
-        self.nc = None
+        self.nc: Client | None = None
         self.js: JetStreamContext | None = None
 
     def get_config_root(self) -> str:

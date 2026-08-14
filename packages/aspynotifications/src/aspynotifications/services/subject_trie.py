@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 
-import pygtrie
+import pygtrie  # type: ignore[import-untyped]
 
 
 class SubjectTrie:
@@ -57,9 +57,11 @@ class SubjectTrie:
 
         # First token
         part = parts[0]
-        for path in ((part,), ("*",), (">",)):
+        for token in (part, "*", ">"):
+            path: tuple[str, ...] = (token,)
+
             if self._trie.has_node(path):
-                if path[-1] == ">":
+                if token == ">":
                     matches.update(self._trie.get(path, []))
                 else:
                     candidates.append(path)

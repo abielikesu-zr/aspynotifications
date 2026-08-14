@@ -96,7 +96,7 @@ class NotificationPolicyFileStoreAdapter(
         criteria = {"name": name}
 
         try:
-            policies = await self.find(
+            policies: list[NotificationPolicy] = await self.find(
                 index_name="by_name",
                 criteria=criteria,
             )

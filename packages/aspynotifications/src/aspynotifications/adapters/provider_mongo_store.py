@@ -97,7 +97,7 @@ class NotificationProviderStoreMongoAdapter(
         criteria = {"name": name}
 
         try:
-            result = await self.find_one(criteria=criteria)
+            result = await self.find_one(criteria=criteria)  # type: ignore[func-returns-value]
         except NotFoundError:
             return None
         except ValidationError as e:

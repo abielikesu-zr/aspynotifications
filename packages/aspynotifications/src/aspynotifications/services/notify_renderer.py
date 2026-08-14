@@ -5,6 +5,7 @@ from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRende
 from aspynotifications.adapters.notify_renderer_slack import SlackNotificationAdapter
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.template import Template
+from aspynotifications.ports.notification_renderer import NotificationRendererPort
 
 
 class NotificationTemplateRenderer:
@@ -13,7 +14,7 @@ class NotificationTemplateRenderer:
     def __init__(self, template_root: str):
         renderer = Jinja2TemplateRenderer(template_root)
 
-        self._adapters = {
+        self._adapters: dict[str, NotificationRendererPort] = {
             "email": EmailNotificationAdapter(renderer),
             "slack_channel": SlackNotificationAdapter(renderer),
         }

@@ -98,7 +98,7 @@ class NotificationProviderFileStoreAdapter(
         criteria = {"name": name}
 
         try:
-            providers = await self.find(
+            providers: list[NotificationProvider] = await self.find(
                 index_name="by_name",
                 criteria=criteria,
             )

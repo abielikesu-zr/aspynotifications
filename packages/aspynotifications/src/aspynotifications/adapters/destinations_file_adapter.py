@@ -64,7 +64,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
             return await self.find_one(
                 index_name="by_name",
                 criteria={"name": destination_name},
-            )
+            )  # type: ignore[func-returns-value]
         except ValidationError as error:
             logger.error(
                 "Corrupted destination data in local filesystem",

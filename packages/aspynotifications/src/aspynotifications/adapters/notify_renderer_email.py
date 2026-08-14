@@ -6,9 +6,10 @@ import yaml
 
 from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.entities.template import Template
+from aspynotifications.ports.notification_renderer import NotificationRendererPort
 
 
-class EmailNotificationAdapter:
+class EmailNotificationAdapter(NotificationRendererPort):
     """Renders notification templates for email destinations."""
 
     def __init__(self, renderer: Jinja2TemplateRenderer):

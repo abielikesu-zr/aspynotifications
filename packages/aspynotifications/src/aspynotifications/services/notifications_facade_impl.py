@@ -34,7 +34,8 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self._notification_provider_service = notification_provider_service
         self._notification_policy_service = notification_policy_service
 
-    async def notify(self, request: CreateNotifyRequest) -> str: ...
+    async def notify(self, request: CreateNotifyRequest) -> str:
+        return "ok"
 
     async def get_subscriptions(self) -> NotificationSubscriptionsDTO:
         subscriptions = await self._notification_policy_service.get_subscriptions()

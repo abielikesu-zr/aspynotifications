@@ -24,7 +24,7 @@ class CloudEventsWorker(abc.ABC):
 
         self.batch_size = config.batch
         self.js: JetStreamContext | None = None
-        self.subs = []
+        self.subs: list[JetStreamContext.PullSubscription] = []
 
     async def get_subscriptions(self) -> list[str]:
         return self.config.subscriptions

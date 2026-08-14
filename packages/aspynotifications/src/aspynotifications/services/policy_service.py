@@ -46,12 +46,12 @@ class NotificationPolicyService:
         logger.debug("NotificationPolicyService initialized")
 
     async def _ensure_subject_trie(self) -> None:
-        if self.subject_trie.valid and self._policy_cache_valid:
+        if self.subject_trie.valid() and self._policy_cache_valid:
             return
 
         async with self._trie_lock:
             # Double-check after acquiring the lock
-            if self.subject_trie.valid and self._policy_cache_valid:
+            if self.subject_trie.valid() and self._policy_cache_valid:
                 return
 
             policies = await self.notification_policy_store.list_notification_policies()

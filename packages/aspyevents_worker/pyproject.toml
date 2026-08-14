@@ -15,7 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 custom = [
-  "aspytracing",  "aspyconfig",  "aspylogger"]
+  "aspynotifications_dtos",  "aspytracing",  "aspyconfig",  "aspylogger"]
 
 
 [tool.setuptools.packages.find]
