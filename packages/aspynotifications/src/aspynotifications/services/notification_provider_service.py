@@ -31,11 +31,11 @@ class NotificationProviderService:
         self,
         notification_provider_store: NotificationProviderStore,
         config: dict[str, Any],
-        sender_factory: NotificationProviderSenderFactory | None = None,
+        sender_factory: NotificationProviderSenderFactory,
     ):
         self.notification_provider_store = notification_provider_store
         self.config = NotificationProviderServiceConfig.model_validate(config)
-        self._sender_factory = sender_factory or NotificationProviderSenderFactory()
+        self._sender_factory = sender_factory
 
         logger.debug("NotificationProviderService initialized")
 

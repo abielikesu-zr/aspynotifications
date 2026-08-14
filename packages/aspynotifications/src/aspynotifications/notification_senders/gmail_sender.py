@@ -1,5 +1,6 @@
 from typing import Any
 
+from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyplugs.registry import register_plugin
 
 from aspynotifications.entities.delivery_result import DeliveryResult
@@ -13,6 +14,9 @@ from aspynotifications.notification_senders.sender_base import (
 @register_plugin("notification_sender", "GMAIL")
 class GmailNotificationSender(SimulatedNotificationSender):
     """Simulated Gmail delivery adapter."""
+
+    def __init__(self, http_client: AspyHttpClient) -> None:
+        self._http = http_client
 
     async def send(
         self,

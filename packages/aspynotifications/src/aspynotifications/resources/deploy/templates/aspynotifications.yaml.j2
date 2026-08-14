@@ -391,6 +391,37 @@ aspynotifications:
 
     keep: "{{  g_app_a_notification_provider_service_keep | default('keep')   }}"
 
+  # Type: HttpClientConfig
+  notification_sender_http_client:
+
+    # Request timeout in seconds
+
+    # Type: float
+
+    timeout: "{{  g_app_a_notification_sender_http_client_timeout | default(5.0) | float  }}"
+
+    # Number of retries on failure
+
+    # Type: int
+
+    max_retries: "{{  g_app_a_notification_sender_http_client_max_retries | default(2) | int  }}"
+
+    # Base backoff for retries
+
+    # Type: float
+
+    backoff_base: "{{  g_app_a_notification_sender_http_client_backoff_base | default(0.15) | float  }}"
+
+    # Maximum backoff for retries
+
+    # Type: float
+
+    backoff_max: "{{  g_app_a_notification_sender_http_client_backoff_max | default(1.0) | float  }}"
+
+    # Type: bool | str
+
+    verify: "{{  g_app_a_notification_sender_http_client_verify | default(True)   }}"
+
   # Type: NotificationFacadeConfig
   notification_facade:
 

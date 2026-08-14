@@ -1,6 +1,6 @@
 from typing import Any, cast
 
-import httpx
+from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyplugs.registry import register_plugin
 
 from aspynotifications.entities.delivery_result import DeliveryResult
@@ -18,6 +18,9 @@ from aspynotifications.notification_senders.sender_base import (
 class SlackNotificationSender(SimulatedNotificationSender):
     """Slack Incoming Webhook delivery adapter."""
 
+    def __init__(self, http_client: AspyHttpClient) -> None:
+        self._http = http_client
+
     async def send(
         self,
         provider: NotificationProvider,
@@ -26,13 +29,11 @@ class SlackNotificationSender(SimulatedNotificationSender):
     ) -> DeliveryResult:
         provider_config = cast(SlackProviderConfig, provider.provider).config
 
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                provider_config.webhook_url,
-                headers={"Content-Type": "application/json"},
-                json=message,
-            )
-            response.raise_for_status()
+        response = await self._http.post(
+            provider_config.webhook_url,
+            headers={"Content-Type": "application/json"},
+            payload=message,
+        )
 
         print(
             f"Slack accepted the message for provider {provider.name}: "

@@ -40,6 +40,10 @@ def _store() -> MagicMock:
     return store
 
 
+def _sender_factory() -> MagicMock:
+    return MagicMock()
+
+
 @pytest.mark.asyncio
 async def test_create_provider_generates_uuid_and_persists_gmail_provider(
     monkeypatch: pytest.MonkeyPatch,
@@ -56,6 +60,7 @@ async def test_create_provider_generates_uuid_and_persists_gmail_provider(
     provider = await NotificationProviderService(
         notification_provider_store=store,
         config={},
+        sender_factory=_sender_factory(),
     ).create_notification_provider(
         name="corporate-mail",
         provider_type="GMAIL",
@@ -75,6 +80,7 @@ async def test_create_provider_resolves_slack_and_zeptomail_config_variants() ->
     service = NotificationProviderService(
         notification_provider_store=store,
         config={},
+        sender_factory=_sender_factory(),
     )
 
     # Act
@@ -107,6 +113,7 @@ async def test_create_provider_rejects_invalid_config() -> None:
         await NotificationProviderService(
             notification_provider_store=store,
             config={},
+            sender_factory=_sender_factory(),
         ).create_notification_provider(
             name="corporate-mail",
             provider_type="GMAIL",

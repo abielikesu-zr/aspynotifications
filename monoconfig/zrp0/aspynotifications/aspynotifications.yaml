@@ -4,3 +4,6 @@ aspynotifications:
 
   destinations_service:
     keep: "keep"
+
+  notification_sender_http_client:
+    verify: False

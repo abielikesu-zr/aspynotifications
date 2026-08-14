@@ -1,4 +1,5 @@
 .aspyapps
+.DS_Store
 .bashrc
 Makefile
 build.sh

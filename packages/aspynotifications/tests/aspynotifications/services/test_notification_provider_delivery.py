@@ -96,13 +96,16 @@ async def test_send_uses_the_sender_selected_by_provider_type(
     sender_class: type,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
-    result = await _service(StubSenderFactory(sender_class())).send(
+    http_client = MagicMock()
+    http_client.post = AsyncMock(return_value=MagicMock(status_code=201))
+
+    result = await _service(StubSenderFactory(sender_class(http_client))).send(
         provider=_provider(provider_type),
         destination=_destination(destination_type),
-        message={"body": "test"},
+        message={"subject": "test", "html": "<p>test</p>", "body": "test"},
     )
 
     assert result.status == "simulated"
     assert result.sender_name == sender_class.__name__
     assert result.provider_type == provider_type
-    assert "soy el provider provider-under-test" in capsys.readouterr().out
+    assert "provider-under-test" in capsys.readouterr().out

@@ -1,6 +1,6 @@
 from typing import Any, cast
 
-import httpx
+from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyplugs.registry import register_plugin
 
 from aspynotifications.config.destination_config import EmailDestinationConfig
@@ -18,6 +18,9 @@ from aspynotifications.notification_senders.sender_base import (
 @register_plugin("notification_sender", "ZEPTOMAIL")
 class ZeptoMailNotificationSender(SimulatedNotificationSender):
     """ZeptoMail delivery adapter."""
+
+    def __init__(self, http_client: AspyHttpClient) -> None:
+        self._http = http_client
 
     async def send(
         self,
@@ -53,19 +56,17 @@ class ZeptoMailNotificationSender(SimulatedNotificationSender):
         else:
             payload["textbody"] = message["text"]
 
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                "https://api.zeptomail.com/v1.1/email",
-                headers={
-                    "Accept": "application/json",
-                    "Authorization": (
-                        "Zoho-enczapikey "
-                        f"{provider_config.credentials.send_mail_token}"
-                    ),
-                },
-                json=payload,
-            )
-            response.raise_for_status()
+        response = await self._http.post(
+            "https://api.zeptomail.com/v1.1/email",
+            headers={
+                "Accept": "application/json",
+                "Authorization": (
+                    "Zoho-enczapikey "
+                    f"{provider_config.credentials.send_mail_token}"
+                ),
+            },
+            payload=payload,
+        )
 
         print(
             f"ZeptoMail accepted the message for provider {provider.name}: "

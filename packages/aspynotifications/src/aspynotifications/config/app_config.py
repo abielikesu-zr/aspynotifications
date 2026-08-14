@@ -1,5 +1,6 @@
 from typing import Literal
 
+from aspyadapters.adapters.http_client_config import HttpClientConfig
 from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -40,6 +41,9 @@ class AspynotificationsAppParams(BaseModel):
     notification_provider_store: StorageAdapterConfig
     notification_provider_service: NotificationProviderServiceConfig = Field(
         default_factory=NotificationProviderServiceConfig
+    )
+    notification_sender_http_client: HttpClientConfig = Field(
+        default_factory=HttpClientConfig
     )
 
     notification_facade: NotificationFacadeConfig = Field(

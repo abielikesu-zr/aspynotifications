@@ -46,7 +46,7 @@ async def main() -> None:
             "from_address": "notifications@example.com",
             "from_name": "Notifications",
             "credentials": {
-                "send_mail_token": "",
+                "send_mail_token": "XXXXX",
             },
         },
     )
@@ -56,7 +56,7 @@ async def main() -> None:
         name="operations-slack",
         provider_type="SLACK",
         config={
-            "webhook_url": "",
+            "webhook_url": "XXX",
         },
     )
 
