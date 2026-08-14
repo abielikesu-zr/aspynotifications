@@ -1,6 +1,7 @@
 from typing import Any
+import structlog
 
-from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
+from aspynotifications_dtos.notify_request import CreateNotifyRequest
 
 from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
 from aspynotifications.services.cloud_event_service import CloudEventService
@@ -11,6 +12,8 @@ from aspynotifications.services.notification_provider_service import (
 from aspynotifications.services.notifications_facade import NotificationsFacade
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.template_service import TemplateService
+
+logger = structlog.get_logger(__name__)
 
 
 class NotificationsFacadeImpl(NotificationsFacade):
@@ -30,4 +33,5 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self._notification_provider_service = notification_provider_service
         self._notification_policy_service = notification_policy_service
 
-    async def notify(self, requestDTO: CloudEventDTO) -> None: ...
+    async def notify(self, request: CreateNotifyRequest) -> str:
+        return "Sucessfull"

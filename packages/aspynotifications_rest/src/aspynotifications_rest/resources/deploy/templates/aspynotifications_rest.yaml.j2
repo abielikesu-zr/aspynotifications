@@ -1,0 +1,17 @@
+# Type: AspyNotificationsRestAppConfigParams
+aspynotifications_rest:
+
+  # Type: AspyNotificationsRestServerConfig
+  rest_server:
+
+    # REST server host
+
+    # Type: str
+
+    host: "{{  g_app_ar_rest_server_host | default('127.0.0.1')   }}"
+
+    # REST server port
+
+    # Type: int
+
+    port: "{{  g_app_ar_rest_server_port | default(50000) | int  }}"

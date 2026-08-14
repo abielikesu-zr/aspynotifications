@@ -9,3 +9,4 @@ dependency-injector
 -e ../../../aspy/packages/aspyadapters
 -e ../../../aspy/packages/aspypolicies
 -e ../../../aspy/packages/aspyplugs
+-e ../aspynotifications_dtos

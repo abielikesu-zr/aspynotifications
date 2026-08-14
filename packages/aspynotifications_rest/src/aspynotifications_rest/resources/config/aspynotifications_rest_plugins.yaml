@@ -1,0 +1,15 @@
+aspyplugs_static:
+  root_modules:
+    aspynotifications_rest:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: asynccontextmanager
+        module: aspynotifications_rest.api.main
+        params: []
+      - name: notifications_router
+        module: aspynotifications_rest.api.notifications_handlers
+        params: []
+      - name: notifications_router
+        module: aspynotifications_rest.api.notifications_handlers
+        params: []

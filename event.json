@@ -1,0 +1,23 @@
+{
+  "event": {
+    "specversion": "1.0",
+    "type": "com.example.node.deployment.failed",
+    "source": "/node-manager",
+    "subject": "node-123",
+    "datacontenttype": "application/json",
+    "severity": "ERROR",
+    "data": {
+      "event": {
+        "node_id": "node123",
+        "deployment_id": "deploy456",
+        "attempt": 3
+      },
+      "error": null,
+      "routing": null,
+      "context": {
+        "environment": "production",
+        "region": "eu-west-2"
+      }
+    }
+  }
+}

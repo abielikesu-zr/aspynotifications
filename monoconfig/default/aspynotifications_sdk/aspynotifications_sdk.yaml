@@ -1,0 +1,40 @@
+# Type: NotificationsSdkParams
+notifications_sdk:
+
+  # Type: HttpClientConfig
+  http_client:
+
+    # Request timeout in seconds
+
+    # Type: float
+
+    timeout: "5.0"
+
+    # Number of retries on failure
+
+    # Type: int
+
+    max_retries: "2"
+
+    # Base backoff for retries
+
+    # Type: float
+
+    backoff_base: "0.15"
+
+    # Maximum backoff for retries
+
+    # Type: float
+
+    backoff_max: "1.0"
+
+    # Type: bool | str
+
+    verify: True
+
+  # Type: NotificationsClientConfig
+  notifications_client:
+
+    # Type: HttpUrl
+
+    base_url: "http://127.0.0.1:50000"

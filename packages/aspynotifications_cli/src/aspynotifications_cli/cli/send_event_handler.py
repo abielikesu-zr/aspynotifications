@@ -1,0 +1,22 @@
+import json
+import structlog
+
+from aspynotifications_cli import load_aspynotifications_cli_config
+from aspynotifications_dtos.notify_request import CreateNotifyRequest
+from aspynotifications_sdk import get_notifications_sdk
+
+logger = structlog.get_logger(__name__)
+
+
+async def send_event_handler(file_path: str, output_format: str) -> None:
+    log = logger.bind(function="send_event_handler")
+
+    load_aspynotifications_cli_config()
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    request = CreateNotifyRequest.model_validate(data)
+    sdk = get_notifications_sdk()
+    result = await sdk.notify(request)
+    log.info("send_event_handler")
+    print('Server: ', result)
