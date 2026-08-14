@@ -41,14 +41,12 @@ async def main() -> None:
     await ensure_notification_provider(
         notification_provider_service,
         name="corporate-mail",
-        provider_type="GMAIL",
+        provider_type="ZEPTOMAIL",
         config={
             "from_address": "notifications@example.com",
             "from_name": "Notifications",
             "credentials": {
-                "service_account_email": "notifications-service@example.iam.gserviceaccount.com",
-                "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
-                "delegated_user": "notifications@example.com",
+                "send_mail_token": "",
             },
         },
     )
@@ -58,7 +56,7 @@ async def main() -> None:
         name="operations-slack",
         provider_type="SLACK",
         config={
-            "webhook_url": os.environ["SLACK_WEBHOOK_URL"],
+            "webhook_url": "",
         },
     )
 
