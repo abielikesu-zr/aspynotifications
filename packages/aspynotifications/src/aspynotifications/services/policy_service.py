@@ -121,7 +121,7 @@ class NotificationPolicyService:
             policy_id
         )
         if not policy:
-            logger.warning(
+            logger.debug(
                 "Notification policy not found",
                 policy_id=policy_id,
             )
@@ -138,7 +138,7 @@ class NotificationPolicyService:
             name
         )
         if not policy:
-            logger.warning(
+            logger.debug(
                 "Notification policy not found",
                 name=name,
             )

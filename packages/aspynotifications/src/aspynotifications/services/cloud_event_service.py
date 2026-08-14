@@ -1,13 +1,4 @@
-# from aspynotifications.config.app_config import CloudEventServiceConfig
-# from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
-
-
-# class CloudEventService:
-
-#     def __init__(self, config: dict, store: ICloudEventStorePort):
-#         self._config = CloudEventServiceConfig.model_validate(config)
-#         self._store = store
-
+from aspynotifications.config.app_config_cloud_template import CloudEventServiceConfig
 import structlog
 
 from aspynotifications.entities.cloud_event import CloudEvent
@@ -18,7 +9,7 @@ logger = structlog.get_logger(__name__)
 
 class CloudEventService:
     def __init__(self, config: dict, store: ICloudEventStorePort):
-        self._config = config
+        self._config = CloudEventServiceConfig.model_validate(config)
         self._store = store
 
     async def create_cloud_event(self, cloud_event: CloudEvent) -> CloudEvent:

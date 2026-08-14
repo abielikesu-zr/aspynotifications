@@ -1,3 +1,4 @@
+from aspynotifications.config.app_config_cloud_template import TemplateServiceConfig
 import structlog
 
 from aspynotifications.entities.template import Template
@@ -8,7 +9,7 @@ logger = structlog.get_logger(__name__)
 
 class TemplateService:
     def __init__(self, config: dict, store: ITemplateStorePort):
-        self._config = config
+        self._config = TemplateServiceConfig.model_validate(config)
         self._store = store
 
     async def create_template(self, template: Template) -> Template:

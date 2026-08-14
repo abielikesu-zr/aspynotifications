@@ -64,8 +64,8 @@ class EventData(BaseModel):
 
 
 class CloudEvent(BaseModel):
-    specversion: Literal["1.0"] = Field(
-        default="1.0",
+    specversion: str = Field(
+        default=None,
         description="CloudEvents specification version",
     )
     type: str = Field(
@@ -84,7 +84,7 @@ class CloudEvent(BaseModel):
         default_factory=lambda: datetime.now(timezone.utc).isoformat(),
         description="Event timestamp in ISO format",
     )
-    subject: str | None = Field(
+    subject: str = Field(
         default=None,
         description="Thing the event concerns",
     )
@@ -93,8 +93,8 @@ class CloudEvent(BaseModel):
         description="Serialization format of the event data",
     )
 
-    severity: Severity | None = Field(
-        default=None,
+    severity: Severity = Field(
+        default='Info',
         description="CloudEvent severity extension attribute",
     )
 

@@ -14,11 +14,8 @@ logger = structlog.get_logger(__name__)
 @register_plugin("cloud_event_store", "LOCALFS")
 class CloudEventFileStoreAdapter(ICloudEventStorePort, GenericLocalFSAdapter):
 
-    def get_model_class(self) -> type[BaseModel]:   # type: ignore[override]
+    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
         return CloudEvent
-
-    def get_index_declarations(self) -> dict:
-        return {"id": ["id"]}
 
     async def save_cloud_event(self, cloud_event: CloudEvent) -> None:
         filename = f"{cloud_event.id}.json"
@@ -31,7 +28,9 @@ class CloudEventFileStoreAdapter(ICloudEventStorePort, GenericLocalFSAdapter):
                 error=str(e),
                 exc_info=e,
             )
-            raise
+            raise Exception(  # noqa: TRY002
+                f"Error saving cloud event {cloud_event.id} to FS: {e!s}"
+            ) from e
 
     async def get_cloud_event(self, event_id: str) -> CloudEvent | None:
         filename = f"{event_id}.json"
