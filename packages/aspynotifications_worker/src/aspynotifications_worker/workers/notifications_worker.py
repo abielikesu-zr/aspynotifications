@@ -5,6 +5,7 @@ from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorke
 from aspyevents_worker.workers.cloud_events_worker import CloudEventsWorker
 from aspynotifications.services.notifications_facade import NotificationsFacade
 from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
+from aspynotifications_dtos.notify_request import CreateNotifyRequest
 
 logger = structlog.get_logger(__name__)
 
@@ -34,7 +35,8 @@ class NotificationsWorker(CloudEventsWorker):
         )
 
         try:
-            await self.notifications_facade.notify(cloud_event)
+            request = CreateNotifyRequest(event=cloud_event)
+            await self.notifications_facade.notify(request)
 
             logger.info(
                 "CloudEvent processed",

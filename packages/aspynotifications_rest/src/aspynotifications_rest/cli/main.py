@@ -1,6 +1,7 @@
 import click
 import structlog
 from aspyrest.cli.rest_server import rest_start_command
+
 from aspynotifications_rest.api.main import notifications_rest_app
 from aspynotifications_rest.api.rest_server_runner import (
     AspyNotificationsRestServerRunner,

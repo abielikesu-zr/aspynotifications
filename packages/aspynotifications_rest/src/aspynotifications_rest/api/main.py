@@ -1,11 +1,11 @@
 from contextlib import asynccontextmanager
 
 import structlog
+from aspynotifications import get_notification_facade
+from aspynotifications.services.notifications_facade import NotificationsFacade
 from fastapi import FastAPI
 
-from aspynotifications import get_notification_facade
 from aspynotifications_rest.api.notifications_handlers import notifications_router
-from aspynotifications.services.notifications_facade import NotificationsFacade
 
 logger = structlog.get_logger(__name__)
 

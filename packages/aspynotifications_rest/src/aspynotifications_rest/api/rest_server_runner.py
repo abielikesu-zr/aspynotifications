@@ -1,5 +1,6 @@
 import structlog
 from aspyrest.runner.base_rest_server_runner import BaseRestServerRunner
+
 from aspynotifications_rest.domain.config.rest_server_config import (
     AspyNotificationsRestServerConfig,
 )
