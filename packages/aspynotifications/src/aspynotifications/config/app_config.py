@@ -8,6 +8,7 @@ from aspynotifications.config.cloud_template import (
     TemplateServiceConfig,
 )
 from aspynotifications.config.notification_config import NotificationPolicyServiceConfig
+from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
 from aspynotifications.config.notification_provider_config import (
     NotificationProviderServiceConfig,
 )
@@ -39,6 +40,10 @@ class AspynotificationsAppParams(BaseModel):
     notification_provider_store: StorageAdapterConfig
     notification_provider_service: NotificationProviderServiceConfig = Field(
         default_factory=NotificationProviderServiceConfig
+    )
+
+    notification_facade: NotificationFacadeConfig = Field(
+        default_factory=NotificationFacadeConfig
     )
 
 

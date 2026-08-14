@@ -33,8 +33,8 @@ class NotificationPolicyService:
         context_transformer: CloudEventPolicyContextTransformer,
         subject_trie: SubjectTrie,
     ):
-        self.notification_policy_store = notification_policy_store
         self.config = NotificationPolicyServiceConfig.model_validate(config)
+        self.notification_policy_store = notification_policy_store
         self.policy_service = policy_service
         self.context_transformer = context_transformer
         self.subject_trie = subject_trie

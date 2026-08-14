@@ -10,6 +10,7 @@ from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
 )
+from aspynotifications.services.notifications_facade import NotificationsFacade
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.template_service import TemplateService
 
@@ -89,3 +90,8 @@ def get_destinations_service() -> DestinationsService:
 def get_notification_provider_service() -> NotificationProviderService:
     """Return the NotificationProviderService singleton."""
     return _initialize_container().notification_provider_service()
+
+
+def get_notification_facade() -> NotificationsFacade:
+    """Return the NotificationProviderService singleton."""
+    return _initialize_container().notifications_facade()

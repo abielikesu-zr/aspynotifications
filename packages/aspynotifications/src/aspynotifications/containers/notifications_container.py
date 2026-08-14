@@ -20,6 +20,7 @@ from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
 )
+from aspynotifications.services.notifications_facade_impl import NotificationsFacadeImpl
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.subject_trie import SubjectTrie
 from aspynotifications.services.template_service import TemplateService
@@ -92,4 +93,14 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         notification_policy_store=notification_policy_store,
         subject_trie=subject_trie,
         config=config.aspynotifications.policy_service,
+    )
+
+    notifications_facade = providers.Singleton(
+        NotificationsFacadeImpl,
+        cloud_event_service=cloud_event_service,
+        template_service=template_service,
+        destinations_service=destinations_service,
+        notification_provider_service=notification_provider_service,
+        notification_policy_service=notification_policy_service,
+        config=config.aspynotifications.notification_facade,
     )
