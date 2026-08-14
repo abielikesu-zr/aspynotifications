@@ -63,12 +63,15 @@ async def main() -> None:
     await ensure_policy(
         policy_service,
         name="production-node-failure",
-        subject="node.*",
+        subject="*.node.error",
         envelope_policies=[
             AspyPolicy(
-                name="node-error",
-                expression='envelope.type == "node.error"',
-                reason="The event is not a node error.",
+                name="node-errors",
+                expression="""
+                    envelope.source == "infra-service"
+                    and envelope.type == "infrastructure.node.error"
+                """,
+                reason="The event is not coming from the infra service.",
             ),
         ],
         destination_policies=[
@@ -78,14 +81,14 @@ async def main() -> None:
                 reason="Not production.",
             ),
         ],
-        destinations=["operations-email"],
+        destinations=["operations-email-destination", "operations-slack-destination"],
     )
 
     await ensure_template(
         template_service,
-        name="email-notification",
+        name="email-notification-template",
         template=Template(
-            name="email-notification",
+            name="email-notification-template",
             email=EmailTemplate(
                 subject=TemplateSource(
                     inline="Notification: {{ envelope.type }} — {{ envelope.subject }}",
@@ -102,9 +105,9 @@ async def main() -> None:
 
     await ensure_template(
         template_service,
-        name="slack-notification",
+        name="slack-notification-template",
         template=Template(
-            name="slack-notification",
+            name="slack-notification-template",
             slack=SlackTemplate(
                 blocks=TemplateSource(
                     file="var/notification-templates/slack-notification.yaml",
@@ -115,10 +118,10 @@ async def main() -> None:
 
     await ensure_destination(
         destinations_service,
-        name="operations-email",
+        name="operations-email-destination",
         provider="corporate-mail",
         destination_type="email",
-        template="email-notification",
+        template="email-notification-template",
         routable=True,
         config={
             "type": "email",
@@ -128,23 +131,15 @@ async def main() -> None:
 
     await ensure_destination(
         destinations_service,
-        name="payments-slack",
+        name="operations-slack-destination",
         provider="operations-slack",
         destination_type="slack_channel",
-        template="slack-notification",
+        template="slack-notification-template",
         routable=True,
         config={
             "type": "slack_channel",
-            "channel_id": "payments",
+            "channel_id": "xx",
         },
-    )
-    await ensure_policy(
-        policy_service,
-        name="payments-alerts",
-        subject="service.payments.>",
-        envelope_policies=[],
-        destination_policies=[],
-        destinations=["payments-slack"],
     )
 
     # ---------- minimal events ----------
@@ -153,9 +148,9 @@ async def main() -> None:
             "name": "Unrelated service",
             "event": {
                 "id": "evt-1",
-                "source": "test",
-                "type": "node.error",
-                "subject": "service.hr.failed",
+                "source": "hr-service",
+                "type": "infrastructure.service.failed",
+                "subject": "service/hr",
                 "time": "2026-08-13T10:00:00Z",
                 "data": {"context": {"environment": "production"}},
             },
@@ -164,9 +159,9 @@ async def main() -> None:
             "name": "Node restarted (wrong type)",
             "event": {
                 "id": "evt-2",
-                "source": "test",
-                "type": "node.restarted",
-                "subject": "node.123",
+                "source": "infra-service",
+                "type": "infrastructure.node.restarted",
+                "subject": "node/123",
                 "time": "2026-08-13T10:00:00Z",
                 "data": {"context": {"environment": "production"}},
             },
@@ -175,9 +170,42 @@ async def main() -> None:
             "name": "Node failure in production",
             "event": {
                 "id": "evt-3",
-                "source": "test",
-                "type": "node.error",
-                "subject": "node.123",
+                "source": "infra-service",
+                "type": "infrastructure.node.error",
+                "subject": "node/123",
+                "time": "2026-08-13T10:00:00Z",
+                "data": {"context": {"environment": "production"}},
+            },
+        },
+        {
+            "name": "Node failure in production - dummy",
+            "event": {
+                "id": "evt-3d",
+                "source": "dummy-service",
+                "type": "infrastructure.node.error",
+                "subject": "node/123",
+                "time": "2026-08-13T10:00:00Z",
+                "data": {"context": {"environment": "production"}},
+            },
+        },
+        {
+            "name": "Node failure in dev",
+            "event": {
+                "id": "evt-3d-dev",
+                "source": "infra-service",
+                "type": "infrastructure.node.error",
+                "subject": "node/123",
+                "time": "2026-08-13T10:00:00Z",
+                "data": {"context": {"environment": "dev"}},
+            },
+        },
+        {
+            "name": "Node failure in production",
+            "event": {
+                "id": "evt-www3",
+                "source": "infra-service",
+                "type": "infrastructure.node.error",
+                "subject": "node/456",
                 "time": "2026-08-13T10:00:00Z",
                 "data": {"context": {"environment": "production"}},
             },
@@ -186,9 +214,9 @@ async def main() -> None:
             "name": "Payments deep event",
             "event": {
                 "id": "evt-4",
-                "source": "test",
-                "type": "payment.failed",
-                "subject": "service.payments.tx.999.failed",
+                "source": "payments-service",
+                "type": "payments.payment.failed",
+                "subject": "payment/999",
                 "time": "2026-08-13T10:00:00Z",
                 "data": {},
             },

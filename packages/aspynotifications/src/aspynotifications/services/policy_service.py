@@ -253,7 +253,7 @@ class NotificationPolicyService:
         await self._ensure_subject_trie()
 
         context = self.event_to_context(event)
-        subject = context["envelope"]["subject"]
+        subject = context["envelope"]["type"]
         policy_ids = self.subject_trie.find_matches(subject)
 
         if not policy_ids:

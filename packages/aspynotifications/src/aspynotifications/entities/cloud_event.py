@@ -1,8 +1,7 @@
 from datetime import datetime, timezone
-from typing import Any, Dict, Literal, Optional
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
-
 
 Severity = Literal[
     "DEBUG",
@@ -19,46 +18,46 @@ DataContentType = Literal[
 
 
 class ErrorData(BaseModel):
-    code: Optional[str] = Field(
+    code: str | None = Field(
         default=None,
         description="Error code",
     )
-    message: Optional[str] = Field(
+    message: str | None = Field(
         default=None,
         description="Error message",
     )
-    stack_trace: Optional[str] = Field(
+    stack_trace: str | None = Field(
         default=None,
         description="Error stack trace",
     )
-    trace_id: Optional[str] = Field(
+    trace_id: str | None = Field(
         default=None,
         description="Trace identifier",
     )
-    reference_id: Optional[str] = Field(
+    reference_id: str | None = Field(
         default=None,
         description="Reference identifier exposed for support",
     )
-    details: Optional[Dict[str, Any]] = Field(
+    details: dict[str, Any] | None = Field(
         default=None,
         description="Additional structured error details",
     )
 
 
 class EventData(BaseModel):
-    event: Optional[Dict[str, Any]] = Field(
+    event: dict[str, Any] | None = Field(
         default=None,
         description="Event-specific data",
     )
-    error: Optional[ErrorData] = Field(
+    error: ErrorData | None = Field(
         default=None,
         description="Optional structured error information",
     )
-    routing: Optional[Dict[str, Any]] = Field(
+    routing: dict[str, Any] | None = Field(
         default=None,
         description="Optional event-specific routing hints",
     )
-    context: Optional[Dict[str, Any]] = Field(
+    context: dict[str, Any] | None = Field(
         default=None,
         description="Optional additional event context",
     )
@@ -85,7 +84,7 @@ class CloudEvent(BaseModel):
         default_factory=lambda: datetime.now(timezone.utc).isoformat(),
         description="Event timestamp in ISO format",
     )
-    subject: Optional[str] = Field(
+    subject: str | None = Field(
         default=None,
         description="Thing the event concerns",
     )
@@ -94,7 +93,7 @@ class CloudEvent(BaseModel):
         description="Serialization format of the event data",
     )
 
-    severity: Optional[Severity] = Field(
+    severity: Severity | None = Field(
         default=None,
         description="CloudEvent severity extension attribute",
     )
