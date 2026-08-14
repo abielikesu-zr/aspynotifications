@@ -11,6 +11,9 @@ from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
 from aspynotifications.factories.policy_factory import create_notification_policy_store
+from aspynotifications.factories.notification_provider_sender_factory import (
+    NotificationProviderSenderFactory,
+)
 from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
@@ -80,11 +83,15 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         store=destinations_store,
         config=config.aspynotifications.destinations_service,
     )
+    notification_provider_sender_factory = providers.Singleton(
+        NotificationProviderSenderFactory,
+    )
 
     notification_provider_service = providers.Singleton(
         NotificationProviderService,
         notification_provider_store=notification_provider_store,
         config=config.aspynotifications.notification_provider_service,
+        sender_factory=notification_provider_sender_factory,
     )
     notification_policy_service = providers.Singleton(
         NotificationPolicyService,

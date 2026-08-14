@@ -1,6 +1,11 @@
 from typing import Any
 
-from aspynotifications.config.destination_config import DestinationType
+from pydantic import TypeAdapter
+
+from aspynotifications.config.destination_config import (
+    DestinationConfig,
+    DestinationType,
+)
 from aspynotifications.entities.template import Template
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.template_service import TemplateService
@@ -47,13 +52,18 @@ async def ensure_destination(
         print(f"Destination already exists: {name}")
         return existing
 
+    destination_config_data = dict(config)
+    destination_config_data.setdefault("type", destination_type)
+    destination_config = TypeAdapter(DestinationConfig).validate_python(
+        destination_config_data
+    )
+
     destination = await service.create_destination(
         name=name,
         provider=provider,
-        destination_type=destination_type,
         template=template,
         routable=routable,
-        config=config,
+        config=destination_config,
     )
 
     print(f"Destination created: {name}")

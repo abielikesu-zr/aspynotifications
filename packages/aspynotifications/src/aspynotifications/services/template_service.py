@@ -1,6 +1,6 @@
-from aspynotifications.config.app_config_cloud_template import TemplateServiceConfig
 import structlog
 
+from aspynotifications.config.cloud_template import TemplateServiceConfig
 from aspynotifications.entities.template import Template
 from aspynotifications.ports.template_port import ITemplateStorePort
 

@@ -6,7 +6,12 @@ import structlog
 from aspynotifications.config.notification_provider_config import (
     NotificationProviderServiceConfig,
 )
+from aspynotifications.entities.delivery_result import DeliveryResult
+from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.notification_provider import NotificationProvider
+from aspynotifications.factories.notification_provider_sender_factory import (
+    NotificationProviderSenderFactory,
+)
 from aspynotifications.ports.notification_provider_store import (
     NotificationProviderStore,
 )
@@ -26,9 +31,11 @@ class NotificationProviderService:
         self,
         notification_provider_store: NotificationProviderStore,
         config: dict[str, Any],
+        sender_factory: NotificationProviderSenderFactory | None = None,
     ):
         self.notification_provider_store = notification_provider_store
         self.config = NotificationProviderServiceConfig.model_validate(config)
+        self._sender_factory = sender_factory or NotificationProviderSenderFactory()
 
         logger.debug("NotificationProviderService initialized")
 
@@ -37,6 +44,32 @@ class NotificationProviderService:
         Verifies that the underlying notification provider storage is healthy.
         """
         return await self.notification_provider_store.ping()
+
+    async def send(
+        self,
+        provider: NotificationProvider,
+        destination: Destination,
+        message: Any,
+    ) -> DeliveryResult:
+        """Send a rendered message through the adapter for ``provider``."""
+        self._validate_provider_destination(provider, destination)
+        sender = self._sender_factory.create(provider.provider.type)
+        result = await sender.send(
+            provider=provider,
+            destination=destination,
+            message=message,
+        )
+
+        logger.info(
+            "Notification delivery completed",
+            provider_name=provider.name,
+            provider_type=provider.provider.type,
+            destination_name=destination.name,
+            destination_type=destination.type,
+            sender=result.sender_name,
+            status=result.status,
+        )
+        return result
 
     async def create_notification_provider(
         self,
@@ -195,3 +228,22 @@ class NotificationProviderService:
             raise LookupError(f"NotificationProvider {provider_id} not found")
 
         return provider
+
+    @staticmethod
+    def _validate_provider_destination(
+        provider: NotificationProvider,
+        destination: Destination,
+    ) -> None:
+        supported_destination_types = {
+            "GMAIL": {"email"},
+            "ZEPTOMAIL": {"email"},
+            "SLACK": {"slack_channel"},
+        }
+        provider_type = provider.provider.type
+        supported_types = supported_destination_types.get(provider_type)
+
+        if supported_types is None or destination.type not in supported_types:
+            raise ValueError(
+                "Provider and destination are incompatible: "
+                f"{provider_type} cannot send to {destination.type}"
+            )

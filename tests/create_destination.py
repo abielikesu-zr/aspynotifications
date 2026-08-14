@@ -7,8 +7,10 @@ from pathlib import Path
 
 from aspyconfig import get_config
 from aspyconfig.utils.os_utils import get_os_username
+from pydantic import TypeAdapter
 
 from aspynotifications.config.app_config import AspynotificationsAppConfig
+from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.entities.destination import Destination
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
@@ -71,12 +73,12 @@ def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
     return config.to_pydantic(AspynotificationsAppConfig)
 
 
-def load_destination_config(arguments: argparse.Namespace) -> dict:
-    """Load the endpoint configuration and supply its discriminator."""
+def load_destination_config(arguments: argparse.Namespace) -> DestinationConfig:
+    """Load and validate the endpoint configuration."""
 
     destination_config = json.loads(arguments.destination_config)
     destination_config.setdefault("type", arguments.type)
-    return destination_config
+    return TypeAdapter(DestinationConfig).validate_python(destination_config)
 
 
 async def create_destination(arguments: argparse.Namespace) -> Destination:
@@ -93,7 +95,6 @@ async def create_destination(arguments: argparse.Namespace) -> Destination:
     return await service.create_destination(
         name=arguments.name,
         provider=arguments.provider,
-        destination_type=arguments.type,
         template=arguments.template,
         routable=arguments.routable,
         config=load_destination_config(arguments),

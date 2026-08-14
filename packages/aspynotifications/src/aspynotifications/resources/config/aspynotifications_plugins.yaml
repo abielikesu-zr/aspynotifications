@@ -6,10 +6,10 @@ aspyplugs_static:
       - name: cloud_event_store
         adapters:
         - type: LOCALFS
-          module: aspynotifications.adapters.cloud_event.cloud_event_file_adapter
+          module: aspynotifications.adapters.cloud_event_file_adapter
           eager: false
         - type: MONGODB
-          module: aspynotifications.adapters.cloud_event.cloud_event_mongo_adapter
+          module: aspynotifications.adapters.cloud_event_mongo_adapter
           eager: false
       - name: destinations_store
         adapters:
@@ -35,12 +35,23 @@ aspyplugs_static:
         - type: MONGODB
           module: aspynotifications.adapters.provider_mongo_store
           eager: false
+      - name: notification_sender
+        adapters:
+        - type: GMAIL
+          module: aspynotifications.notification_senders.gmail_sender
+          eager: false
+        - type: SLACK
+          module: aspynotifications.notification_senders.slack_sender
+          eager: false
+        - type: ZEPTOMAIL
+          module: aspynotifications.notification_senders.zeptomail_sender
+          eager: false
       - name: template_store
         adapters:
         - type: LOCALFS
-          module: aspynotifications.adapters.template.template_file_adapter
+          module: aspynotifications.adapters.template_file_adapter
           eager: false
         - type: MONGODB
-          module: aspynotifications.adapters.template.template_mongo_adapter
+          module: aspynotifications.adapters.template_mongo_adapter
           eager: false
       user_decorators: []

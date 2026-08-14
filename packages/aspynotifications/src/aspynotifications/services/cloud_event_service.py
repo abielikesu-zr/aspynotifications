@@ -1,6 +1,6 @@
-from aspynotifications.config.app_config_cloud_template import CloudEventServiceConfig
 import structlog
 
+from aspynotifications.config.cloud_template import CloudEventServiceConfig
 from aspynotifications.entities.cloud_event import CloudEvent
 from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
 

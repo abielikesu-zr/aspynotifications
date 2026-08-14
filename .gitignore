@@ -17,3 +17,5 @@ packages/**/requirements*.*
 __pycache__/
 *.py[cod]
 *.dist-info/
+packages/aspynotifications/pyproject.toml
+packages/aspynotifications/pyproject.prod.toml

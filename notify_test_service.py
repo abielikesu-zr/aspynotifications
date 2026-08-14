@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from aspyconfig import get_config
 from aspylogger.services.logging_setup import bootstrap_logging
@@ -56,7 +57,9 @@ async def main() -> None:
         notification_provider_service,
         name="operations-slack",
         provider_type="SLACK",
-        config={},
+        config={
+            "webhook_url": os.environ["SLACK_WEBHOOK_URL"],
+        },
     )
 
     # ---------- ensure policies exist ----------
@@ -254,7 +257,7 @@ async def main() -> None:
                     print(f"  Template not found: {destination.template}")
                     continue
 
-                _ = renderer_service.render(
+                rendered_message = renderer_service.render(
                     destination=destination,
                     template=template,
                     context=context,
@@ -268,11 +271,12 @@ async def main() -> None:
                     print(f"  Provider not found: {destination.provider}")
                     continue
 
-                print(
-                    f"  Rendered → provider={provider.name}, "
-                    f"type={provider.provider.type} "
-                    f"({destination.name})"
+                result = await notification_provider_service.send(
+                    provider=provider,
+                    destination=destination,
+                    message=rendered_message,
                 )
+                print(f"  Delivery status → {result.status}")
 
 
 if __name__ == "__main__":
