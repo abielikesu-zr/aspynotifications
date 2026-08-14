@@ -1,0 +1,12 @@
+aspyplugs_static:
+  root_modules:
+    aspyevents_worker:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: abc
+        module: aspyevents_worker.workers.cloud_events_worker
+        params: []
+      - name: worker
+        module: aspyevents_worker.cli.worker
+        params: []

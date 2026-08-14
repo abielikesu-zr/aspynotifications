@@ -1,5 +1,6 @@
 import click
 from aspyevents_worker.cli.worker import worker_start_command
+
 from aspynotifications_worker import get_notifications_worker
 from aspynotifications_worker.runner.notifications_worker_runner import (
     NotificationsWorkerRunner,

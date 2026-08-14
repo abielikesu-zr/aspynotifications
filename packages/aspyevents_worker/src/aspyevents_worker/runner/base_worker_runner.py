@@ -64,7 +64,7 @@ class BaseWorkerRunner:
             config_root, config_property = self.CONFIG_ROOT.split(".", 1)
         else:
             config_root = self.CONFIG_ROOT
-            config_property = "nats_worker"
+            config_property = "nats_connection"
 
         return config_root, config_property
 

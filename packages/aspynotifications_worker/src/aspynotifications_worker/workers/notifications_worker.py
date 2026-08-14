@@ -20,6 +20,10 @@ class NotificationsWorker(CloudEventsWorker):
         super().__init__(name, self.config)
         self.notifications_facade = notifications_facade
 
+    async def get_subscriptions(self) -> list[str]:
+        response = await self.notifications_facade.get_subscriptions()
+        return response.subscriptions
+
     async def handle(self, cloud_event: CloudEventDTO) -> None:
         logger.info(
             "Processing CloudEvent",

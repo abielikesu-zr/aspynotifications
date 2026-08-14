@@ -18,9 +18,11 @@ PACKAGE_NAME = __package__ or ""
 async def run_worker(
     runner: BaseWorkerRunner,
     config_file: str | None,
+    nats_url: str | None = None,
 ) -> None:
     runner.load_config(
         config_file=config_file,
+        nats_url=nats_url,
     )
 
     await runner.run()
@@ -43,6 +45,16 @@ def worker() -> None:
     ),
 )
 @click.option(
+    "--quiet",
+    "-q",
+    count=True,
+    help=(
+        "Decrease verbosity. "
+        "-q: WARNING for the application package. "
+        "-qq: also raise the root logger to WARNING."
+    ),
+)
+@click.option(
     "--log-format",
     type=click.Choice(
         ["json", "console"],
@@ -52,13 +64,20 @@ def worker() -> None:
     help="Logging format: json or console. Defaults to console.",
 )
 @click.option(
+    "--nats-url",
+    default=None,
+    help="NATS server URL.",
+)
+@click.option(
     "--configfile",
     help="Configuration file path.",
 )
 def start_worker(
     verbose: int,
+    quiet: int,
     log_format: str | None,
     configfile: str | None,
+    nats_url: str | None = None,
 ) -> None:
     """Start the worker."""
 
@@ -77,6 +96,7 @@ def start_worker(
 
     bootstrap_logging(
         verbose=verbose,
+        quiet=quiet,
         log_format=log_format,
         root_package=root_packages,
     )
@@ -86,6 +106,7 @@ def start_worker(
             run_worker(
                 runner=runner,
                 config_file=configfile,
+                nats_url=nats_url,
             )
         )
 

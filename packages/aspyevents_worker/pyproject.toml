@@ -11,8 +11,11 @@ authors = [
 license = "LicenseRef-Proprietary"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-]
+  "pydantic==2.11.10",  "structlog==25.4.0",  "click==8.2.1",  "nats-py==2.15.0"]
 
+[project.optional-dependencies]
+custom = [
+  "aspytracing",  "aspyconfig",  "aspylogger"]
 
 
 [tool.setuptools.packages.find]

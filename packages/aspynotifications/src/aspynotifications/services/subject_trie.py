@@ -29,6 +29,12 @@ class SubjectTrie:
         self._trie = pygtrie.Trie()
         self._valid = False
 
+    def get_subjects(self) -> list[str]:
+        if not self._valid:
+            raise RuntimeError("SubjectTrie has not been built")
+
+        return [".".join(key) for key, _ in self._trie.items()]
+
     def build(self, pairs: Iterable[tuple[str, str]]) -> None:
         """Rebuild the trie from a list of (subject_pattern, id) pairs."""
         self.reset()

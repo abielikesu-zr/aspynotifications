@@ -1,6 +1,7 @@
 from typing import Any
-import structlog
 
+import structlog
+from aspynotifications_dtos.notifications_dtos import NotificationSubscriptionsDTO
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
 
 from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
@@ -33,5 +34,11 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self._notification_provider_service = notification_provider_service
         self._notification_policy_service = notification_policy_service
 
-    async def notify(self, request: CreateNotifyRequest) -> str:
-        return "Sucessfull"
+    async def notify(self, request: CreateNotifyRequest) -> str: ...
+
+    async def get_subscriptions(self) -> NotificationSubscriptionsDTO:
+        subscriptions = await self._notification_policy_service.get_subscriptions()
+
+        return NotificationSubscriptionsDTO(
+            subscriptions=subscriptions,
+        )

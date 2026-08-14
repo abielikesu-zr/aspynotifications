@@ -3,15 +3,14 @@ import asyncio
 
 import structlog
 from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
+from aspytracing import SpanType, get_tracing
 from nats.js import JetStreamContext
 from nats.js.api import AckPolicy, ConsumerConfig
-from opentelemetry import propagate, trace
-from opentelemetry.context import Context
-from opentelemetry.trace import Link, SpanKind
 
 from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorkerConfig
 
 logger = structlog.get_logger(__name__)
+tracing = get_tracing()
 
 
 class CloudEventsWorker(abc.ABC):
@@ -27,13 +26,79 @@ class CloudEventsWorker(abc.ABC):
         self.js: JetStreamContext | None = None
         self.subs = []
 
+    async def get_subscriptions(self) -> list[str]:
+        return self.config.subscriptions
+
+    def _get_stream_subscriptions(
+        self,
+        subscriptions: list[str],
+    ) -> list[str]:
+        stream_subject = self.config.stream.subject
+        if not stream_subject.endswith(">"):
+            if not stream_subject.endswith("."):
+                stream_subject += "."
+            stream_subject += ">"
+
+        prefix = stream_subject.removesuffix(">")
+
+        return [
+            subscription
+            if subscription.startswith(prefix)
+            else f"{prefix}{subscription}"
+            for subscription in subscriptions
+        ]
+
+    async def _ensure_stream(self) -> None:
+        if self.js is None:
+            raise RuntimeError("JetStream context is not initialized")
+
+        stream_config = self.config.stream
+
+        stream_subject = stream_config.subject
+
+        if not stream_subject.endswith(">"):
+            if not stream_subject.endswith("."):
+                stream_subject += "."
+            stream_subject += ">"
+
+        try:
+            stream = await self.js.stream_info(stream_config.name)
+
+            if stream.config.subjects != [stream_subject]:
+                raise RuntimeError(
+                    f"JetStream stream '{stream_config.name}' already exists "
+                    f"with subjects {stream.config.subjects}, "
+                    f"expected [{stream_subject!r}]"
+                )
+
+        except Exception as exc:
+            if "stream not found" not in str(exc).lower():
+                raise
+
+            await self.js.add_stream(
+                name=stream_config.name,
+                subjects=[stream_subject],
+            )
+
+            logger.info(
+                "JetStream stream created",
+                stream=stream_config.name,
+                subject=stream_subject,
+            )
+
     async def run(self, js_context: JetStreamContext) -> None:
         self.js = js_context
+
+        await self._ensure_stream()
 
         ack_wait = self.config.ack_wait_seconds
         max_deliver = self.config.max_deliver
 
-        for index, subject in enumerate(self.config.in_):
+        subs = await self.get_subscriptions()
+        # Append the STREAM subject
+        subs = self._get_stream_subscriptions(subs)
+
+        for index, subject in enumerate(subs):
             durable = f"worker-{self.name.replace(' ', '-')}-{index}"
 
             consumer_config = ConsumerConfig(
@@ -97,34 +162,22 @@ class CloudEventsWorker(abc.ABC):
         try:
             cloud_event = CloudEventDTO.model_validate_json(message.data)
 
-            remote_context = propagate.extract(
-                {
-                    "traceparent": cloud_event.traceparent,
-                    "tracestate": cloud_event.tracestate,
-                }
-            )
+            trace_context: dict[str, str | None] = {
+                "traceparent": cloud_event.traceparent,
+                "tracestate": cloud_event.tracestate,
+            }
 
-            remote_span = trace.get_current_span(remote_context)
-            remote_span_context = remote_span.get_span_context()
-
-            links = []
-
-            if remote_span_context.is_valid:
-                links.append(Link(remote_span_context))
-
-            tracer = trace.get_tracer(self.name)
-
-            with tracer.start_as_current_span(
-                "cloud_event.process",
-                context=Context(),
-                kind=SpanKind.CONSUMER,
-                links=links,
-            ) as span:
-                span.set_attribute("messaging.system", "nats")
-                span.set_attribute("messaging.destination.name", message.subject)
-                span.set_attribute("cloud_events.type", cloud_event.type)
-                span.set_attribute("cloud_events.source", cloud_event.source)
-
+            with tracing.start_or_continue_trace(
+                span_name="cloud_event.process",
+                trace_context=trace_context,
+                kind=SpanType.CONSUMER,
+                attributes={
+                    "messaging.system": "nats",
+                    "messaging.destination.name": message.subject,
+                    "cloud_events.type": cloud_event.type,
+                    "cloud_events.source": cloud_event.source,
+                },
+            ):
                 await self.handle(cloud_event)
 
                 await message.ack()
