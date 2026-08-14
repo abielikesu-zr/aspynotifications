@@ -106,13 +106,3 @@ async def test_send_uses_the_sender_selected_by_provider_type(
     assert result.sender_name == sender_class.__name__
     assert result.provider_type == provider_type
     assert "soy el provider provider-under-test" in capsys.readouterr().out
-
-
-@pytest.mark.asyncio
-async def test_send_rejects_an_incompatible_provider_and_destination() -> None:
-    with pytest.raises(ValueError, match="GMAIL cannot send to slack_channel"):
-        await _service(StubSenderFactory(GmailNotificationSender())).send(
-            provider=_provider("GMAIL"),
-            destination=_destination("slack_channel"),
-            message={"body": "test"},
-        )

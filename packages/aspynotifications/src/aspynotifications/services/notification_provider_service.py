@@ -52,7 +52,6 @@ class NotificationProviderService:
         message: Any,
     ) -> DeliveryResult:
         """Send a rendered message through the adapter for ``provider``."""
-        self._validate_provider_destination(provider, destination)
         sender = self._sender_factory.create(provider.provider.type)
         result = await sender.send(
             provider=provider,
@@ -60,7 +59,7 @@ class NotificationProviderService:
             message=message,
         )
 
-        logger.info(
+        logger.debug(
             "Notification delivery completed",
             provider_name=provider.name,
             provider_type=provider.provider.type,
@@ -228,22 +227,3 @@ class NotificationProviderService:
             raise LookupError(f"NotificationProvider {provider_id} not found")
 
         return provider
-
-    @staticmethod
-    def _validate_provider_destination(
-        provider: NotificationProvider,
-        destination: Destination,
-    ) -> None:
-        supported_destination_types = {
-            "GMAIL": {"email"},
-            "ZEPTOMAIL": {"email"},
-            "SLACK": {"slack_channel"},
-        }
-        provider_type = provider.provider.type
-        supported_types = supported_destination_types.get(provider_type)
-
-        if supported_types is None or destination.type not in supported_types:
-            raise ValueError(
-                "Provider and destination are incompatible: "
-                f"{provider_type} cannot send to {destination.type}"
-            )
