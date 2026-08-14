@@ -93,3 +93,26 @@ async def get_policy_destinations(
             destinations.append(destination)
 
     return destinations
+
+
+async def ensure_notification_provider(
+    service,
+    *,
+    name: str,
+    provider_type: str,
+    config: dict[str, Any],
+):
+    existing = await service.get_notification_provider_by_name(name)
+
+    if existing:
+        print(f"Provider already exists: {name}")
+        return existing
+
+    provider = await service.create_notification_provider(
+        name=name,
+        provider_type=provider_type,
+        config=config,
+    )
+
+    print(f"Provider created: {name}")
+    return provider

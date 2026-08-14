@@ -6,26 +6,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_policy_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "LOCALFS"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "./var/aspynotifications/policy_store"
+        # Type: str
 
-      
+        data_dir: "./var/aspynotifications/policy_store"
 
   # Type: NotificationPolicyServiceConfig
   policy_service:
@@ -39,26 +38,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_destinations_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "LOCALFS"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "./var/aspynotifications/destinations_store"
+        # Type: str
 
-      
+        data_dir: "./var/aspynotifications/destinations_store"
 
   # Type: DestinationsServiceConfig
   destinations_service:
@@ -72,26 +70,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_template_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "LOCALFS"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "./var/aspynotifications/template_store"
+        # Type: str
 
-      
+        data_dir: "./var/aspynotifications/template_store"
 
   # Type: TemplateServiceConfig
   template_service:
@@ -105,26 +102,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_cloud_event_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "LOCALFS"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "./var/aspynotifications/cloud_event_store"
+        # Type: str
 
-      
+        data_dir: "./var/aspynotifications/cloud_event_store"
 
   # Type: CloudEventServiceConfig
   cloud_event_service:
@@ -132,3 +128,35 @@ aspynotifications:
     # Type: Literal['yes']
 
     keep: 'yes'
+
+  # Type: StorageAdapterConfig
+  notification_provider_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "LOCALFS"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "./var/aspynotifications/notification_provider_store"
+
+  # Type: NotificationProviderServiceConfig
+  notification_provider_service:
+
+    # Type: Literal['keep']
+
+    keep: "keep"

@@ -7,6 +7,9 @@ from aspynotifications.containers.notifications_container import (
 )
 from aspynotifications.services.cloud_event_service import CloudEventService
 from aspynotifications.services.destinations_service import DestinationsService
+from aspynotifications.services.notification_provider_service import (
+    NotificationProviderService,
+)
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.template_service import TemplateService
 
@@ -81,3 +84,8 @@ def get_notification_policy_service() -> NotificationPolicyService:
 def get_destinations_service() -> DestinationsService:
     """Return the DestinationsService singleton."""
     return _initialize_container().destinations_service()
+
+
+def get_notification_provider_service() -> NotificationProviderService:
+    """Return the NotificationProviderService singleton."""
+    return _initialize_container().notification_provider_service()

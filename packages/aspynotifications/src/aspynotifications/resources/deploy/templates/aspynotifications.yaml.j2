@@ -6,71 +6,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_policy_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      {% if  g_app_a_policy_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "{{  g_app_a_policy_store_adapter_type | default('LOCALFS')   }}"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "{{  g_app_a_policy_store_localfs_data_dir | default(None)   }}"
+        # Type: str
 
-      {% elif  g_app_a_policy_store_adapter_type == 'MONGODB' %}
-
-        type: 'MONGODB'
-
-        # MongoDB-specific configuration
-
-        # Type: MongoDBConfig
-        config:
-
-          # MongoDB connection URI
-
-          # Type: str
-
-          uri: "{{  g_app_a_policy_store_mongodb_uri | default(None)   }}"
-
-          # Database name
-
-          # Type: str
-
-          database: "{{  g_app_a_policy_store_mongodb_database | default(None)   }}"
-
-          # Username for authentication, if required
-
-          # Type: str | None
-
-          username: "{{  g_app_a_policy_store_mongodb_username | default(None)   }}"
-
-          # Password for authentication, if required
-
-          # Type: str | None
-
-          password: "{{  g_app_a_policy_store_mongodb_password | default(None)   }}"
-
-          # Authentication source database, if required
-
-          # Type: str | None
-
-          auth_source: "{{  g_app_a_policy_store_mongodb_auth_source | default(None)   }}"
-
-          # Use TLS/SSL connection
-
-          # Type: bool
-
-          tls: "{{  (g_app_a_policy_store_mongodb_tls | default(False)) is sameas true  }}"
-
-      {% endif %}
+        data_dir: "{{  g_app_a_policy_store_adapter_config_data_dir | default(None)   }}"
 
   # Type: NotificationPolicyServiceConfig
   policy_service:
@@ -84,71 +38,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_destinations_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      {% if  g_app_a_destinations_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "{{  g_app_a_destinations_store_adapter_type | default('LOCALFS')   }}"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "{{  g_app_a_destinations_store_localfs_data_dir | default(None)   }}"
+        # Type: str
 
-      {% elif  g_app_a_destinations_store_adapter_type == 'MONGODB' %}
-
-        type: 'MONGODB'
-
-        # MongoDB-specific configuration
-
-        # Type: MongoDBConfig
-        config:
-
-          # MongoDB connection URI
-
-          # Type: str
-
-          uri: "{{  g_app_a_destinations_store_mongodb_uri | default(None)   }}"
-
-          # Database name
-
-          # Type: str
-
-          database: "{{  g_app_a_destinations_store_mongodb_database | default(None)   }}"
-
-          # Username for authentication, if required
-
-          # Type: str | None
-
-          username: "{{  g_app_a_destinations_store_mongodb_username | default(None)   }}"
-
-          # Password for authentication, if required
-
-          # Type: str | None
-
-          password: "{{  g_app_a_destinations_store_mongodb_password | default(None)   }}"
-
-          # Authentication source database, if required
-
-          # Type: str | None
-
-          auth_source: "{{  g_app_a_destinations_store_mongodb_auth_source | default(None)   }}"
-
-          # Use TLS/SSL connection
-
-          # Type: bool
-
-          tls: "{{  (g_app_a_destinations_store_mongodb_tls | default(False)) is sameas true  }}"
-
-      {% endif %}
+        data_dir: "{{  g_app_a_destinations_store_adapter_config_data_dir | default(None)   }}"
 
   # Type: DestinationsServiceConfig
   destinations_service:
@@ -162,71 +70,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_template_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      {% if  g_app_a_template_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "{{  g_app_a_template_store_adapter_type | default('LOCALFS')   }}"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "{{  g_app_a_template_store_localfs_data_dir | default(None)   }}"
+        # Type: str
 
-      {% elif  g_app_a_template_store_adapter_type == 'MONGODB' %}
-
-        type: 'MONGODB'
-
-        # MongoDB-specific configuration
-
-        # Type: MongoDBConfig
-        config:
-
-          # MongoDB connection URI
-
-          # Type: str
-
-          uri: "{{  g_app_a_template_store_mongodb_uri | default(None)   }}"
-
-          # Database name
-
-          # Type: str
-
-          database: "{{  g_app_a_template_store_mongodb_database | default(None)   }}"
-
-          # Username for authentication, if required
-
-          # Type: str | None
-
-          username: "{{  g_app_a_template_store_mongodb_username | default(None)   }}"
-
-          # Password for authentication, if required
-
-          # Type: str | None
-
-          password: "{{  g_app_a_template_store_mongodb_password | default(None)   }}"
-
-          # Authentication source database, if required
-
-          # Type: str | None
-
-          auth_source: "{{  g_app_a_template_store_mongodb_auth_source | default(None)   }}"
-
-          # Use TLS/SSL connection
-
-          # Type: bool
-
-          tls: "{{  (g_app_a_template_store_mongodb_tls | default(False)) is sameas true  }}"
-
-      {% endif %}
+        data_dir: "{{  g_app_a_template_store_adapter_config_data_dir | default(None)   }}"
 
   # Type: TemplateServiceConfig
   template_service:
@@ -240,71 +102,25 @@ aspynotifications:
 
     # Configuration for the storage adapter
 
-    # Type: LocalFSAdapterConfig | MongoDBAdapterConfig
-    # Switch Variable: g_app_a_cloud_event_store_adapter_type
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
 
-      {% if  g_app_a_cloud_event_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+      # Type of storage adapter
 
-        type: 'LOCALFS'
+      # Type: Literal['LOCALFS']
 
-        # LocalFS-specific configuration
+      type: "{{  g_app_a_cloud_event_store_adapter_type | default('LOCALFS')   }}"
 
-        # Type: LocalFSConfig
-        config:
+      # LocalFS-specific configuration
 
-          # Directory where JSON files will be stored
+      # Type: LocalFSConfig
+      config:
 
-          # Type: str
+        # Directory where JSON files will be stored
 
-          data_dir: "{{  g_app_a_cloud_event_store_localfs_data_dir | default(None)   }}"
+        # Type: str
 
-      {% elif  g_app_a_cloud_event_store_adapter_type == 'MONGODB' %}
-
-        type: 'MONGODB'
-
-        # MongoDB-specific configuration
-
-        # Type: MongoDBConfig
-        config:
-
-          # MongoDB connection URI
-
-          # Type: str
-
-          uri: "{{  g_app_a_cloud_event_store_mongodb_uri | default(None)   }}"
-
-          # Database name
-
-          # Type: str
-
-          database: "{{  g_app_a_cloud_event_store_mongodb_database | default(None)   }}"
-
-          # Username for authentication, if required
-
-          # Type: str | None
-
-          username: "{{  g_app_a_cloud_event_store_mongodb_username | default(None)   }}"
-
-          # Password for authentication, if required
-
-          # Type: str | None
-
-          password: "{{  g_app_a_cloud_event_store_mongodb_password | default(None)   }}"
-
-          # Authentication source database, if required
-
-          # Type: str | None
-
-          auth_source: "{{  g_app_a_cloud_event_store_mongodb_auth_source | default(None)   }}"
-
-          # Use TLS/SSL connection
-
-          # Type: bool
-
-          tls: "{{  (g_app_a_cloud_event_store_mongodb_tls | default(False)) is sameas true  }}"
-
-      {% endif %}
+        data_dir: "{{  g_app_a_cloud_event_store_adapter_config_data_dir | default(None)   }}"
 
   # Type: CloudEventServiceConfig
   cloud_event_service:
@@ -312,3 +128,35 @@ aspynotifications:
     # Type: Literal['yes']
 
     keep: 'yes'
+
+  # Type: StorageAdapterConfig
+  notification_provider_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_notification_provider_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_notification_provider_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: NotificationProviderServiceConfig
+  notification_provider_service:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_notification_provider_service_keep | default('keep')   }}"

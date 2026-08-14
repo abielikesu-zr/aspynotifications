@@ -11,9 +11,15 @@ from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
 from aspynotifications.factories.policy_factory import create_notification_policy_store
+from aspynotifications.factories.provider_store_factory import (
+    create_notification_provider_store,
+)
 from aspynotifications.factories.template_store_factory import create_template_store
 from aspynotifications.services.cloud_event_service import CloudEventService
 from aspynotifications.services.destinations_service import DestinationsService
+from aspynotifications.services.notification_provider_service import (
+    NotificationProviderService,
+)
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.subject_trie import SubjectTrie
 from aspynotifications.services.template_service import TemplateService
@@ -54,7 +60,10 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         create_destinations_store,
         config=config.aspynotifications.destinations_store,
     )
-
+    notification_provider_store = providers.Singleton(
+        create_notification_provider_store,
+        config=config.aspynotifications.notification_provider_store,
+    )
     policy_service = providers.Singleton(
         get_policy_service,
     )
@@ -71,6 +80,11 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         config=config.aspynotifications.destinations_service,
     )
 
+    notification_provider_service = providers.Singleton(
+        NotificationProviderService,
+        notification_provider_store=notification_provider_store,
+        config=config.aspynotifications.notification_provider_service,
+    )
     notification_policy_service = providers.Singleton(
         NotificationPolicyService,
         policy_service=policy_service,

@@ -6,3 +6,4 @@ global_vars:
 
 placeholders:
   localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
+  store_adapter_config_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"

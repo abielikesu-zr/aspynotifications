@@ -14,8 +14,8 @@ class NotificationTemplateRenderer:
         renderer = Jinja2TemplateRenderer(template_root)
 
         self._adapters = {
-            "smtp": EmailNotificationAdapter(renderer),
-            "slack": SlackNotificationAdapter(renderer),
+            "email": EmailNotificationAdapter(renderer),
+            "slack_channel": SlackNotificationAdapter(renderer),
         }
 
     def render(
@@ -24,12 +24,10 @@ class NotificationTemplateRenderer:
         template: Template,
         context: dict[str, Any],
     ) -> Any:
-        adapter = self._adapters.get(destination.provider)
+        adapter = self._adapters.get(destination.type)
 
         if adapter is None:
-            raise ValueError(
-                f"Unsupported notification provider: {destination.provider}"
-            )
+            raise ValueError(f"Unsupported notification provider: {destination.type}")
 
         return adapter.render(
             template=template,
