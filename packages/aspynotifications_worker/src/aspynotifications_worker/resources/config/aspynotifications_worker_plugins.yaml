@@ -1,0 +1,9 @@
+aspyplugs_static:
+  root_modules:
+    aspynotifications_worker:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: abc
+        module: aspynotifications_worker.cloud_events_worker
+        params: []

@@ -1,5 +1,4 @@
 import asyncio
-import os
 
 from aspyconfig import get_config
 from aspylogger.services.logging_setup import bootstrap_logging
@@ -55,9 +54,7 @@ async def main() -> None:
         notification_provider_service,
         name="operations-slack",
         provider_type="SLACK",
-        config={
-            "webhook_url": "XXX",
-        },
+        config={},
     )
 
     # ---------- ensure policies exist ----------

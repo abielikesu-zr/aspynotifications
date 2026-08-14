@@ -88,6 +88,16 @@ class CloudEventDTO(BaseModel):
         default="application/json",
         description="Serialization format of the event data",
     )
+    traceparent: str | None = Field(
+        default=None,
+        description="W3C traceparent propagation value",
+    )
+
+    tracestate: str | None = Field(
+        default=None,
+        description="W3C tracestate propagation value",
+    )
+
     severity: Severity | None = Field(
         default=None,
         description="CloudEvent severity extension attribute",
