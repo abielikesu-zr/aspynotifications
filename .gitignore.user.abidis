@@ -1,0 +1,17 @@
+.DS_Store
+Makefile
+var/
+.venv
+.venv-build
+.aspy_cache
+**/*.egg-info/
+.make-env
+app.log
+dist/
+.zshrc
+packages/**/requirements*.*
+__pycache__/
+*.py[cod]
+*.dist-info/
+packages/aspynotifications/pyproject.toml
+packages/aspynotifications/pyproject.prod.toml
