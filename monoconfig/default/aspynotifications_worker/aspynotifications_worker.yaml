@@ -58,4 +58,4 @@ aspynotifications_worker:
 
     # Type: str
 
-    nats_url: "nats://localhost:4222"
+    nats_url: "nats://127.0.0.1:4222"

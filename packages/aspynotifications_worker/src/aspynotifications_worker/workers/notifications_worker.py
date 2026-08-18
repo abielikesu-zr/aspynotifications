@@ -13,12 +13,12 @@ logger = structlog.get_logger(__name__)
 class NotificationsWorker(CloudEventsWorker):
     def __init__(
         self,
-        name: str,
         config: dict[str, Any],
         notifications_facade: NotificationsFacade,
     ) -> None:
         self.config = CloudEventsWorkerConfig.model_validate(config)
-        super().__init__(name, self.config)
+        self.name = self.config.name
+        super().__init__(name=self.name, config=self.config)
         self.notifications_facade = notifications_facade
 
     async def get_subscriptions(self) -> list[str]:

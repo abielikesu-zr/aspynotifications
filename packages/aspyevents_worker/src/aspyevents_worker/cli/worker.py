@@ -28,12 +28,7 @@ async def run_worker(
     await runner.run()
 
 
-@click.group("worker")
-def worker() -> None:
-    """Worker commands."""
-
-
-@worker.command("start")
+@click.command("start")
 @click.option(
     "--verbose",
     "-v",
@@ -129,7 +124,7 @@ def worker_start_command(
     Create a configured worker command group.
     """
 
-    command = worker
+    command = start_worker
 
     command.context_settings = {
         "obj": {

@@ -5,7 +5,7 @@ class NatsConnectionConfig(BaseModel):
     """Configuration required to establish a connection to a NATS server."""
 
     nats_url: str = Field(
-        default="nats://localhost:4222",
+        default="nats://127.0.0.1:4222",
         description="URL of the NATS server to connect to.",
     )
 
