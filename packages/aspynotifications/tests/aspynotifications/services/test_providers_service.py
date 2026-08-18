@@ -5,7 +5,6 @@ import pytest
 from pydantic import ValidationError
 
 from aspynotifications.entities.notification_provider import (
-    GmailProvider,
     SlackProvider,
     ZeptoMailProvider,
 )
@@ -15,18 +14,6 @@ from aspynotifications.ports.notification_provider_store import (
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
 )
-
-
-def _gmail_config() -> dict:
-    return {
-        "from_address": "notifications@example.com",
-        "from_name": "Notifications",
-        "credentials": {
-            "service_account_email": "service@example.com",
-            "private_key": "private-key",
-            "delegated_user": "notifications@example.com",
-        },
-    }
 
 
 def _store() -> MagicMock:
@@ -45,34 +32,6 @@ def _sender_factory() -> MagicMock:
 
 
 @pytest.mark.asyncio
-async def test_create_provider_generates_uuid_and_persists_gmail_provider(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    # Arrange
-    store = _store()
-    provider_id = uuid.UUID("00000000-0000-0000-0000-000000000001")
-    monkeypatch.setattr(
-        "aspynotifications.services.notification_provider_service.uuid4",
-        lambda: provider_id,
-    )
-
-    # Act
-    provider = await NotificationProviderService(
-        notification_provider_store=store,
-        config={},
-        sender_factory=_sender_factory(),
-    ).create_notification_provider(
-        name="corporate-mail",
-        provider_type="GMAIL",
-        config=_gmail_config(),
-    )
-
-    # Assert
-    assert provider.id == str(provider_id)
-    assert isinstance(provider.provider, GmailProvider)
-    store.save_notification_provider.assert_called_once_with(provider)
-
-
 @pytest.mark.asyncio
 async def test_create_provider_resolves_slack_and_zeptomail_config_variants() -> None:
     # Arrange
@@ -115,9 +74,9 @@ async def test_create_provider_rejects_invalid_config() -> None:
             config={},
             sender_factory=_sender_factory(),
         ).create_notification_provider(
-            name="corporate-mail",
-            provider_type="GMAIL",
-            config={"from_address": "notifications@example.com"},
+            name="slack-production",
+            provider_type="SLACK",
+            config={},
         )
 
     store.save_notification_provider.assert_not_called()

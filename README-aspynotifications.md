@@ -29,7 +29,7 @@ Package metadata and dependencies are managed by `aspymgr`. Generated
 | Destinations | `DestinationsService` provides CRUD and pings destination storage. |
 | Providers | `NotificationProviderService` provides CRUD, pings provider storage, and selects a sender by provider type. |
 | Rendering | `NotificationTemplateRenderer` renders email and Slack template representations through Jinja2. |
-| Delivery | Gmail is simulated; Slack and ZeptoMail use their configured HTTP endpoints but currently return `DeliveryResult(status="simulated")`. |
+| Delivery | Slack and ZeptoMail use their configured HTTP endpoints but currently return `DeliveryResult(status="simulated")`. |
 | Facade | `NotificationsFacade` exposes `notify` and `get_subscriptions`. `get_subscriptions` is operational; `notify` currently returns `"ok"` and does not yet orchestrate the end-to-end delivery flow. |
 
 ## Architecture and public access
@@ -95,7 +95,6 @@ and persists the entity.
 
 | Type | Configuration | Sender |
 | --- | --- | --- |
-| `GMAIL` | `from_address`, optional `from_name`, Google service-account credentials | `GmailNotificationSender` (simulated) |
 | `SLACK` | `webhook_url` | `SlackNotificationSender` |
 | `ZEPTOMAIL` | `from_address`, optional `from_name`, `send_mail_token` | `ZeptoMailNotificationSender` |
 
@@ -202,12 +201,11 @@ are not present.
 
 ```text
 packages/aspynotifications/src/aspynotifications/
-├── adapters/                 # storage, rendering, and context adapters
+├── adapters/                 # storage, rendering, context, and sender adapters
 ├── config/                   # typed application and service configuration
 ├── containers/               # dependency-injection composition root
 ├── entities/                 # domain models
 ├── factories/                # store and sender selection
-├── notification_senders/     # Gmail, Slack, and ZeptoMail sender adapters
 ├── ports/                    # store, renderer, and sender contracts
 ├── resources/config/         # lazy plugin registrations
 └── services/                 # domain services and public facade

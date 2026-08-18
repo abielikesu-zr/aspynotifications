@@ -37,9 +37,6 @@ aspyplugs_static:
           eager: false
       - name: notification_sender
         adapters:
-        - type: GMAIL
-          module: aspynotifications.adapters.notification_senders.gmail_sender
-          eager: false
         - type: SLACK
           module: aspynotifications.adapters.notification_senders.slack_sender
           eager: false

@@ -2,9 +2,6 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from aspynotifications.adapters.notification_senders.gmail_sender import (
-    GmailNotificationSender,
-)
 from aspynotifications.adapters.notification_senders.slack_sender import (
     SlackNotificationSender,
 )
@@ -41,14 +38,6 @@ def _service(sender_factory: object | None = None) -> NotificationProviderServic
 
 def _provider(provider_type: str) -> NotificationProvider:
     config_by_type = {
-        "GMAIL": {
-            "from_address": "notifications@example.com",
-            "credentials": {
-                "service_account_email": "service@example.com",
-                "private_key": "private-key",
-                "delegated_user": "notifications@example.com",
-            },
-        },
         "SLACK": {"webhook_url": "https://hooks.slack.com/services/example"},
         "ZEPTOMAIL": {
             "from_address": "notifications@example.com",
@@ -85,7 +74,6 @@ def _destination(destination_type: str) -> Destination:
 @pytest.mark.parametrize(
     ("provider_type", "destination_type", "sender_class"),
     [
-        ("GMAIL", "email", GmailNotificationSender),
         ("SLACK", "slack_channel", SlackNotificationSender),
         ("ZEPTOMAIL", "email", ZeptoMailNotificationSender),
     ],
