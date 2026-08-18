@@ -9,13 +9,13 @@ from aspynotifications.entities.notification_provider import (
     NotificationProvider,
     SlackProvider,
 )
-from aspynotifications.adapters.notification_senders.sender_base import (
-    SimulatedNotificationSender,
+from aspynotifications.ports.notification_provider_sender import (
+    INotificationProviderSender,
 )
 
 
 @register_plugin("notification_sender", "SLACK")
-class SlackNotificationSender(SimulatedNotificationSender):
+class SlackNotificationSender(INotificationProviderSender):
     """Slack Incoming Webhook delivery adapter."""
 
     def __init__(self, http_client: AspyHttpClient) -> None:
