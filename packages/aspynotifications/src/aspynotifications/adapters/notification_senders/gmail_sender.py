@@ -6,7 +6,7 @@ from aspyplugs.registry import register_plugin
 from aspynotifications.entities.delivery_result import DeliveryResult
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.notification_provider import NotificationProvider
-from aspynotifications.notification_senders.sender_base import (
+from aspynotifications.adapters.notification_senders.sender_base import (
     SimulatedNotificationSender,
 )
 

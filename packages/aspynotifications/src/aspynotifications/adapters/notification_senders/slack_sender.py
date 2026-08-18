@@ -9,7 +9,7 @@ from aspynotifications.entities.notification_provider import (
     NotificationProvider,
     SlackProviderConfig,
 )
-from aspynotifications.notification_senders.sender_base import (
+from aspynotifications.adapters.notification_senders.sender_base import (
     SimulatedNotificationSender,
 )
 

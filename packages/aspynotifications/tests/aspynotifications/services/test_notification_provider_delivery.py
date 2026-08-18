@@ -2,13 +2,13 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from aspynotifications.notification_senders.gmail_sender import (
+from aspynotifications.adapters.notification_senders.gmail_sender import (
     GmailNotificationSender,
 )
-from aspynotifications.notification_senders.slack_sender import (
+from aspynotifications.adapters.notification_senders.slack_sender import (
     SlackNotificationSender,
 )
-from aspynotifications.notification_senders.zeptomail_sender import (
+from aspynotifications.adapters.notification_senders.zeptomail_sender import (
     ZeptoMailNotificationSender,
 )
 from aspynotifications.entities.destination import Destination

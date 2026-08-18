@@ -38,13 +38,13 @@ aspyplugs_static:
       - name: notification_sender
         adapters:
         - type: GMAIL
-          module: aspynotifications.notification_senders.gmail_sender
+          module: aspynotifications.adapters.notification_senders.gmail_sender
           eager: false
         - type: SLACK
-          module: aspynotifications.notification_senders.slack_sender
+          module: aspynotifications.adapters.notification_senders.slack_sender
           eager: false
         - type: ZEPTOMAIL
-          module: aspynotifications.notification_senders.zeptomail_sender
+          module: aspynotifications.adapters.notification_senders.zeptomail_sender
           eager: false
       - name: template_store
         adapters:
