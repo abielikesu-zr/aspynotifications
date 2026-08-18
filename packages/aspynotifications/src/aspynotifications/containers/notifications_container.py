@@ -25,6 +25,7 @@ from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
 )
 from aspynotifications.services.notifications_facade_impl import NotificationsFacadeImpl
+from aspynotifications.services.notify_renderer import NotificationTemplateRenderer
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.subject_trie import SubjectTrie
 from aspynotifications.services.template_service import TemplateService
@@ -107,6 +108,10 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         subject_trie=subject_trie,
         config=config.aspynotifications.policy_service,
     )
+    notification_template_renderer = providers.Singleton(
+        NotificationTemplateRenderer,
+        template_root=".",
+    )
 
     notifications_facade = providers.Singleton(
         NotificationsFacadeImpl,
@@ -115,5 +120,6 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         destinations_service=destinations_service,
         notification_provider_service=notification_provider_service,
         notification_policy_service=notification_policy_service,
+        notification_template_renderer=notification_template_renderer,
         config=config.aspynotifications.notification_facade,
     )

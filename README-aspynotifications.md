@@ -30,7 +30,7 @@ Package metadata and dependencies are managed by `aspymgr`. Generated
 | Providers | `NotificationProviderService` provides CRUD, pings provider storage, and selects a sender by provider type. |
 | Rendering | `NotificationTemplateRenderer` renders email and Slack template representations through Jinja2. |
 | Delivery | Slack and ZeptoMail use their configured HTTP endpoints but currently return `DeliveryResult(status="simulated")`. |
-| Facade | `NotificationsFacade` exposes `notify` and `get_subscriptions`. `get_subscriptions` is operational; `notify` currently returns `"ok"` and does not yet orchestrate the end-to-end delivery flow. |
+| Facade | `NotificationsFacade` exposes `notify` and `get_subscriptions`. `notify` persists the CloudEvent, evaluates matching policies, resolves the union of destinations, renders each message, and delegates delivery to the configured Provider sender. |
 
 ## Architecture and public access
 

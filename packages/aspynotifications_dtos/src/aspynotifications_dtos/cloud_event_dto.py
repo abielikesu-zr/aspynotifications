@@ -76,6 +76,10 @@ class CloudEventDTO(BaseModel):
         ...,
         description="Event source",
     )
+    id: str = Field(
+        ...,
+        description="Unique event identifier",
+    )
     time: str = Field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat(),
         description="Event timestamp in ISO format",
