@@ -7,7 +7,7 @@ from aspynotifications.entities.delivery_result import DeliveryResult
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.notification_provider import (
     NotificationProvider,
-    SlackProviderConfig,
+    SlackProvider,
 )
 from aspynotifications.adapters.notification_senders.sender_base import (
     SimulatedNotificationSender,
@@ -27,7 +27,7 @@ class SlackNotificationSender(SimulatedNotificationSender):
         destination: Destination,
         message: Any,
     ) -> DeliveryResult:
-        provider_config = cast(SlackProviderConfig, provider.provider).config
+        provider_config = cast(SlackProvider, provider.provider).config
 
         response = await self._http.post(
             provider_config.webhook_url,

@@ -22,7 +22,7 @@ class GmailCredentials(BaseModel):
     )
 
 
-class GmailConfig(BaseModel):
+class GmailProviderSettings(BaseModel):
     """
     Configuration specific to the Gmail notification provider.
     """
@@ -34,13 +34,16 @@ class GmailConfig(BaseModel):
     )
 
 
-class GmailProviderConfig(BaseModel):
+class GmailProvider(BaseModel):
     """
     Wrapper for Gmail notification provider configuration.
     """
 
     type: Literal["GMAIL"] = Field("GMAIL", description="Type of notification provider")
-    config: GmailConfig = Field(..., description="Gmail-specific configuration")
+    config: GmailProviderSettings = Field(
+        ...,
+        description="Gmail-specific configuration",
+    )
 
 
 class ZeptoMailCredentials(BaseModel):
@@ -54,7 +57,7 @@ class ZeptoMailCredentials(BaseModel):
     )
 
 
-class ZeptoMailConfig(BaseModel):
+class ZeptoMailProviderSettings(BaseModel):
     """
     Configuration specific to the ZeptoMail notification provider.
     """
@@ -66,7 +69,7 @@ class ZeptoMailConfig(BaseModel):
     )
 
 
-class ZeptoMailProviderConfig(BaseModel):
+class ZeptoMailProvider(BaseModel):
     """
     Wrapper for ZeptoMail notification provider configuration.
     """
@@ -74,10 +77,13 @@ class ZeptoMailProviderConfig(BaseModel):
     type: Literal["ZEPTOMAIL"] = Field(
         "ZEPTOMAIL", description="Type of notification provider"
     )
-    config: ZeptoMailConfig = Field(..., description="ZeptoMail-specific configuration")
+    config: ZeptoMailProviderSettings = Field(
+        ...,
+        description="ZeptoMail-specific configuration",
+    )
 
 
-class SlackConfig(BaseModel):
+class SlackProviderSettings(BaseModel):
     """
     Configuration specific to the Slack notification provider.
     """
@@ -85,13 +91,16 @@ class SlackConfig(BaseModel):
     webhook_url: str = Field(..., description="Slack incoming webhook URL")
 
 
-class SlackProviderConfig(BaseModel):
+class SlackProvider(BaseModel):
     """
     Wrapper for Slack notification provider configuration.
     """
 
     type: Literal["SLACK"] = Field("SLACK", description="Type of notification provider")
-    config: SlackConfig = Field(..., description="Slack-specific configuration")
+    config: SlackProviderSettings = Field(
+        ...,
+        description="Slack-specific configuration",
+    )
 
 
 class NotificationProvider(BaseModel):
@@ -102,7 +111,7 @@ class NotificationProvider(BaseModel):
     id: str = Field(..., description="Unique provider identifier")
     name: str = Field(..., description="Provider name")
 
-    provider: GmailProviderConfig | ZeptoMailProviderConfig | SlackProviderConfig = (
+    provider: GmailProvider | ZeptoMailProvider | SlackProvider = (
         Field(
             ...,
             discriminator="type",

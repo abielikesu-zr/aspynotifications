@@ -5,9 +5,9 @@ import pytest
 from pydantic import ValidationError
 
 from aspynotifications.entities.notification_provider import (
-    GmailProviderConfig,
-    SlackProviderConfig,
-    ZeptoMailProviderConfig,
+    GmailProvider,
+    SlackProvider,
+    ZeptoMailProvider,
 )
 from aspynotifications.ports.notification_provider_store import (
     NotificationProviderStore,
@@ -69,7 +69,7 @@ async def test_create_provider_generates_uuid_and_persists_gmail_provider(
 
     # Assert
     assert provider.id == str(provider_id)
-    assert isinstance(provider.provider, GmailProviderConfig)
+    assert isinstance(provider.provider, GmailProvider)
     store.save_notification_provider.assert_called_once_with(provider)
 
 
@@ -99,8 +99,8 @@ async def test_create_provider_resolves_slack_and_zeptomail_config_variants() ->
     )
 
     # Assert
-    assert isinstance(slack.provider, SlackProviderConfig)
-    assert isinstance(zeptomail.provider, ZeptoMailProviderConfig)
+    assert isinstance(slack.provider, SlackProvider)
+    assert isinstance(zeptomail.provider, ZeptoMailProvider)
 
 
 @pytest.mark.asyncio

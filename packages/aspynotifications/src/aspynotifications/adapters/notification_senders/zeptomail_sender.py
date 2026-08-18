@@ -8,7 +8,7 @@ from aspynotifications.entities.delivery_result import DeliveryResult
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.notification_provider import (
     NotificationProvider,
-    ZeptoMailProviderConfig,
+    ZeptoMailProvider,
 )
 from aspynotifications.adapters.notification_senders.sender_base import (
     SimulatedNotificationSender,
@@ -28,7 +28,7 @@ class ZeptoMailNotificationSender(SimulatedNotificationSender):
         destination: Destination,
         message: Any,
     ) -> DeliveryResult:
-        provider_config = cast(ZeptoMailProviderConfig, provider.provider).config
+        provider_config = cast(ZeptoMailProvider, provider.provider).config
         destination_config = cast(EmailDestinationConfig, destination.config)
 
         payload: dict[str, Any] = {
