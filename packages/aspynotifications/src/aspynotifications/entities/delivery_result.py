@@ -6,7 +6,7 @@ from typing import Literal
 class DeliveryResult:
     """Outcome of sending a rendered notification through a provider."""
 
-    status: Literal["simulated"]
+    status: Literal["accepted"]
     provider_name: str
     provider_type: str
     sender_name: str

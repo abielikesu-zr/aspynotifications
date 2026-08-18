@@ -29,7 +29,7 @@ Package metadata and dependencies are managed by `aspymgr`. Generated
 | Destinations | `DestinationsService` provides CRUD and pings destination storage. |
 | Providers | `NotificationProviderService` provides CRUD, pings provider storage, and selects a sender by provider type. |
 | Rendering | `NotificationTemplateRenderer` renders email and Slack template representations through Jinja2. |
-| Delivery | Slack and ZeptoMail use their configured HTTP endpoints but currently return `DeliveryResult(status="simulated")`. |
+| Delivery | Slack and ZeptoMail use their configured HTTP endpoints and return `DeliveryResult(status="accepted")` when the provider accepts the HTTP request. |
 | Facade | `NotificationsFacade` exposes `notify` and `get_subscriptions`. `notify` persists the CloudEvent, evaluates matching policies, resolves the union of destinations, renders each message, and delegates delivery to the configured Provider sender. |
 
 ## Architecture and public access
@@ -73,7 +73,7 @@ service receives only the store port of its own entity.
 | `NotificationPolicy` | Subject pattern, envelope and destination policies, and destinations selected by a policy match. |
 | `Destination` | Named delivery endpoint with a Provider name, template name, routability, and typed endpoint configuration. |
 | `NotificationProvider` | Named configured delivery integration with a discriminated provider configuration. |
-| `DeliveryResult` | Immutable outcome reported by a sender; the only current status is `simulated`. |
+| `DeliveryResult` | Immutable outcome reported by a sender; the current status is `accepted` after a successful provider HTTP response. |
 
 ### Destination configurations
 

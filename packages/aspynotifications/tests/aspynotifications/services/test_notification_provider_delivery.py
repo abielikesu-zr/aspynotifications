@@ -93,7 +93,7 @@ async def test_send_uses_the_sender_selected_by_provider_type(
         message={"subject": "test", "html": "<p>test</p>", "body": "test"},
     )
 
-    assert result.status == "simulated"
+    assert result.status == "accepted"
     assert result.sender_name == sender_class.__name__
     assert result.provider_type == provider_type
     assert "provider-under-test" in capsys.readouterr().out

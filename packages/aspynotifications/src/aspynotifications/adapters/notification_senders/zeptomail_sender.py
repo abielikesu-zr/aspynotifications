@@ -73,7 +73,7 @@ class ZeptoMailNotificationSender(INotificationProviderSender):
             f"HTTP {response.status_code}."
         )
         return DeliveryResult(
-            status="simulated",
+            status="accepted",
             provider_name=provider.name,
             provider_type=provider.provider.type,
             sender_name=self.__class__.__name__,
