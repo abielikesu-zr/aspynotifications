@@ -1,0 +1,24 @@
+# Type: TracingAdapterConfig
+tracing:
+
+  # Configuration for the tracing adapter
+
+  # Type: aspytracing.config.noop_tracer_config.NoopAdapterConfig | aspytracing.config.otel_tracer_config.OtelAdapterConfig
+  adapter:
+
+    # Type of tracing adapter
+
+    # Type: Literal['NOOP']
+
+    type: "{{  g_app_t_adapter_type | default('NOOP')   }}"
+
+    # Noop-specific configuration
+
+    # Type: NoopConfig
+    config:
+
+      # Global tracer name
+
+      # Type: str
+
+      tracer_name: "{{  g_app_t_adapter_config_tracer_name | default('noop')   }}"

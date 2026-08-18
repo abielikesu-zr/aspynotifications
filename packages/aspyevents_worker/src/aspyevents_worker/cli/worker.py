@@ -8,7 +8,7 @@ import click
 import structlog
 from aspylogger.services.logging_setup import bootstrap_logging
 
-from aspyevents_worker.runner.base_worker_runner import BaseWorkerRunner
+from aspyevents_worker.runner.base_worker_runner import BaseWorkerRunner, WorkerFactory
 
 logger = structlog.get_logger(__name__)
 
@@ -83,8 +83,8 @@ def start_worker(
 
     context = click.get_current_context()
 
-    runner_class = context.obj["runner"]
-    worker_factory = context.obj["worker_factory"]
+    runner_class: type[BaseWorkerRunner] = context.obj["runner"]
+    worker_factory: WorkerFactory = context.obj["worker_factory"]
 
     runner = runner_class(
         worker_factory=worker_factory,
@@ -123,7 +123,7 @@ def start_worker(
 def worker_start_command(
     *,
     runner: type[BaseWorkerRunner],
-    worker_factory,
+    worker_factory: WorkerFactory,
 ) -> click.Command:
     """
     Create a configured worker command group.

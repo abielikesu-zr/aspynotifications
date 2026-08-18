@@ -10,7 +10,6 @@ from nats.js.api import AckPolicy, ConsumerConfig
 from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorkerConfig
 
 logger = structlog.get_logger(__name__)
-tracing = get_tracing()
 
 
 class CloudEventsWorker(abc.ABC):
@@ -159,6 +158,7 @@ class CloudEventsWorker(abc.ABC):
                 await asyncio.sleep(1)
 
     async def _process(self, message) -> None:
+        tracing = get_tracing()
         try:
             cloud_event = CloudEventDTO.model_validate_json(message.data)
 

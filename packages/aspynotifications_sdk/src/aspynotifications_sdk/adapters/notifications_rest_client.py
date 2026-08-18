@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 import structlog
 from aspyadapters.adapters.http_client import AspyHttpClient
@@ -10,9 +10,8 @@ from aspyadapters.adapters.http_exceptions import (
     HttpClientServerError,
     HttpClientTimeoutError,
 )
-
-from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
+
 from aspynotifications_sdk.entities.config import NotificationsClientConfig
 from aspynotifications_sdk.errors import (
     BadRequestError,
@@ -31,8 +30,7 @@ logger = structlog.get_logger(__name__)
 
 
 class NotificationsRestClient(INotificationsClientPort):
-
-    def __init__(self, config: Dict[str, Any], http_client: AspyHttpClient):
+    def __init__(self, config: dict[str, Any], http_client: AspyHttpClient):
         self.config = NotificationsClientConfig.model_validate(config)
         self._base_url = self.config.base_url
         self._http = http_client
@@ -57,15 +55,15 @@ class NotificationsRestClient(INotificationsClientPort):
         except HttpClientConnectionError as e:
             raise TransportError(f"Connection error calling {path}") from e
         except HttpClientNotFoundError as e:
-            raise NotFoundError(f"Resource not found: {str(e)}") from e
+            raise NotFoundError(f"Resource not found: {e!s}") from e
         except HttpClientBadRequestError as e:
-            raise BadRequestError(f"Bad Request: {str(e)}") from e
+            raise BadRequestError(f"Bad Request: {e!s}") from e
         except HttpClientForbiddenError as e:
-            raise UnauthorizedError(f"Access forbidden: {str(e)}") from e
+            raise UnauthorizedError(f"Access forbidden: {e!s}") from e
         except HttpClientServerError as e:
-            raise ServerError(f"Internal server error: {str(e)}") from e
+            raise ServerError(f"Internal server error: {e!s}") from e
         except Exception as e:
-            raise NotificationsClientError(f"Unexpected error: {str(e)}") from e
+            raise NotificationsClientError(f"Unexpected error: {e!s}") from e
 
     async def notify(self, request: CreateNotifyRequest) -> str:
         logger.debug("notify rest client request", request=request)

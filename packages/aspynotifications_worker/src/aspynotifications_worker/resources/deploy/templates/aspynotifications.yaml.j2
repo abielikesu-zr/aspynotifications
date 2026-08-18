@@ -1,0 +1,202 @@
+# Type: AspynotificationsAppParams
+aspynotifications:
+
+  # Type: StorageAdapterConfig
+  policy_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_policy_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_policy_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: NotificationPolicyServiceConfig
+  policy_service:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_policy_service_keep | default('keep')   }}"
+
+  # Type: StorageAdapterConfig
+  destinations_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_destinations_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_destinations_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: DestinationsServiceConfig
+  destinations_service:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_destinations_service_keep | default('keep')   }}"
+
+  # Type: StorageAdapterConfig
+  template_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_template_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_template_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: TemplateServiceConfig
+  template_service:
+
+    # Type: Literal['yes']
+
+    keep: 'yes'
+
+  # Type: StorageAdapterConfig
+  cloud_event_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_cloud_event_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_cloud_event_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: CloudEventServiceConfig
+  cloud_event_service:
+
+    # Type: Literal['yes']
+
+    keep: 'yes'
+
+  # Type: StorageAdapterConfig
+  notification_provider_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    adapter:
+
+      # Type of storage adapter
+
+      # Type: Literal['LOCALFS']
+
+      type: "{{  g_app_a_notification_provider_store_adapter_type | default('LOCALFS')   }}"
+
+      # LocalFS-specific configuration
+
+      # Type: LocalFSConfig
+      config:
+
+        # Directory where JSON files will be stored
+
+        # Type: str
+
+        data_dir: "{{  g_app_a_notification_provider_store_adapter_config_data_dir | default(None)   }}"
+
+  # Type: NotificationProviderServiceConfig
+  notification_provider_service:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_notification_provider_service_keep | default('keep')   }}"
+
+  # Type: HttpClientConfig
+  notification_sender_http_client:
+
+    # Maximum time in seconds to wait for an HTTP request to complete.
+
+    # Type: float
+
+    timeout: "{{  g_app_a_notification_sender_http_client_timeout | default(5.0) | float  }}"
+
+    # Maximum number of times a failed HTTP request is retried.
+
+    # Type: int
+
+    max_retries: "{{  g_app_a_notification_sender_http_client_max_retries | default(1) | int  }}"
+
+    # Initial backoff delay in seconds used before retrying a failed request.
+
+    # Type: float
+
+    backoff_base: "{{  g_app_a_notification_sender_http_client_backoff_base | default(0.15) | float  }}"
+
+    # Maximum backoff delay in seconds between retry attempts.
+
+    # Type: float
+
+    backoff_max: "{{  g_app_a_notification_sender_http_client_backoff_max | default(1.0) | float  }}"
+
+    # Whether TLS certificates are verified for HTTPS requests.
+
+    # Type: bool
+
+    verify: "{{  (g_app_a_notification_sender_http_client_verify | default(True)) is sameas true  }}"
+
+  # Type: NotificationFacadeConfig
+  notification_facade:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_notification_facade_keep | default('keep')   }}"

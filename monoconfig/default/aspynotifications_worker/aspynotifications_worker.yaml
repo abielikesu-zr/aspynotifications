@@ -1,0 +1,61 @@
+# Type: AspynotificationsWorkerParams
+aspynotifications_worker:
+
+  # Type: CloudEventsWorkerConfig
+  nats_worker:
+
+    # Unique name identifying the CloudEvents worker.
+
+    # Type: str
+
+    name: "notifications_worker"
+
+    # JetStream stream configuration used by the worker for CloudEvents.
+
+    # Type: CloudEventsStreamConfig
+    stream:
+
+      # Name of the JetStream stream used to store CloudEvents.
+
+      # Type: str
+
+      name: "EVENTS"
+
+      # Subject pattern used by the stream to capture CloudEvents.
+
+      # Type: str
+
+      subject: "events.>"
+
+    # List of NATS subjects to which the worker subscribes for CloudEvents.
+
+    # Type: list[str]
+
+    subscriptions: []
+
+    # Maximum number of CloudEvents processed in a single batch.
+
+    # Type: int
+
+    batch: "1"
+
+    # Maximum time in seconds that a message may remain unacknowledged before JetStream considers it eligible for redelivery.
+
+    # Type: float
+
+    ack_wait_seconds: "300.0"
+
+    # Maximum number of delivery attempts allowed for a message before it is considered undeliverable.
+
+    # Type: int
+
+    max_deliver: "2"
+
+  # Type: NatsConnectionConfig
+  nats_connection:
+
+    # URL of the NATS server to connect to.
+
+    # Type: str
+
+    nats_url: "nats://localhost:4222"

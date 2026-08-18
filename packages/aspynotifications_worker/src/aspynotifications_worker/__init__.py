@@ -23,6 +23,7 @@ def get_notifications_worker_config() -> AspynotificationsWorkerAppConfig:
     loading configuration only once.
     """
     global _notifications_worker_app_config
+    print("KKKK ----+>  get_notifications_worker_config")
 
     if _notifications_worker_app_config is None:
         config = aspy_get_config()
@@ -46,6 +47,7 @@ def _initialize_container() -> AspyNotificationsWorkerContainer:
     configuration.
     """
     global _notifications_worker_container
+    print("KKKK ----+>  AspyNotificationsWorkerContainer")
 
     if _notifications_worker_container is None:
         config = get_notifications_worker_config()
@@ -67,4 +69,5 @@ def _initialize_container() -> AspyNotificationsWorkerContainer:
 
 def get_notifications_worker() -> NotificationsWorker:
     """Return the NotificationsWorker singleton."""
+    print("KKKK ----+>  get_notifications_worker")
     return _initialize_container().notifications_worker()

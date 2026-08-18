@@ -1,9 +1,11 @@
 {
     "python.analysis.extraPaths": [
-        "../aspy/packages/aspyrest/src",
+        "../aspy/packages/aspylogger/src",
+        "../aspy/packages/aspytracing/src",
         "../aspyconfig/src",
+        "./packages/aspyevents_worker/src",
         "./packages/aspynotifications/src",
         "./packages/aspynotifications_dtos/src",
-        "./packages/aspynotifications_rest/src"
+        "./packages/aspynotifications_worker/src"
     ]
 }

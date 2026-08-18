@@ -2,8 +2,18 @@ plugins:
   - LOCALFS
 
 global_vars:
-  data_dir: "./var"
+  data_dir: "./var/all_stores"
+
+skip_config:
+  - nats_connection_username
+  - nats_connection_password
+  - nats_connection_tls_ca_file
+  - nats_connection_tls_cert_file
+  - nats_connection_tls_key_file
 
 placeholders:
   localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
-  store_adapter_config_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
+  # store_adapter_config_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
+  store_adapter_config_data_dir: "{{ data_dir }}/<parent>"
+  aw_nats_worker_name: "notifications_worker"
+  aw_nats_worker_subscriptions: []
