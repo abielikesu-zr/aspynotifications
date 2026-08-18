@@ -1,6 +1,7 @@
 import json
 import structlog
 
+from aspylogger.services.logging_setup import configure_logging
 from aspynotifications_cli import load_aspynotifications_cli_config
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
 from aspynotifications_sdk import get_notifications_sdk
@@ -12,6 +13,7 @@ async def send_event_handler(file_path: str, output_format: str) -> None:
     log = logger.bind(function="send_event_handler")
 
     load_aspynotifications_cli_config()
+    configure_logging()
     with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
