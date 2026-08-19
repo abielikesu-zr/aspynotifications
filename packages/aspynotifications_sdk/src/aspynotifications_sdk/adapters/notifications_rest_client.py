@@ -12,7 +12,7 @@ from aspyadapters.adapters.http_exceptions import (
 )
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
 
-from aspynotifications_sdk.entities.config import NotificationsClientConfig
+from aspynotifications_sdk.entities.config import RestClientParams
 from aspynotifications_sdk.errors import (
     BadRequestError,
     NotFoundError,
@@ -30,8 +30,9 @@ logger = structlog.get_logger(__name__)
 
 
 class NotificationsRestClient(INotificationsClientPort):
+
     def __init__(self, config: dict[str, Any], http_client: AspyHttpClient):
-        self.config = NotificationsClientConfig.model_validate(config)
+        self.config = RestClientParams.model_validate(config)
         self._base_url = self.config.base_url
         self._http = http_client
 

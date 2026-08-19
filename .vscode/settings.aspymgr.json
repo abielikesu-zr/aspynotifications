@@ -9,6 +9,8 @@
         "./packages/aspyevents_worker/src",
         "./packages/aspynotifications/src",
         "./packages/aspynotifications_dtos/src",
-        "./packages/aspynotifications_worker/src"
+        "./packages/aspynotifications_worker/src",
+        "./packages/aspynotifications_rest/src",
+        "./packages/aspynotifications_sdk/src"
     ]
 }

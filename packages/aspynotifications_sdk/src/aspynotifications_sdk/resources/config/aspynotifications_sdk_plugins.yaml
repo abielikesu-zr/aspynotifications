@@ -1,0 +1,10 @@
+aspyplugs_static:
+  root_modules:
+    aspynotifications_sdk:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: model_validator
+        module: aspynotifications_sdk.entities.config
+        params:
+        - mode="before"

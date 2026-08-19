@@ -1,6 +1,9 @@
 from dependency_injector import containers, providers
 
 from aspyadapters.adapters.http_client import AspyHttpClient
+from aspynotifications_sdk.adapters.notifications_nats_client import (
+    NotificationsNatsClient,
+)
 from aspynotifications_sdk.adapters.notifications_rest_client import (
     NotificationsRestClient,
 )
@@ -19,10 +22,21 @@ class NotificationsSdkContainer(containers.DeclarativeContainer):
         config=config.notifications_sdk.http_client,
     )
 
-    notifications_client: providers.Provider[INotificationsClientPort] = providers.Singleton(
+    notifications_rest_client = providers.Singleton(
         NotificationsRestClient,
         http_client=http_client,
-        config=config.notifications_sdk.notifications_client,
+        config=config.notifications_sdk.client.client.config,
+    )
+
+    notifications_nats_client = providers.Singleton(
+        NotificationsNatsClient,
+        config=config.notifications_sdk.client.client.config,
+    )
+
+    notifications_client: providers.Provider[INotificationsClientPort] = providers.Selector(
+        config.notifications_sdk.client.client.type,
+        REST=notifications_rest_client,
+        NATS=notifications_nats_client,
     )
 
     notifications_sdk = providers.Singleton(
