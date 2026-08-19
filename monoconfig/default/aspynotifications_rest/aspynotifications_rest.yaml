@@ -14,4 +14,4 @@ aspynotifications_rest:
 
     # Type: int
 
-    port: "50000"
+    port: "50011"

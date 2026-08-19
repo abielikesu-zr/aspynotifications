@@ -7,7 +7,7 @@ class AspyNotificationsRestServerConfig(BaseModel):
         description="REST server host",
     )
     port: int = Field(
-        default=50000,
+        default=50011,
         description="REST server port",
     )
 
