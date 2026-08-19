@@ -1,0 +1,3 @@
+**/requirements*.in
+target/
+tests/karate/

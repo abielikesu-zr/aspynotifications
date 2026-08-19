@@ -7,6 +7,3 @@ aspyplugs_static:
       - name: abc
         module: aspyevents_worker.workers.cloud_events_worker
         params: []
-      - name: worker
-        module: aspyevents_worker.cli.worker
-        params: []

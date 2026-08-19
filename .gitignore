@@ -116,3 +116,6 @@ packages/*/build/
 **/pyproject.prod.toml
 **/requirements*.txt
 **/requirements*.in
+
+target/
+tests/karate/
