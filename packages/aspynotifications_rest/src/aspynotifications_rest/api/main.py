@@ -5,6 +5,9 @@ from aspynotifications import get_notification_facade
 from aspynotifications.services.notifications_facade import NotificationsFacade
 from fastapi import FastAPI
 
+from aspynotifications_rest.api.notification_administration_handlers import (
+    notification_administration_router,
+)
 from aspynotifications_rest.api.notifications_handlers import notifications_router
 
 logger = structlog.get_logger(__name__)
@@ -32,3 +35,4 @@ async def lifespan_context(app: FastAPI):
 notifications_rest_app = FastAPI(lifespan=lifespan_context)
 
 notifications_rest_app.include_router(notifications_router)
+notifications_rest_app.include_router(notification_administration_router)

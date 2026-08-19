@@ -1,11 +1,25 @@
 from typing import Any
 
 import structlog
-from aspynotifications_dtos.notifications_dtos import NotificationSubscriptionsDTO
+from aspypolicies.entities.aspy_policy import AspyPolicy
+from aspynotifications_dtos.notifications_dtos import (
+    CreateDestinationRequest,
+    CreateNotificationPolicyRequest,
+    CreateTemplateRequest,
+    DestinationDTO,
+    NotificationPolicyDTO,
+    NotificationSubscriptionsDTO,
+    TemplateDTO,
+)
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
+from pydantic import TypeAdapter
 
+from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
 from aspynotifications.entities.cloud_event import CloudEvent
+from aspynotifications.entities.destination import Destination
+from aspynotifications.entities.notification_policy import NotificationPolicy
+from aspynotifications.entities.template import Template
 from aspynotifications.services.cloud_event_service import CloudEventService
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
@@ -42,6 +56,17 @@ class NotificationsFacadeImpl(NotificationsFacade):
         cloud_event = CloudEvent.model_validate(
             request.event.model_dump(exclude_none=True)
         )
+
+        existing_event = await self._cloud_event_service.get_cloud_event_by_id(
+            cloud_event.id
+        )
+        if existing_event is not None:
+            logger.info(
+                "Notification already processed",
+                event_id=cloud_event.id,
+            )
+            return "ok"
+
         await self._cloud_event_service.create_cloud_event(cloud_event)
 
         event = cloud_event.model_dump(exclude_none=True)
@@ -102,3 +127,43 @@ class NotificationsFacadeImpl(NotificationsFacade):
         return NotificationSubscriptionsDTO(
             subscriptions=subscriptions,
         )
+
+    async def create_notification_policy(
+        self,
+        request: CreateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        policy = await self._notification_policy_service.create_notification_policy(
+            name=request.name,
+            subject=request.subject,
+            envelope_policies=[
+                AspyPolicy.model_validate(policy.model_dump())
+                for policy in request.envelope_policies
+            ],
+            destination_policies=[
+                AspyPolicy.model_validate(policy.model_dump())
+                for policy in request.destination_policies
+            ],
+            destinations=request.destinations,
+        )
+        return NotificationPolicyDTO.model_validate(policy.model_dump())
+
+    async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
+        template = Template.model_validate(request.model_dump())
+        created_template = await self._template_service.create_template(template)
+        return TemplateDTO.model_validate(created_template.model_dump())
+
+    async def create_destination(
+        self,
+        request: CreateDestinationRequest,
+    ) -> DestinationDTO:
+        config = TypeAdapter(DestinationConfig).validate_python(
+            request.config.model_dump()
+        )
+        destination = await self._destinations_service.create_destination(
+            name=request.name,
+            provider=request.provider,
+            template=request.template,
+            routable=request.routable,
+            config=config,
+        )
+        return DestinationDTO.model_validate(destination.model_dump())

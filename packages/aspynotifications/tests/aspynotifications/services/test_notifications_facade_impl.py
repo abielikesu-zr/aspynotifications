@@ -32,6 +32,7 @@ def _facade() -> tuple[
 ]:
     cloud_event_service = MagicMock()
     cloud_event_service.create_cloud_event = AsyncMock()
+    cloud_event_service.get_cloud_event_by_id = AsyncMock(return_value=None)
 
     destination_one = SimpleNamespace(
         name="operations-email",
@@ -118,6 +119,28 @@ async def test_notify_persists_event_and_delivers_once_per_destination() -> None
     assert "event" not in event["data"]
     assert "error" not in event["data"]
     assert "routing" not in event["data"]
+
+
+@pytest.mark.asyncio
+async def test_notify_does_not_deliver_an_already_processed_event() -> None:
+    (
+        facade,
+        cloud_event_service,
+        notification_provider_service,
+        destinations_service,
+        find_matching_policies,
+    ) = _facade()
+    cloud_event_service.get_cloud_event_by_id.return_value = SimpleNamespace(
+        id="event-001"
+    )
+
+    result = await facade.notify(_request())
+
+    assert result == "ok"
+    cloud_event_service.create_cloud_event.assert_not_awaited()
+    find_matching_policies.assert_not_awaited()
+    destinations_service.get_destination_by_name.assert_not_awaited()
+    notification_provider_service.send.assert_not_awaited()
 
 
 @pytest.mark.asyncio
