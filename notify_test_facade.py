@@ -222,6 +222,10 @@ async def main() -> None:
     facade = get_notification_facade()
 
     for case in events:
+        case["event"].setdefault("data", {}).setdefault("context", {})[
+            "test_origin"
+        ] = "notify_test_facade.py"
+
         print()
         print("=" * 60)
         print(f"Testing: {case['name']}")

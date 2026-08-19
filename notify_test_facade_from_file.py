@@ -153,6 +153,10 @@ async def main(source_files: list[Path]) -> None:
     facade = get_notification_facade()
 
     for case in load_cases(source_files):
+        case["event"].setdefault("data", {}).setdefault("context", {})[
+            "test_origin"
+        ] = "notify_test_facade_from_file.py"
+
         print()
         print("=" * 60)
         print(f"Testing: {case['name']}")

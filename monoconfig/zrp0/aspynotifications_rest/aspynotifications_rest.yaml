@@ -1,0 +1,17 @@
+# Type: AspyNotificationsRestAppConfigParams
+aspynotifications_rest:
+
+  # Type: AspyNotificationsRestServerConfig
+  rest_server:
+
+    # REST server host
+
+    # Type: str
+
+    host: "127.0.0.1"
+
+    # REST server port
+
+    # Type: int
+
+    port: "50000"

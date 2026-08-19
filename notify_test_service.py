@@ -224,6 +224,10 @@ async def main() -> None:
     renderer_service = NotificationTemplateRenderer(template_root=".")
 
     for case in events:
+        case["event"].setdefault("data", {}).setdefault("context", {})[
+            "test_origin"
+        ] = "notify_test_service.py"
+
         print()
         print("=" * 60)
         print(f"Testing: {case['name']}")

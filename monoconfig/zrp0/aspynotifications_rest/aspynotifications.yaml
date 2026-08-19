@@ -1,19 +1,14 @@
 # Type: AspynotificationsAppParams
 aspynotifications:
-  # Type: DestinationsServiceConfig
-
-  destinations_service:
-    keep: "keep"
-
-  notification_sender_http_client:
-    verify: False
 
   # Type: StorageAdapterConfig
   policy_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
+
       # Type of storage adapter
 
       # Type: Literal['LOCALFS']
@@ -24,6 +19,7 @@ aspynotifications:
 
       # Type: LocalFSConfig
       config:
+
         # Directory where JSON files will be stored
 
         # Type: str
@@ -32,16 +28,19 @@ aspynotifications:
 
   # Type: NotificationPolicyServiceConfig
   policy_service:
+
     # Type: Literal['keep']
 
     keep: "keep"
 
   # Type: StorageAdapterConfig
   destinations_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
+
       # Type of storage adapter
 
       # Type: Literal['LOCALFS']
@@ -52,18 +51,28 @@ aspynotifications:
 
       # Type: LocalFSConfig
       config:
+
         # Directory where JSON files will be stored
 
         # Type: str
 
         data_dir: "./var/aspynotifications/destinations_store"
 
+  # Type: DestinationsServiceConfig
+  destinations_service:
+
+    # Type: Literal['keep']
+
+    keep: "keep"
+
   # Type: StorageAdapterConfig
   template_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
+
       # Type of storage adapter
 
       # Type: Literal['LOCALFS']
@@ -74,6 +83,7 @@ aspynotifications:
 
       # Type: LocalFSConfig
       config:
+
         # Directory where JSON files will be stored
 
         # Type: str
@@ -82,16 +92,19 @@ aspynotifications:
 
   # Type: TemplateServiceConfig
   template_service:
+
     # Type: Literal['yes']
 
-    keep: "yes"
+    keep: 'yes'
 
   # Type: StorageAdapterConfig
   cloud_event_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
+
       # Type of storage adapter
 
       # Type: Literal['LOCALFS']
@@ -102,6 +115,7 @@ aspynotifications:
 
       # Type: LocalFSConfig
       config:
+
         # Directory where JSON files will be stored
 
         # Type: str
@@ -110,16 +124,19 @@ aspynotifications:
 
   # Type: CloudEventServiceConfig
   cloud_event_service:
+
     # Type: Literal['yes']
 
-    keep: "yes"
+    keep: 'yes'
 
   # Type: StorageAdapterConfig
   notification_provider_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     adapter:
+
       # Type of storage adapter
 
       # Type: Literal['LOCALFS']
@@ -130,6 +147,7 @@ aspynotifications:
 
       # Type: LocalFSConfig
       config:
+
         # Directory where JSON files will be stored
 
         # Type: str
@@ -138,20 +156,14 @@ aspynotifications:
 
   # Type: NotificationProviderServiceConfig
   notification_provider_service:
+
     # Type: Literal['keep']
 
     keep: "keep"
 
   # Type: NotificationFacadeConfig
   notification_facade:
+
     # Type: Literal['keep']
 
     keep: "keep"
-
-notifications_sdk:
-  # Type: NotificationsClientConfig
-  client:
-    client:
-      type: "REST"
-      config:
-        base_url: "http://127.0.0.1:50000"
