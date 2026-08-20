@@ -1,30 +1,29 @@
-from typing import Literal, Union
-
-from pydantic import BaseModel, Field, HttpUrl
-
+from typing import Literal, Optional, Union
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 from aspyadapters.adapters.http_client_config import HttpClientConfig
-from aspynats.config.nats_connection_config import NatsConnectionConfig
-
-
-class RestClientParams(BaseModel):
-    base_url: HttpUrl
+from aspynats.config.nats_client_config import NatsClientAdapterConfig
 
 
 class RestClientConfig(BaseModel):
-    type: Literal["REST"]
-    config: RestClientParams = Field(...)
+    base_url: HttpUrl
 
 
-class NatsClientConfig(BaseModel):
-    type: Literal["NATS"] = "NATS"
-    config: NatsConnectionConfig = Field(default_factory=NatsConnectionConfig)
+class RestClientAdapterConfig(BaseModel):
+    type: Literal["REST"] = "REST"
+    config: RestClientConfig = Field(...)
 
-class NotificationsSdkParams(BaseModel):
-    http_client: HttpClientConfig
-    client: Union[RestClientConfig, NatsClientConfig] = Field(
-        default_factory=NatsClientConfig, discriminator="type"
+
+class NotificationClientConfig(BaseModel):
+    adapter: RestClientAdapterConfig | NatsClientAdapterConfig = Field(
+        ..., discriminator="type"
     )
 
 
+class NotificationsSdkParams(BaseModel):
+    http_client: Optional[HttpClientConfig] = Field(default=None)
+    notification_client: NotificationClientConfig
+
+
 class NotificationsSdkConfig(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     notifications_sdk: NotificationsSdkParams

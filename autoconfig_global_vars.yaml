@@ -1,5 +1,6 @@
 plugins:
   - LOCALFS
+  - NATS
 
 global_vars:
   data_dir: "./var/all_stores"

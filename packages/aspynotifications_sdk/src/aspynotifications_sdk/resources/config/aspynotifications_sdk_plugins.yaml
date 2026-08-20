@@ -3,7 +3,7 @@ aspyplugs_static:
     aspynotifications_sdk:
       load_at_startup: []
       lazy_loaded:
-      - name: notification_event_store
+      - name: notifications_client
         adapters:
         - type: NATS
           module: aspynotifications_sdk.adapters.notifications_nats_client
