@@ -17,7 +17,7 @@ class NotificationsSdkContainer(containers.DeclarativeContainer):
 
     notification_client_resolver = providers.Singleton(
         PluginDependencyResolver,
-        dependencies=providers.Object({AspyHttpClient: http_client}),
+        dependencies=providers.Dict({AspyHttpClient: http_client}),
     )
 
     notifications_client = providers.Singleton(

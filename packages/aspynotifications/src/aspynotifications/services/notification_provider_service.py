@@ -1,3 +1,4 @@
+from sys import exc_info
 from typing import Any
 from uuid import uuid4
 
@@ -52,7 +53,14 @@ class NotificationProviderService:
         message: Any,
     ) -> DeliveryResult:
         """Send a rendered message through the adapter for ``provider``."""
-        sender = self._sender_factory.create(provider.provider.type)
+        try:
+            sender = self._sender_factory.create(provider.provider.type)
+            logger.info(provider.provider.type)
+        except Exception as e:
+            # Manejar el error
+            logger.error("Error creando sender", exc_info=e, error=str(e), provider_type=provider.provider.type)
+            raise
+        
         result = await sender.send(
             provider=provider,
             destination=destination,
