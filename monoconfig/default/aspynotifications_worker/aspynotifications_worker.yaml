@@ -10,23 +10,6 @@ aspynotifications_worker:
 
     name: "notifications_worker"
 
-    # JetStream stream configuration used by the worker for CloudEvents.
-
-    # Type: CloudEventsStreamConfig
-    stream:
-
-      # Name of the JetStream stream used to store CloudEvents.
-
-      # Type: str
-
-      name: "EVENTS"
-
-      # Subject pattern used by the stream to capture CloudEvents.
-
-      # Type: str
-
-      subject: "events.>"
-
     # List of NATS subjects to which the worker subscribes for CloudEvents.
 
     # Type: list[str]
@@ -51,11 +34,33 @@ aspynotifications_worker:
 
     max_deliver: "2"
 
-  # Type: NatsConnectionConfig
-  nats_connection:
+  # Type: NatsClientConfig
+  nats_client:
 
-    # URL of the NATS server to connect to.
+    # Name of the JetStream stream used to store CloudEvents.
 
-    # Type: str
+    # Type: NatsConnectionConfig
+    connection:
 
-    nats_url: "nats://127.0.0.1:4222"
+      # URL of the NATS server to connect to.
+
+      # Type: str
+
+      nats_url: "nats://127.0.0.1:4222"
+
+    # Subject pattern used by the stream to capture CloudEvents.
+
+    # Type: NatsStreamConfig
+    stream:
+
+      # Name of the JetStream stream used to store CloudEvents.
+
+      # Type: str
+
+      name: "EVENTS"
+
+      # Subject pattern used by the stream to capture CloudEvents.
+
+      # Type: str
+
+      subject: "events.>"

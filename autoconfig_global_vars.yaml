@@ -1,19 +1,21 @@
 plugins:
   - LOCALFS
   - NATS
+  - NOOP
 
 global_vars:
   data_dir: "./var/all_stores"
 
 skip_config:
-  - notifications_sdk_notification_client_adapter_config_connection_username
-  - notifications_sdk_notification_client_adapter_config_connection_password
-  - notifications_sdk_notification_client_adapter_config_connection_tls_ca_file
-  - notifications_sdk_notification_client_adapter_config_connection_tls_cert_file
-  - notifications_sdk_notification_client_adapter_config_connection_tls_key_file
+  - connection_username
+  - connection_password
+  - connection_tls_ca_file
+  - connection_tls_cert_file
+  - connection_tls_key_file
 
 placeholders:
-  localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
+  localfs_data_dir: "{{ data_dir }}/<parent>"
+  # localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
   # store_adapter_config_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
   store_adapter_config_data_dir: "{{ data_dir }}/<parent>"
   aw_nats_worker_name: "notifications_worker"
