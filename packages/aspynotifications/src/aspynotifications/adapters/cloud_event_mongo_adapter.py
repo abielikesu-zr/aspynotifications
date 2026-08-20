@@ -1,13 +1,11 @@
-from typing import List
-
 import structlog
-from pydantic import BaseModel, ValidationError
-
 from aspyadapters.adapters.generic_mongo_db_adapter import (
     GenericMongoAdapter,
     NotFoundError,
 )
 from aspyplugs.registry import register_plugin
+from pydantic import BaseModel, ValidationError
+
 from aspynotifications.entities.cloud_event import CloudEvent
 from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
 
@@ -16,8 +14,7 @@ logger = structlog.get_logger(__name__)
 
 @register_plugin("cloud_event_store", "MONGODB")
 class CloudEventMongoStoreAdapter(ICloudEventStorePort, GenericMongoAdapter):
-
-    def get_model_class(self) -> type[BaseModel]: # type: ignore[override]
+    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
         return CloudEvent
 
     def get_collection_name(self) -> str:
@@ -49,7 +46,7 @@ class CloudEventMongoStoreAdapter(ICloudEventStorePort, GenericMongoAdapter):
             )
             raise
 
-    async def list_cloud_events(self) -> List[CloudEvent]:
+    async def list_cloud_events(self) -> list[CloudEvent]:
         try:
             return await self.find()
         except Exception as e:
@@ -58,7 +55,7 @@ class CloudEventMongoStoreAdapter(ICloudEventStorePort, GenericMongoAdapter):
                 error=str(e),
                 exc_info=e,
             )
-            raise Exception(f"Error listing cloud events: {str(e)}") from e
+            raise Exception(f"Error listing cloud events: {e!s}") from e
 
     async def ping(self) -> bool:
         try:
