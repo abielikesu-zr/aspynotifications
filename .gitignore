@@ -91,6 +91,8 @@ Desktop.ini
 .aspyapps
 .aspy_cache/
 .make-env
+install-all-packages.json
+install-packages-to-all-repos.json
 *.bin
 
 # ---------- Symlinks created by aspyinit ----------
@@ -116,6 +118,3 @@ packages/*/build/
 **/pyproject.prod.toml
 **/requirements*.txt
 **/requirements*.in
-
-target/
-tests/karate/
