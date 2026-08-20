@@ -1,7 +1,7 @@
-from aspypolicies import get_policy_service
 from aspyadapters.adapters.http_client import AspyHttpClient
-from dependency_injector import containers, providers
 from aspyplugs.z_plug_resolver import PluginDependencyResolver
+from aspypolicies import get_policy_service
+from dependency_injector import containers, providers
 
 from aspynotifications.adapters.cloud_event_context_transformer import (
     CloudEventPolicyContextTransformer,
@@ -12,10 +12,10 @@ from aspynotifications.factories.cloud_event_store_factory import (
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
-from aspynotifications.factories.policy_factory import create_notification_policy_store
 from aspynotifications.factories.notification_provider_sender_factory import (
     NotificationProviderSenderFactory,
 )
+from aspynotifications.factories.policy_factory import create_notification_policy_store
 from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
@@ -86,6 +86,7 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         store=destinations_store,
         config=config.aspynotifications.destinations_service,
     )
+
     notification_sender_http_client = providers.Singleton(
         AspyHttpClient,
         config=config.aspynotifications.notification_sender_http_client,
@@ -93,17 +94,15 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
 
     provider_sender_resolver = providers.Singleton(
         PluginDependencyResolver,
-        dependencies=providers.Object(
+        dependencies=providers.Dict(
             {
                 AspyHttpClient: notification_sender_http_client,
-
             }
         ),
     )
 
     notification_provider_sender_factory = providers.Singleton(
-        NotificationProviderSenderFactory,
-        resolver = provider_sender_resolver        
+        NotificationProviderSenderFactory, resolver=provider_sender_resolver
     )
 
     notification_provider_service = providers.Singleton(
