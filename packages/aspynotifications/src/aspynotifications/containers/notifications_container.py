@@ -1,6 +1,7 @@
 from aspypolicies import get_policy_service
 from aspyadapters.adapters.http_client import AspyHttpClient
 from dependency_injector import containers, providers
+from aspyplugs.z_plug_resolver import PluginDependencyResolver
 
 from aspynotifications.adapters.cloud_event_context_transformer import (
     CloudEventPolicyContextTransformer,
@@ -89,9 +90,20 @@ class AspyNotificationsContainer(containers.DeclarativeContainer):
         AspyHttpClient,
         config=config.aspynotifications.notification_sender_http_client,
     )
+
+    provider_sender_resolver = providers.Singleton(
+        PluginDependencyResolver,
+        dependencies=providers.Object(
+            {
+                AspyHttpClient: notification_sender_http_client,
+
+            }
+        ),
+    )
+
     notification_provider_sender_factory = providers.Singleton(
         NotificationProviderSenderFactory,
-        http_client=notification_sender_http_client,
+        resolver = provider_sender_resolver        
     )
 
     notification_provider_service = providers.Singleton(
