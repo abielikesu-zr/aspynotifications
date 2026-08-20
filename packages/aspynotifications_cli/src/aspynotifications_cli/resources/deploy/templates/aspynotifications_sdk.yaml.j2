@@ -70,36 +70,6 @@ notifications_sdk:
 
             nats_url: "{{  g_app_ns_notification_client_nats_connection_nats_url | default('nats://127.0.0.1:4222')   }}"
 
-            # Username used to authenticate with the NATS server.
-
-            # Type: str | None
-
-            username: "{{  g_app_ns_notification_client_nats_connection_username | default(None)   }}"
-
-            # Password used to authenticate with the NATS server.
-
-            # Type: str | None
-
-            password: "{{  g_app_ns_notification_client_nats_connection_password | default(None)   }}"
-
-            # Path to the CA certificate file used to verify the NATS server certificate.
-
-            # Type: str | None
-
-            tls_ca_file: "{{  g_app_ns_notification_client_nats_connection_tls_ca_file | default(None)   }}"
-
-            # Path to the client TLS certificate file used when establishing a mutual TLS connection.
-
-            # Type: str | None
-
-            tls_cert_file: "{{  g_app_ns_notification_client_nats_connection_tls_cert_file | default(None)   }}"
-
-            # Path to the private key file corresponding to the client TLS certificate.
-
-            # Type: str | None
-
-            tls_key_file: "{{  g_app_ns_notification_client_nats_connection_tls_key_file | default(None)   }}"
-
           # Subject pattern used by the stream to capture CloudEvents.
 
           # Type: NatsStreamConfig

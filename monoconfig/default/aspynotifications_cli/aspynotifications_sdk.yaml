@@ -1,7 +1,7 @@
 # Type: NotificationsSdkParams
 notifications_sdk:
 
-  # Type: Optional[HttpClientConfig]
+  # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
   http_client:
 
     # Maximum time in seconds to wait for an HTTP request to complete.
@@ -32,27 +32,46 @@ notifications_sdk:
 
     # Type: bool
 
-    verify: True
+    verify: "True"
 
   # Type: NotificationClientConfig
   notification_client:
 
     # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
+    # Switch Variable: g_app_ns_notification_client_adapter_type
     adapter:
 
-      # Type: Literal['REST']
+      
 
-      type: "NATS"
+        type: 'NATS'
 
-      # Type: RestClientConfig
-      config:
+        # Type: NatsClientConfig
+        config:
 
-        stream:
+          # Name of the JetStream stream used to store CloudEvents.
 
-          name: "EVENTS"
+          # Type: NatsConnectionConfig
+          connection:
 
-          subject: "notify.>"
+            # URL of the NATS server to connect to.
 
-        # Type: HttpUrl
-        connection:
-          nats_url: "nats://127.0.0.1:4222"
+            # Type: str
+
+            nats_url: "nats://127.0.0.1:4222"
+
+          # Subject pattern used by the stream to capture CloudEvents.
+
+          # Type: NatsStreamConfig
+          stream:
+
+            # Name of the JetStream stream used to store CloudEvents.
+
+            # Type: str
+
+            name: "EVENTS"
+
+            # Subject pattern used by the stream to capture CloudEvents.
+
+            # Type: str
+
+            subject: "events.>"

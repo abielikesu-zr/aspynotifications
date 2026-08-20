@@ -6,11 +6,11 @@ global_vars:
   data_dir: "./var/all_stores"
 
 skip_config:
-  - nats_connection_username
-  - nats_connection_password
-  - nats_connection_tls_ca_file
-  - nats_connection_tls_cert_file
-  - nats_connection_tls_key_file
+  - notifications_sdk_notification_client_adapter_config_connection_username
+  - notifications_sdk_notification_client_adapter_config_connection_password
+  - notifications_sdk_notification_client_adapter_config_connection_tls_ca_file
+  - notifications_sdk_notification_client_adapter_config_connection_tls_cert_file
+  - notifications_sdk_notification_client_adapter_config_connection_tls_key_file
 
 placeholders:
   localfs_data_dir: "{{ data_dir }}/{{service_name}}/<parent>"
