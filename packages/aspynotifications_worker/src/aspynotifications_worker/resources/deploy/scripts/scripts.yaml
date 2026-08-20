@@ -1,0 +1,4 @@
+aspynotifications.aspynotifications_worker:
+  deploy:
+    pre_package_install: []
+    post_package_install: []

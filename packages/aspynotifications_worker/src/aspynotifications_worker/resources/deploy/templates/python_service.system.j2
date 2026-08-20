@@ -1,0 +1,33 @@
+{# Define the service_item: use 'item' if defined (from loop), otherwise fallback to the first service #}
+{% set service_item = item if item is defined else (ascloud_manifest.services | first) %}
+
+[Unit]
+Description={{ ascloud_manifest.name }} - {{ service_item.name }}
+After=network.target
+
+[Service]
+{% set final_install_dir = install_dir | default(ascloud_manifest.install_dir) %}
+
+Type=simple
+User={{ app_user | default(ascloud_manifest.user) }}
+Group={{ app_group | default(ascloud_manifest.group) }}
+WorkingDirectory={{ final_install_dir }}
+
+{# Logic using the specific service_item attributes #}
+EnvironmentFile={{ service_item.env_file | replace(ascloud_manifest.install_dir, final_install_dir) }}
+ExecStart={{ service_item.exec_start | replace(ascloud_manifest.install_dir, final_install_dir) }}
+
+Restart=on-failure
+RestartSec=5
+
+{# Conditional logging logic for the selected service #}
+{% if service_item.log_file and service_item.log_file not in ['stdout', 'null', 'none'] %}
+StandardOutput=append:{{ service_item.log_file | replace(ascloud_manifest.install_dir, final_install_dir) }}
+StandardError=append:{{ service_item.log_file | replace(ascloud_manifest.install_dir, final_install_dir) }}
+{% else %}
+StandardOutput=journal
+StandardError=journal
+{% endif %}
+
+[Install]
+WantedBy=multi-user.target
