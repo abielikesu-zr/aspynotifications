@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
-NATS_DIR="D:/nats-server"
+get_user_lower() {
+  printf '%s' "${USER:-$USERNAME}" | tr '[:upper:]' '[:lower:]'
+}
 
-NATS_SERVER="$NATS_DIR/nats-server.exe"
+export USER="$(get_user_lower)"
 
-NATS_CONFIG="$NATS_DIR/nats-server.conf"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-NATS_LOG="D:/WorkspaceStore/nats_data/nats-server.log"
-
-NATS_PID="$NATS_DIR/nats-server.pid"
+source "$SCRIPT_DIR/.nats.${USER}.env"
 
 
 start_nats()

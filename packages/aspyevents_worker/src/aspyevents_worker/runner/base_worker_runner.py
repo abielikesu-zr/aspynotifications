@@ -15,8 +15,8 @@ from nats.aio.client import Client
 from nats.js import JetStreamContext
 from pydantic import ValidationError
 
-from aspyevents_worker.config.nats_connection_config import NatsConnectionConfig
 from aspyevents_worker.workers.cloud_events_worker import CloudEventsWorker
+from aspynats.config.nats_connection_config import NatsConnectionConfig
 
 logger = structlog.get_logger(__name__)
 

@@ -1,22 +1,13 @@
 from typing import Literal, Union
 
-from pydantic import BaseModel, Field, HttpUrl, model_validator
+from pydantic import BaseModel, Field, HttpUrl
 
 from aspyadapters.adapters.http_client_config import HttpClientConfig
+from aspynats.config.nats_connection_config import NatsConnectionConfig
 
 
 class RestClientParams(BaseModel):
     base_url: HttpUrl
-
-
-class NatsClientParams(BaseModel):
-    nats_url: str = Field(...)
-
-    @model_validator(mode="before")
-    def normalize_nats_url(cls, values):
-        if "nats_url" in values and isinstance(values["nats_url"], str):
-            values["nats_url"] = values["nats_url"].rstrip("/")
-        return values
 
 
 class RestClientConfig(BaseModel):
@@ -25,19 +16,14 @@ class RestClientConfig(BaseModel):
 
 
 class NatsClientConfig(BaseModel):
-    type: Literal["NATS"]
-    config: NatsClientParams = Field(...)
-
-
-class NotificationsClientConfig(BaseModel):
-    client: Union[RestClientConfig, NatsClientConfig] = Field(
-        ..., discriminator="type"
-    )
-
+    type: Literal["NATS"] = "NATS"
+    config: NatsConnectionConfig = Field(default_factory=NatsConnectionConfig)
 
 class NotificationsSdkParams(BaseModel):
     http_client: HttpClientConfig
-    client: NotificationsClientConfig
+    client: Union[RestClientConfig, NatsClientConfig] = Field(
+        default_factory=NatsClientConfig, discriminator="type"
+    )
 
 
 class NotificationsSdkConfig(BaseModel):

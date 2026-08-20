@@ -2,9 +2,13 @@ aspyplugs_static:
   root_modules:
     aspynotifications_sdk:
       load_at_startup: []
-      lazy_loaded: []
-      user_decorators:
-      - name: model_validator
-        module: aspynotifications_sdk.entities.config
-        params:
-        - mode="before"
+      lazy_loaded:
+      - name: notification_event_store
+        adapters:
+        - type: NATS
+          module: aspynotifications_sdk.adapters.notifications_nats_client
+          eager: false
+        - type: REST
+          module: aspynotifications_sdk.adapters.notifications_rest_client
+          eager: false
+      user_decorators: []

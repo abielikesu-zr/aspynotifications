@@ -6,7 +6,7 @@ from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspytracing import SpanType, get_tracing
 from nats.js import JetStreamContext
 from nats.js.api import AckPolicy, ConsumerConfig
-
+from aspynats.workers.manager_worker import ensure_stream
 from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorkerConfig
 
 logger = structlog.get_logger(__name__)
@@ -20,7 +20,6 @@ class CloudEventsWorker(abc.ABC):
     ) -> None:
         self.name = name
         self.config = config
-
         self.batch_size = config.batch
         self.js: JetStreamContext | None = None
         self.subs: list[JetStreamContext.PullSubscription] = []
@@ -47,48 +46,9 @@ class CloudEventsWorker(abc.ABC):
             for subscription in subscriptions
         ]
 
-    async def _ensure_stream(self) -> None:
-        if self.js is None:
-            raise RuntimeError("JetStream context is not initialized")
-
-        stream_config = self.config.stream
-
-        stream_subject = stream_config.subject
-
-        if not stream_subject.endswith(">"):
-            if not stream_subject.endswith("."):
-                stream_subject += "."
-            stream_subject += ">"
-
-        try:
-            stream = await self.js.stream_info(stream_config.name)
-
-            if stream.config.subjects != [stream_subject]:
-                raise RuntimeError(
-                    f"JetStream stream '{stream_config.name}' already exists "
-                    f"with subjects {stream.config.subjects}, "
-                    f"expected [{stream_subject!r}]"
-                )
-
-        except Exception as exc:
-            if "stream not found" not in str(exc).lower():
-                raise
-
-            await self.js.add_stream(
-                name=stream_config.name,
-                subjects=[stream_subject],
-            )
-
-            logger.info(
-                "JetStream stream created",
-                stream=stream_config.name,
-                subject=stream_subject,
-            )
-
     async def run(self, js_context: JetStreamContext) -> None:
         self.js = js_context
-
-        await self._ensure_stream()
+        await ensure_stream(js=js_context, config=self.config.stream)
 
         ack_wait = self.config.ack_wait_seconds
         max_deliver = self.config.max_deliver

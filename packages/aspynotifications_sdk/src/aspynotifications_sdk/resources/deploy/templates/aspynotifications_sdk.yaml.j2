@@ -4,37 +4,92 @@ notifications_sdk:
   # Type: HttpClientConfig
   http_client:
 
-    # Request timeout in seconds
+    # Maximum time in seconds to wait for an HTTP request to complete.
 
     # Type: float
 
     timeout: "{{  g_app_ns_http_client_timeout | default(5.0) | float  }}"
 
-    # Number of retries on failure
+    # Maximum number of times a failed HTTP request is retried.
 
     # Type: int
 
-    max_retries: "{{  g_app_ns_http_client_max_retries | default(2) | int  }}"
+    max_retries: "{{  g_app_ns_http_client_max_retries | default(1) | int  }}"
 
-    # Base backoff for retries
+    # Initial backoff delay in seconds used before retrying a failed request.
 
     # Type: float
 
     backoff_base: "{{  g_app_ns_http_client_backoff_base | default(0.15) | float  }}"
 
-    # Maximum backoff for retries
+    # Maximum backoff delay in seconds between retry attempts.
 
     # Type: float
 
     backoff_max: "{{  g_app_ns_http_client_backoff_max | default(1.0) | float  }}"
 
-    # Type: bool | str
+    # Whether TLS certificates are verified for HTTPS requests.
 
-    verify: "{{  g_app_ns_http_client_verify | default(True)   }}"
+    # Type: bool
 
-  # Type: NotificationsClientConfig
-  notifications_client:
+    verify: "{{  (g_app_ns_http_client_verify | default(True)) is sameas true  }}"
 
-    # Type: HttpUrl
+  # Type: RestClientConfig | NatsClientConfig
+  # Switch Variable: g_app_ns_client_type
+  client:
 
-    base_url: "{{  g_app_ns_notifications_client_base_url | default(None)   }}"
+    {% if  g_app_ns_client_type | default('REST') == 'REST' %}
+
+      type: 'REST'
+
+      # Type: RestClientParams
+      config:
+
+        # Type: HttpUrl
+
+        base_url: "{{  g_app_ns_client_config_base_url | default(None)   }}"
+
+    {% elif  g_app_ns_client_type == 'NATS' %}
+
+      type: 'NATS'
+
+      # Type: NatsConnectionConfig
+      config:
+
+        # URL of the NATS server to connect to.
+
+        # Type: str
+
+        nats_url: "{{  g_app_ns_client_config_nats_url | default('nats://127.0.0.1:4222')   }}"
+
+        # Username used to authenticate with the NATS server.
+
+        # Type: str | None
+
+        username: "{{  g_app_ns_client_config_username | default(None)   }}"
+
+        # Password used to authenticate with the NATS server.
+
+        # Type: str | None
+
+        password: "{{  g_app_ns_client_config_password | default(None)   }}"
+
+        # Path to the CA certificate file used to verify the NATS server certificate.
+
+        # Type: str | None
+
+        tls_ca_file: "{{  g_app_ns_client_config_tls_ca_file | default(None)   }}"
+
+        # Path to the client TLS certificate file used when establishing a mutual TLS connection.
+
+        # Type: str | None
+
+        tls_cert_file: "{{  g_app_ns_client_config_tls_cert_file | default(None)   }}"
+
+        # Path to the private key file corresponding to the client TLS certificate.
+
+        # Type: str | None
+
+        tls_key_file: "{{  g_app_ns_client_config_tls_key_file | default(None)   }}"
+
+    {% endif %}

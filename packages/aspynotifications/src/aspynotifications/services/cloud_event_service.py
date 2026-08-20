@@ -1,4 +1,5 @@
 import structlog
+import uuid
 
 from aspynotifications.config.cloud_template import CloudEventServiceConfig
 from aspynotifications.entities.cloud_event import CloudEvent
@@ -15,6 +16,7 @@ class CloudEventService:
     async def create_cloud_event(self, cloud_event: CloudEvent) -> CloudEvent:
         log = logger.bind(function="create_cloud_event")
         try:
+            cloud_event.id = str(uuid.uuid4())
             await self._store.save_cloud_event(cloud_event)
 
             log.debug(
