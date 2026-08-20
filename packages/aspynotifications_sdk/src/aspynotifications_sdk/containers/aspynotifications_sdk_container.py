@@ -12,7 +12,7 @@ class NotificationsSdkContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     http_client = providers.Singleton(
-        AspyHttpClient, config=config.notification_sdk.http_client
+        AspyHttpClient, config=config.notifications_sdk.http_client
     )
 
     notification_client_resolver = providers.Singleton(
