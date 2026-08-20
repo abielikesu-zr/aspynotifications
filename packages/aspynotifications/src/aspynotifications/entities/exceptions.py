@@ -1,0 +1,2 @@
+class DestinationAlreadyExistsError(Exception):
+    pass

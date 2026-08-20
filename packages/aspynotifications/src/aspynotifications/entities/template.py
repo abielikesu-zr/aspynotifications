@@ -1,15 +1,7 @@
 from pydantic import BaseModel, Field
 
-
-class TemplateSource(BaseModel):
-    inline: str | None = Field(
-        default=None,
-        description="Inline template content",
-    )
-    file: str | None = Field(
-        default=None,
-        description="Path to template file",
-    )
+from aspynotifications.entities.noop import WholeTemplate
+from aspynotifications.entities.source import TemplateSource
 
 
 class EmailTemplate(BaseModel):
@@ -57,4 +49,8 @@ class Template(BaseModel):
     teams: TeamsTemplate | None = Field(
         default=None,
         description="Teams template representations",
+    )
+    output_hole: WholeTemplate | None = Field(
+        default=None,
+        description="Output hole template representation",
     )

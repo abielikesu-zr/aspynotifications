@@ -3,8 +3,10 @@ from contextlib import asynccontextmanager
 import structlog
 from aspynotifications import get_notification_facade
 from aspynotifications.services.notifications_facade import NotificationsFacade
+from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from fastapi import FastAPI
 
+from aspynotifications_rest.api.error_handlers import resource_already_exists_handler
 from aspynotifications_rest.api.notification_administration_handlers import (
     notification_administration_router,
 )
@@ -36,3 +38,8 @@ notifications_rest_app = FastAPI(lifespan=lifespan_context)
 
 notifications_rest_app.include_router(notifications_router)
 notifications_rest_app.include_router(notification_administration_router)
+
+notifications_rest_app.add_exception_handler(
+    ResourceAlreadyExistsError,
+    resource_already_exists_handler,
+)

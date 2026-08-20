@@ -7,6 +7,10 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
 )
+from aspynotifications_dtos.providers_dtos import (
+    CreateNotificationProviderRequest,
+    NotificationProviderDTO,
+)
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 
@@ -44,3 +48,15 @@ async def create_destination(
     facade: NotificationsFacade = request.app.state.notifications_facade
     destination: DestinationDTO = await facade.create_destination(body)
     return JSONResponse(content=destination.model_dump())
+
+
+@notification_administration_router.post("/providers")
+async def create_notification_provider(
+    body: CreateNotificationProviderRequest,
+    request: Request,
+) -> JSONResponse:
+    facade: NotificationsFacade = request.app.state.notifications_facade
+
+    provider: NotificationProviderDTO = await facade.create_notification_provider(body)
+
+    return JSONResponse(content=provider.model_dump())

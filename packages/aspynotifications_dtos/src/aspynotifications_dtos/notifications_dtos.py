@@ -2,6 +2,12 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from aspynotifications_dtos.base_dtos import TemplateSourceDTO
+from aspynotifications_dtos.noop_dtos import (
+    BHoleTemplateDTO,
+    OutputHoleDestinationConfigDTO,
+)
+
 
 class NotificationSubscriptionsDTO(BaseModel):
     subscriptions: list[str]
@@ -28,13 +34,6 @@ class CreateNotificationPolicyRequest(BaseModel):
 
 class NotificationPolicyDTO(CreateNotificationPolicyRequest):
     id: str = Field(..., min_length=1)
-
-
-class TemplateSourceDTO(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    inline: str | None = None
-    file: str | None = None
 
 
 class EmailTemplateDTO(BaseModel):
@@ -64,6 +63,7 @@ class CreateTemplateRequest(BaseModel):
     email: EmailTemplateDTO | None = None
     slack: SlackTemplateDTO | None = None
     teams: TeamsTemplateDTO | None = None
+    output_hole: BHoleTemplateDTO | None = None
 
 
 class TemplateDTO(CreateTemplateRequest):
@@ -97,7 +97,8 @@ class TeamsConversationDestinationConfigDTO(BaseModel):
 DestinationConfigDTO = Annotated[
     EmailDestinationConfigDTO
     | SlackChannelDestinationConfigDTO
-    | TeamsConversationDestinationConfigDTO,
+    | TeamsConversationDestinationConfigDTO
+    | OutputHoleDestinationConfigDTO,
     Field(discriminator="type"),
 ]
 
@@ -114,4 +115,4 @@ class CreateDestinationRequest(BaseModel):
 
 class DestinationDTO(CreateDestinationRequest):
     id: str = Field(..., min_length=1)
-    type: Literal["email", "slack_channel", "teams_conversation"]
+    type: Literal["email", "slack_channel", "teams_conversation", "output_hole"]

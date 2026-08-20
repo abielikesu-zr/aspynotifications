@@ -10,6 +10,10 @@ from aspynotifications_dtos.notifications_dtos import (
     TemplateDTO,
 )
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
+from aspynotifications_dtos.providers_dtos import (
+    CreateNotificationProviderRequest,
+    NotificationProviderDTO,
+)
 
 
 class NotificationsFacade(ABC):
@@ -42,4 +46,12 @@ class NotificationsFacade(ABC):
         request: CreateDestinationRequest,
     ) -> DestinationDTO:
         """Create a notification destination."""
+        ...
+
+    @abstractmethod
+    async def create_notification_provider(
+        self,
+        request: CreateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        """Create a notification provider."""
         ...

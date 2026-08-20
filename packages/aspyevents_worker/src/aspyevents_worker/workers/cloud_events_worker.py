@@ -5,6 +5,7 @@ import structlog
 from aspynats.config.nats_stream_config import NatsStreamConfig
 from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspytracing import SpanType, get_tracing
+from nats import errors
 from nats.js import JetStreamContext
 from nats.js.api import AckPolicy, ConsumerConfig
 
@@ -60,6 +61,7 @@ class CloudEventsWorker(abc.ABC):
         subs = await self.get_subscriptions()
         # Append the STREAM subject
         subs = self._get_stream_subscriptions(subs)
+        logger.info("Subscribing", subscriptions=subs)
 
         for index, subject in enumerate(subs):
             durable = f"worker-{self.name.replace(' ', '-')}-{index}"
@@ -114,10 +116,12 @@ class CloudEventsWorker(abc.ABC):
             except asyncio.CancelledError:
                 raise
 
-            except Exception:
-                logger.exception(
-                    "Worker consumer error",
-                    worker=self.name,
+            except errors.TimeoutError:
+                continue
+
+            except Exception as e:
+                logger.debug(
+                    "Worker consumer error", worker=self.name, error=str(e), exc_info=e
                 )
                 await asyncio.sleep(1)
 

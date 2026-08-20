@@ -37,6 +37,9 @@ aspyplugs_static:
           eager: false
       - name: notification_sender
         adapters:
+        - type: SHOLE
+          module: aspynotifications.adapters.notification_senders.ohole_sender
+          eager: false
         - type: SLACK
           module: aspynotifications.adapters.notification_senders.slack_sender
           eager: false

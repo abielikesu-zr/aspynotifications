@@ -1,4 +1,3 @@
-from sys import exc_info
 from typing import Any
 from uuid import uuid4
 
@@ -58,9 +57,14 @@ class NotificationProviderService:
             logger.info(provider.provider.type)
         except Exception as e:
             # Manejar el error
-            logger.error("Error creando sender", exc_info=e, error=str(e), provider_type=provider.provider.type)
+            logger.error(
+                "Error creando sender",
+                exc_info=e,
+                error=str(e),
+                provider_type=provider.provider.type,
+            )
             raise
-        
+
         result = await sender.send(
             provider=provider,
             destination=destination,

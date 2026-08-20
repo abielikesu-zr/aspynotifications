@@ -3,6 +3,7 @@ import uuid
 from aspynotifications.config.app_config import DestinationsServiceConfig
 from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.entities.destination import Destination
+from aspynotifications.entities.exceptions import DestinationAlreadyExistsError
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
 
@@ -36,7 +37,9 @@ class DestinationsService:
 
         existing = await self.get_destination_by_name(destination.name)
         if existing is not None:
-            raise ValueError(f"Destination name already exists: {destination.name}")
+            raise DestinationAlreadyExistsError(
+                f"Destination name already exists: {name}"
+            )
 
         await self._store.save_destination(destination)
         return destination

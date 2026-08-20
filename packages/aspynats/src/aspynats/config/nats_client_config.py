@@ -7,7 +7,6 @@ from aspynats.config.nats_stream_config import NatsStreamConfig
 
 
 class NatsClientConfig(BaseModel):
-
     connection: NatsConnectionConfig = Field(
         default_factory=NatsConnectionConfig,
         description="Name of the JetStream stream used to store CloudEvents.",

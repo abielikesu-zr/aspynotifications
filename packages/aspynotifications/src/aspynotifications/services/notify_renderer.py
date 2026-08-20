@@ -2,6 +2,9 @@ from typing import Any
 
 from aspynotifications.adapters.notify_renderer_email import EmailNotificationAdapter
 from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
+from aspynotifications.adapters.notify_renderer_ohooe import (
+    OutputHoleNotificationAdapter,
+)
 from aspynotifications.adapters.notify_renderer_slack import SlackNotificationAdapter
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.template import Template
@@ -17,6 +20,7 @@ class NotificationTemplateRenderer:
         self._adapters: dict[str, NotificationRendererPort] = {
             "email": EmailNotificationAdapter(renderer),
             "slack_channel": SlackNotificationAdapter(renderer),
+            "output_hole": OutputHoleNotificationAdapter(renderer),
         }
 
     def render(

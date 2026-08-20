@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from aspynotifications.entities.noop import AHoleProvider
+
 
 class ZeptoMailCredentials(BaseModel):
     """
@@ -68,10 +70,8 @@ class NotificationProvider(BaseModel):
     id: str = Field(..., description="Unique provider identifier")
     name: str = Field(..., description="Provider name")
 
-    provider: ZeptoMailProvider | SlackProvider = (
-        Field(
-            ...,
-            discriminator="type",
-            description="Notification provider configuration",
-        )
+    provider: ZeptoMailProvider | SlackProvider | AHoleProvider = Field(
+        ...,
+        discriminator="type",
+        description="Notification provider configuration",
     )

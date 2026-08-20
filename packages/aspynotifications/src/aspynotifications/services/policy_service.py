@@ -228,17 +228,57 @@ class NotificationPolicyService:
         context: dict[str, Any],
         policy: NotificationPolicy,
     ) -> PolicyEvaluationResult:
+        logger.debug(
+            "Evaluating notification policy",
+            policy=policy.name,
+            envelope_policy_count=len(policy.envelope_policies),
+            destination_policy_count=len(policy.destination_policies),
+            context=context,
+        )
+
         envelope_result = self.policy_service.evaluate_policies(
             policy.envelope_policies,
             context,
         )
+
+        logger.debug(
+            "Notification envelope policies evaluated",
+            policy=policy.name,
+            matched=envelope_result.matched,
+            result=envelope_result,
+        )
+
         if not envelope_result.matched:
+            logger.debug(
+                "Notification policy rejected by envelope policies",
+                policy=policy.name,
+            )
             return envelope_result
 
-        return self.policy_service.evaluate_policies(
+        destination_result = self.policy_service.evaluate_policies(
             policy.destination_policies,
             context,
         )
+
+        logger.debug(
+            "Notification destination policies evaluated",
+            policy=policy.name,
+            matched=destination_result.matched,
+            result=destination_result,
+        )
+
+        if not destination_result.matched:
+            logger.debug(
+                "Notification policy rejected by destination policies",
+                policy=policy.name,
+            )
+        else:
+            logger.debug(
+                "Notification policy matched",
+                policy=policy.name,
+            )
+
+        return destination_result
 
     def event_to_context(
         self,
@@ -250,27 +290,119 @@ class NotificationPolicyService:
         self,
         event: dict[str, Any],
     ) -> list[NotificationPolicy]:
+        logger.debug(
+            "Finding matching notification policies",
+            cloud_event=event,
+        )
+
         await self._ensure_subject_trie()
 
+        logger.debug(
+            "Notification policy subject trie ready",
+            cache_size=len(self._policy_cache),
+        )
+
         context = self.event_to_context(event)
+
+        logger.debug(
+            "Notification policy context created",
+            context=context,
+        )
+
         subject = context["envelope"]["type"]
+
+        logger.debug(
+            "Looking up notification policies by subject",
+            subject=subject,
+        )
+
         policy_ids = self.subject_trie.find_matches(subject)
 
+        logger.debug(
+            "Notification policy subject lookup completed",
+            subject=subject,
+            policy_ids=policy_ids,
+            match_count=len(policy_ids),
+        )
+
         if not policy_ids:
+            logger.debug(
+                "No notification policies matched subject",
+                subject=subject,
+            )
             return []
 
         matches: list[NotificationPolicy] = []
+
         for policy_id in policy_ids:
+            logger.debug(
+                "Evaluating candidate notification policy",
+                policy_id=policy_id,
+            )
+
             policy = self._policy_cache.get(policy_id)
+
             if policy is None:
+                logger.debug(
+                    "Notification policy not found in cache, loading from store",
+                    policy_id=policy_id,
+                )
+
                 # Fallback (should be rare while cache is valid)
                 policy = await self.get_notification_policy(policy_id)
+
                 if policy is None:
+                    logger.debug(
+                        "Notification policy not found",
+                        policy_id=policy_id,
+                    )
                     continue
 
+                logger.debug(
+                    "Notification policy loaded from store",
+                    policy_id=policy_id,
+                    policy_name=policy.name,
+                )
+            else:
+                logger.debug(
+                    "Notification policy loaded from cache",
+                    policy_id=policy_id,
+                    policy_name=policy.name,
+                    policy_subject=policy.subject,
+                )
+
             result = self.event_matches_policy(context, policy)
+
+            logger.debug(
+                "Notification policy evaluation completed",
+                policy_id=policy_id,
+                policy_name=policy.name,
+                matched=result.matched,
+                result=result,
+            )
+
             if result.matched:
                 matches.append(policy)
+
+                logger.debug(
+                    "Notification policy matched",
+                    policy_id=policy_id,
+                    policy_name=policy.name,
+                )
+            else:
+                logger.debug(
+                    "Notification policy rejected",
+                    policy_id=policy_id,
+                    policy_name=policy.name,
+                )
+
+        logger.debug(
+            "Notification policy matching completed",
+            subject=subject,
+            candidate_count=len(policy_ids),
+            match_count=len(matches),
+            matches=[policy.name for policy in matches],
+        )
 
         return matches
 

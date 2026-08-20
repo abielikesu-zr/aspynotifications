@@ -2,6 +2,8 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from aspynotifications.entities.noop import OutputHoleDestinationConfig
+
 
 class EmailDestinationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -27,8 +29,16 @@ class TeamsConversationDestinationConfig(BaseModel):
     conversation_id: str = Field(..., min_length=1)
 
 
-DestinationType = Literal["email", "slack_channel", "teams_conversation"]
+DestinationType = Literal[
+    "email",
+    "slack_channel",
+    "teams_conversation",
+    "output_hole",
+]
 DestinationConfig = Annotated[
-    EmailDestinationConfig | SlackChannelDestinationConfig | TeamsConversationDestinationConfig,
+    EmailDestinationConfig
+    | SlackChannelDestinationConfig
+    | TeamsConversationDestinationConfig
+    | OutputHoleDestinationConfig,
     Field(discriminator="type"),
 ]

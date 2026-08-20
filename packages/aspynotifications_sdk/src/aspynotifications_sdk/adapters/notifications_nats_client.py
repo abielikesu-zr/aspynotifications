@@ -36,7 +36,9 @@ class NotificationsNatsClient:
 
     async def publish(self, event: CloudEventDTO) -> None:
         await self.ensure_connection()
-        subject = f"events.{event.type}"
+        subject = event.type
+        if not subject.startswith("events."):
+            subject = f"events.{subject}"
         payload = json.dumps(event.model_dump(mode="json")).encode()
         await self.js.publish(subject, payload)  # type: ignore[union-attr]
 
