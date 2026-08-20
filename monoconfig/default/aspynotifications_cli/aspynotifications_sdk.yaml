@@ -32,7 +32,7 @@ notifications_sdk:
 
     # Type: bool
 
-    verify: "True"
+    verify: True
 
   # Type: NotificationClientConfig
   notification_client:
@@ -42,11 +42,17 @@ notifications_sdk:
 
       # Type: Literal['REST']
 
-      type: "REST"
+      type: "NATS"
 
       # Type: RestClientConfig
       config:
 
-        # Type: HttpUrl
+        stream:
 
-        base_url: "REPLACE_ME"
+          name: "EVENTS"
+
+          subject: "notify.>"
+
+        # Type: HttpUrl
+        connection:
+          nats_url: "nats://127.0.0.1:4222"

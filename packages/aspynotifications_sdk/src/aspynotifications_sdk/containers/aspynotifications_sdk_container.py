@@ -1,7 +1,4 @@
 from dependency_injector import containers, providers
-from aspynotifications_sdk.adapters.notifications_nats_client import (
-    NotificationsNatsClient,
-)
 from aspyplugs.z_plug_resolver import PluginDependencyResolver
 
 from aspynotifications_sdk.aspynotifications_sdk import NotificationsSDK
@@ -25,7 +22,7 @@ class NotificationsSdkContainer(containers.DeclarativeContainer):
 
     notifications_client = providers.Singleton(
         create_notification_client,
-        config=config.notifications_sdk.client,
+        config=config.notifications_sdk.notification_client,
         resolver=notification_client_resolver,
     )
 
