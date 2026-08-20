@@ -10,13 +10,15 @@ import structlog
 from aspyconfig import get_config as aspy_get_config
 from aspyconfig.utils.os_utils import get_os_username
 from aspylogger.services.logging_setup import configure_logging
+from aspynats.config.nats_client_config import NatsClientConfig
+from aspynats.config.nats_connection_config import NatsConnectionConfig
+from aspynats.workers.manager_worker import ensure_stream
 from nats import connect
 from nats.aio.client import Client
 from nats.js import JetStreamContext
 from pydantic import ValidationError
 
 from aspyevents_worker.workers.cloud_events_worker import CloudEventsWorker
-from aspynats.config.nats_connection_config import NatsConnectionConfig
 
 logger = structlog.get_logger(__name__)
 
@@ -33,7 +35,7 @@ class BaseWorkerRunner:
     Subclasses must define DEFAULT_CONFIG, CONFIG_ROOT and PACKAGE_NAME.
     """
 
-    DEFAULT_CONFIG: dict = NatsConnectionConfig().model_dump()
+    DEFAULT_CONFIG: dict = NatsClientConfig().model_dump()
     CONFIG_ROOT: str
     PACKAGE_NAME: str
 
@@ -65,18 +67,18 @@ class BaseWorkerRunner:
             config_root, config_property = self.CONFIG_ROOT.split(".", 1)
         else:
             config_root = self.CONFIG_ROOT
-            config_property = "nats_connection"
+            config_property = "nats_client"
 
         return config_root, config_property
 
-    def get_worker_config(self) -> NatsConnectionConfig:
+    def get_worker_config(self) -> NatsClientConfig:
         config = aspy_get_config()
         config_root, config_property = self.get_config_path()
 
         try:
             return config.to_pydantic(
                 key=f"{config_root}.{config_property}",
-                schema=NatsConnectionConfig,
+                schema=NatsClientConfig,
             )
         except ValidationError as e:
             errors = "\n".join(
@@ -89,8 +91,10 @@ class BaseWorkerRunner:
         self,
         config_file: str | None = None,
         nats_url: str | None = None,
+        stream_name: str | None = None,
+        stream_subject: str | None = None,
     ) -> None:
-        d_config = NatsConnectionConfig.model_validate(
+        d_config = NatsClientConfig.model_validate(
             self.DEFAULT_CONFIG,
         )
 
@@ -105,7 +109,13 @@ class BaseWorkerRunner:
         cli_config = {
             f"{config_root}": {
                 f"{config_property}": {
-                    "nats_url": nats_url,
+                    "connection": {
+                        "nats_url": nats_url,
+                    },
+                    "stream": {
+                        "name": stream_name,
+                        "subject": stream_subject,
+                    },
                 }
             }
         }
@@ -213,16 +223,18 @@ class BaseWorkerRunner:
             worker=self.worker.name,
         )
 
-        ssl_context = self._create_ssl_context(worker_config)
+        ssl_context = self._create_ssl_context(worker_config.connection)
 
         self.nc = await connect(
-            worker_config.nats_url,
-            user=worker_config.username,
-            password=worker_config.password,
+            worker_config.connection.nats_url,
+            user=worker_config.connection.username,
+            password=worker_config.connection.password,
             tls=ssl_context,
         )
 
         self.js = self.nc.jetstream()
+
+        await ensure_stream(js=self.js, config=worker_config.stream)
 
         logger.info(
             "NATS JetStream connection established",
@@ -236,7 +248,7 @@ class BaseWorkerRunner:
         signal.signal(signal.SIGTERM, self.handle_shutdown)
 
         worker_task = asyncio.create_task(
-            self.worker.run(self.js),
+            self.worker.run(self.js, stream_config=worker_config.stream),
             name=f"{self.worker.name}-worker",
         )
 

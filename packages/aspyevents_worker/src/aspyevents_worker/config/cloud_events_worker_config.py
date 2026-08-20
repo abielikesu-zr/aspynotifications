@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from aspynats.config.cloud_events_worker_config import NatsStreamConfig
 
 
 class CloudEventsWorkerConfig(BaseModel):
@@ -7,10 +6,6 @@ class CloudEventsWorkerConfig(BaseModel):
 
     name: str = Field(
         description="Unique name identifying the CloudEvents worker.",
-    )
-    stream: NatsStreamConfig = Field(
-        default_factory=NatsStreamConfig,
-        description="JetStream stream configuration used by the worker for CloudEvents.",
     )
     subscriptions: list[str] = Field(
         description="List of NATS subjects to which the worker subscribes for CloudEvents.",

@@ -19,10 +19,14 @@ async def run_worker(
     runner: BaseWorkerRunner,
     config_file: str | None,
     nats_url: str | None = None,
+    stream_name: str | None = None,
+    stream_subject: str | None = None,
 ) -> None:
     runner.load_config(
         config_file=config_file,
         nats_url=nats_url,
+        stream_name=stream_name,
+        stream_subject=stream_subject,
     )
 
     await runner.run()
@@ -64,6 +68,16 @@ async def run_worker(
     help="NATS server URL.",
 )
 @click.option(
+    "--stream-name",
+    default=None,
+    help="NATS jetstream name. Example: EVENTS",
+)
+@click.option(
+    "--stream-subject",
+    default=None,
+    help="NATS jetstream subject. Example: 'events.>' ",
+)
+@click.option(
     "--configfile",
     help="Configuration file path.",
 )
@@ -73,6 +87,8 @@ def start_worker(
     log_format: str | None,
     configfile: str | None,
     nats_url: str | None = None,
+    stream_name: str | None = None,
+    stream_subject: str | None = None,
 ) -> None:
     """Start the worker."""
 
@@ -102,6 +118,8 @@ def start_worker(
                 runner=runner,
                 config_file=configfile,
                 nats_url=nats_url,
+                stream_name=stream_name,
+                stream_subject=stream_subject,
             )
         )
 

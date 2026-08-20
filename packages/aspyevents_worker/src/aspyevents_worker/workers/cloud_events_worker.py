@@ -2,11 +2,12 @@ import abc
 import asyncio
 
 import structlog
+from aspynats.config.nats_stream_config import NatsStreamConfig
 from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspytracing import SpanType, get_tracing
 from nats.js import JetStreamContext
 from nats.js.api import AckPolicy, ConsumerConfig
-from aspynats.workers.manager_worker import ensure_stream
+
 from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorkerConfig
 
 logger = structlog.get_logger(__name__)
@@ -22,6 +23,7 @@ class CloudEventsWorker(abc.ABC):
         self.config = config
         self.batch_size = config.batch
         self.js: JetStreamContext | None = None
+        self.stream_config: NatsStreamConfig | None = None
         self.subs: list[JetStreamContext.PullSubscription] = []
 
     async def get_subscriptions(self) -> list[str]:
@@ -31,7 +33,7 @@ class CloudEventsWorker(abc.ABC):
         self,
         subscriptions: list[str],
     ) -> list[str]:
-        stream_subject = self.config.stream.subject
+        stream_subject = self.stream_config.subject  # type: ignore
         if not stream_subject.endswith(">"):
             if not stream_subject.endswith("."):
                 stream_subject += "."
@@ -46,9 +48,11 @@ class CloudEventsWorker(abc.ABC):
             for subscription in subscriptions
         ]
 
-    async def run(self, js_context: JetStreamContext) -> None:
+    async def run(
+        self, js_context: JetStreamContext, stream_config: NatsStreamConfig
+    ) -> None:
         self.js = js_context
-        await ensure_stream(js=js_context, config=self.config.stream)
+        self.stream_config = stream_config
 
         ack_wait = self.config.ack_wait_seconds
         max_deliver = self.config.max_deliver

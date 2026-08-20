@@ -1,6 +1,6 @@
 import structlog
-
 from nats.js import JetStreamContext
+
 from aspynats.config.nats_stream_config import NatsStreamConfig
 
 logger = structlog.get_logger(__name__)
