@@ -1,22 +1,22 @@
 import json
-from typing import Any, Dict
+from typing import Any
 
 import nats
 import structlog
-
 from aspynats.config.nats_client_config import NatsClientConfig
+from aspynats.workers.manager_worker import ensure_stream
 from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspynotifications_dtos.notify_request import CreateNotifyRequest
 from aspyplugs.registry import register_plugin
-from aspynats.workers.manager_worker import ensure_stream
-from nats.js import JetStreamContext
 from nats.aio.client import Client as NATS
+from nats.js import JetStreamContext
 
 logger = structlog.get_logger(__name__)
 
+
 @register_plugin("notifications_client", "NATS")
 class NotificationsNatsClient:
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self._config = NatsClientConfig.model_validate(config)
         self._nats_url = self._config.connection.nats_url
         self.js: JetStreamContext | None = None

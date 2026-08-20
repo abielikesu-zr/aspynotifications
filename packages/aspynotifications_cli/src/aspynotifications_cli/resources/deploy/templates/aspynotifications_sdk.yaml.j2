@@ -1,7 +1,7 @@
 # Type: NotificationsSdkParams
 notifications_sdk:
 
-  # Type: Optional[HttpClientConfig]
+  # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
   http_client:
 
     # Maximum time in seconds to wait for an HTTP request to complete.
@@ -38,15 +38,83 @@ notifications_sdk:
   notification_client:
 
     # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
+    # Switch Variable: g_app_ns_notification_client_adapter_type
     adapter:
 
-      # Type: Literal['REST']
+      {% if  g_app_ns_notification_client_adapter_type | default('REST') == 'REST' %}
 
-      type: "{{  g_app_ns_notification_client_adapter_type | default('REST')   }}"
+        type: 'REST'
 
-      # Type: RestClientConfig
-      config:
+        # Type: RestClientConfig
+        config:
 
-        # Type: HttpUrl
+          # Type: HttpUrl
 
-        base_url: "{{  g_app_ns_notification_client_adapter_config_base_url | default(None)   }}"
+          base_url: "{{  g_app_ns_notification_client_rest_base_url | default(None)   }}"
+
+      {% elif  g_app_ns_notification_client_adapter_type == 'NATS' %}
+
+        type: 'NATS'
+
+        # Type: NatsClientConfig
+        config:
+
+          # Name of the JetStream stream used to store CloudEvents.
+
+          # Type: NatsConnectionConfig
+          connection:
+
+            # URL of the NATS server to connect to.
+
+            # Type: str
+
+            nats_url: "{{  g_app_ns_notification_client_nats_connection_nats_url | default('nats://127.0.0.1:4222')   }}"
+
+            # Username used to authenticate with the NATS server.
+
+            # Type: str | None
+
+            username: "{{  g_app_ns_notification_client_nats_connection_username | default(None)   }}"
+
+            # Password used to authenticate with the NATS server.
+
+            # Type: str | None
+
+            password: "{{  g_app_ns_notification_client_nats_connection_password | default(None)   }}"
+
+            # Path to the CA certificate file used to verify the NATS server certificate.
+
+            # Type: str | None
+
+            tls_ca_file: "{{  g_app_ns_notification_client_nats_connection_tls_ca_file | default(None)   }}"
+
+            # Path to the client TLS certificate file used when establishing a mutual TLS connection.
+
+            # Type: str | None
+
+            tls_cert_file: "{{  g_app_ns_notification_client_nats_connection_tls_cert_file | default(None)   }}"
+
+            # Path to the private key file corresponding to the client TLS certificate.
+
+            # Type: str | None
+
+            tls_key_file: "{{  g_app_ns_notification_client_nats_connection_tls_key_file | default(None)   }}"
+
+          # Subject pattern used by the stream to capture CloudEvents.
+
+          # Type: NatsStreamConfig
+          stream:
+
+            # Name of the JetStream stream used to store CloudEvents.
+
+            # Type: str
+
+            name: "{{  g_app_ns_notification_client_nats_stream_name | default('EVENTS')   }}"
+
+            # Subject pattern used by the stream to capture CloudEvents.
+
+            # Type: str
+
+            subject: "{{  g_app_ns_notification_client_nats_stream_subject | default('events.>')   }}"
+
+      {% endif %}

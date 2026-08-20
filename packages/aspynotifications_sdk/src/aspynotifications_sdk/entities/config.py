@@ -1,7 +1,8 @@
-from typing import Literal, Optional, Union
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl
+from typing import Literal
+
 from aspyadapters.adapters.http_client_config import HttpClientConfig
 from aspynats.config.nats_client_config import NatsClientAdapterConfig
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 class RestClientConfig(BaseModel):
@@ -20,7 +21,7 @@ class NotificationClientConfig(BaseModel):
 
 
 class NotificationsSdkParams(BaseModel):
-    http_client: Optional[HttpClientConfig] = Field(default=None)
+    http_client: HttpClientConfig | None = Field(default=None)
     notification_client: NotificationClientConfig
 
 
