@@ -1,6 +1,9 @@
 from typing import Any
 
 from aspyplugs.registry import register_plugin
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
 
 from aspynotifications.entities.delivery_result import DeliveryResult
 from aspynotifications.entities.destination import Destination
@@ -14,13 +17,32 @@ from aspynotifications.ports.notification_provider_sender import (
 class OutputHoleNotificationSender(INotificationProviderSender):
     """Console delivery adapter for output-hole notifications."""
 
+    def __init__(self) -> None:
+        self._console = Console()
+
     async def send(
         self,
         provider: NotificationProvider,
         destination: Destination,
         message: Any,
     ) -> DeliveryResult:
-        print(message)
+        content = (
+            message.get("content", message) if isinstance(message, dict) else message
+        )
+
+        self._console.print()
+
+        self._console.print(
+            Panel(
+                Text(str(content)),
+                title="[bold magenta]💀 NOTIFICATION HOLE 💀[/bold magenta]",
+                subtitle="[dim]delivery accepted[/dim]",
+                border_style="magenta",
+                padding=(1, 2),
+            )
+        )
+
+        self._console.print()
 
         return DeliveryResult(
             status="accepted",
