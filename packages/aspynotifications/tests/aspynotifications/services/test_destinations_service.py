@@ -2,20 +2,21 @@ import uuid
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from pydantic import ValidationError
+from pydantic import TypeAdapter, ValidationError
 
 from aspynotifications.config.destination_config import (
+    DestinationConfig,
     EmailDestinationConfig,
     SlackChannelDestinationConfig,
-    TeamsConversationDestinationConfig,
 )
 from aspynotifications.entities.destination import Destination
+from aspynotifications.entities.exceptions import DestinationAlreadyExistsError
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 from aspynotifications.services.destinations_service import DestinationsService
 
 
-def _email_config() -> dict:
-    return {"type": "email", "to": ["alerts@example.com"], "cc": [], "bcc": []}
+def _email_config() -> EmailDestinationConfig:
+    return EmailDestinationConfig(to=["alerts@example.com"])
 
 
 def _destination(destination_id: str = "destination-001") -> Destination:
@@ -60,7 +61,6 @@ async def test_create_destination_generates_uuid_and_persists_email_destination(
     destination = await _service(store).create_destination(
         name="email-alerts",
         provider="email",
-        destination_type="email",
         template="incident-template",
         routable=False,
         config=_email_config(),
@@ -69,7 +69,6 @@ async def test_create_destination_generates_uuid_and_persists_email_destination(
     # Assert
     assert destination.id == str(destination_id)
     assert isinstance(destination.config, EmailDestinationConfig)
-    store.get_destination.assert_called_once_with(str(destination_id))
     store.get_destination_by_name.assert_called_once_with("email-alerts")
     store.save_destination.assert_called_once_with(destination)
 
@@ -83,10 +82,9 @@ async def test_create_destination_resolves_slack_config_variant() -> None:
     destination = await _service(store).create_destination(
         name="slack-alerts",
         provider="slack",
-        destination_type="slack_channel",
         template="incident-template",
         routable=False,
-        config={"type": "slack_channel", "channel_id": "C123"},
+        config=SlackChannelDestinationConfig(channel_id="C123"),
     )
 
     # Assert
@@ -95,93 +93,17 @@ async def test_create_destination_resolves_slack_config_variant() -> None:
 
 
 @pytest.mark.asyncio
-async def test_create_destination_resolves_teams_config_variant() -> None:
-    # Arrange
-    store = _store()
-
-    # Act
-    destination = await _service(store).create_destination(
-        name="teams-alerts",
-        provider="teams",
-        destination_type="teams_conversation",
-        template="incident-template",
-        routable=False,
-        config={
-            "type": "teams_conversation",
-            "service_url": "https://smba.trafficmanager.net/amer/",
-            "conversation_id": "conversation-001",
-        },
-    )
-
-    # Assert
-    assert isinstance(destination.config, TeamsConversationDestinationConfig)
-    store.save_destination.assert_called_once_with(destination)
-
-
-@pytest.mark.asyncio
 async def test_create_destination_rejects_unknown_config_discriminator() -> None:
-    # Arrange
-    store = _store()
-
     # Act / Assert
     with pytest.raises(ValidationError):
-        await _service(store).create_destination(
-            name="invalid-destination",
-            provider="slack",
-            destination_type="slack_channel",
-            template="incident-template",
-            routable=False,
-            config={"type": "unknown"},
-        )
-
-    store.save_destination.assert_not_called()
+        TypeAdapter(DestinationConfig).validate_python({"type": "unknown"})
 
 
 @pytest.mark.asyncio
 async def test_create_destination_rejects_incomplete_config() -> None:
-    # Arrange
-    store = _store()
-
     # Act / Assert
     with pytest.raises(ValidationError):
-        await _service(store).create_destination(
-            name="invalid-destination",
-            provider="slack",
-            destination_type="slack_channel",
-            template="incident-template",
-            routable=False,
-            config={"type": "slack_channel"},
-        )
-
-    store.save_destination.assert_not_called()
-
-
-@pytest.mark.asyncio
-async def test_create_destination_rejects_duplicate_id(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    # Arrange
-    store = _store()
-    destination_id = uuid.UUID("00000000-0000-0000-0000-000000000001")
-    store.get_destination = AsyncMock(return_value=_destination("duplicate-id"))
-    monkeypatch.setattr(
-        "aspynotifications.services.destinations_service.uuid.uuid4",
-        lambda: destination_id,
-    )
-
-    # Act / Assert
-    with pytest.raises(ValueError, match="Destination ID already exists"):
-        await _service(store).create_destination(
-            name="email-alerts",
-            provider="email",
-            destination_type="email",
-            template="incident-template",
-            routable=False,
-            config=_email_config(),
-        )
-
-    store.get_destination.assert_called_once_with(str(destination_id))
-    store.save_destination.assert_not_called()
+        SlackChannelDestinationConfig.model_validate({"type": "slack_channel"})
 
 
 @pytest.mark.asyncio
@@ -198,17 +120,15 @@ async def test_create_destination_rejects_duplicate_name(
     )
 
     # Act / Assert
-    with pytest.raises(ValueError, match="Destination name already exists"):
+    with pytest.raises(DestinationAlreadyExistsError, match="Destination name already exists"):
         await _service(store).create_destination(
             name="email-alerts",
             provider="email",
-            destination_type="email",
             template="incident-template",
             routable=False,
             config=_email_config(),
         )
 
-    store.get_destination.assert_called_once_with(str(destination_id))
     store.get_destination_by_name.assert_called_once_with("email-alerts")
     store.save_destination.assert_not_called()
 

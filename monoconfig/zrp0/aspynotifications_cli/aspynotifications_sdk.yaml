@@ -33,8 +33,8 @@ notifications_sdk:
     verify: True
 
   # Type: NotificationsClientConfig
-  client:
-    client:
+  notification_client:
+    adapter:
       type: "REST"
       config:
         base_url: "http://127.0.0.1:50011"

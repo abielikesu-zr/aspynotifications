@@ -50,19 +50,12 @@ class SlackTemplateDTO(BaseModel):
     blocks: TemplateSourceDTO | None = None
 
 
-class TeamsTemplateDTO(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    adaptive_card: TemplateSourceDTO | None = None
-
-
 class CreateTemplateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str = Field(..., min_length=1)
     email: EmailTemplateDTO | None = None
     slack: SlackTemplateDTO | None = None
-    teams: TeamsTemplateDTO | None = None
     output_hole: BHoleTemplateDTO | None = None
 
 
@@ -86,18 +79,9 @@ class SlackChannelDestinationConfigDTO(BaseModel):
     channel_id: str = Field(..., min_length=1)
 
 
-class TeamsConversationDestinationConfigDTO(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    type: Literal["teams_conversation"] = "teams_conversation"
-    service_url: str = Field(..., min_length=1)
-    conversation_id: str = Field(..., min_length=1)
-
-
 DestinationConfigDTO = Annotated[
     EmailDestinationConfigDTO
     | SlackChannelDestinationConfigDTO
-    | TeamsConversationDestinationConfigDTO
     | OutputHoleDestinationConfigDTO,
     Field(discriminator="type"),
 ]
@@ -115,4 +99,4 @@ class CreateDestinationRequest(BaseModel):
 
 class DestinationDTO(CreateDestinationRequest):
     id: str = Field(..., min_length=1)
-    type: Literal["email", "slack_channel", "teams_conversation", "output_hole"]
+    type: Literal["email", "slack_channel", "output_hole"]

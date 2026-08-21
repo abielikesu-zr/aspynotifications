@@ -2,7 +2,7 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from aspyevents_dtos.save_event_request import CreateNotifyRequest
+from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications.services.notifications_facade_impl import (
     NotificationsFacadeImpl,
 )

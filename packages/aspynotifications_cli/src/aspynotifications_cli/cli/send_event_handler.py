@@ -1,8 +1,8 @@
 import json
 
 import structlog
-from aspyevents_dtos.save_event_request import CreateNotifyRequest
 from aspylogger.services.logging_setup import configure_logging
+from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_sdk import get_notifications_sdk
 
 from aspynotifications_cli import load_aspynotifications_cli_config

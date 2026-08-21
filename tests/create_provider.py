@@ -28,7 +28,7 @@ def parse_arguments() -> argparse.Namespace:
         help="Optional additional configuration directory.",
     )
     parser.add_argument("--name", required=True)
-    parser.add_argument("--type", required=True, choices=("email", "slack", "teams"))
+    parser.add_argument("--type", required=True, choices=("email", "slack"))
     parser.add_argument(
         "--provider-config",
         required=True,

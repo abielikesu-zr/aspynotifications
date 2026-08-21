@@ -26,13 +26,6 @@ class SlackTemplate(BaseModel):
     )
 
 
-class TeamsTemplate(BaseModel):
-    adaptive_card: TemplateSource | None = Field(
-        default=None,
-        description="Teams adaptive card template",
-    )
-
-
 class Template(BaseModel):
     name: str = Field(
         ...,
@@ -45,10 +38,6 @@ class Template(BaseModel):
     slack: SlackTemplate | None = Field(
         default=None,
         description="Slack template representations",
-    )
-    teams: TeamsTemplate | None = Field(
-        default=None,
-        description="Teams template representations",
     )
     output_hole: WholeTemplate | None = Field(
         default=None,

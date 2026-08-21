@@ -21,24 +21,14 @@ class SlackChannelDestinationConfig(BaseModel):
     channel_id: str = Field(..., min_length=1)
 
 
-class TeamsConversationDestinationConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    type: Literal["teams_conversation"] = "teams_conversation"
-    service_url: str = Field(..., min_length=1)
-    conversation_id: str = Field(..., min_length=1)
-
-
 DestinationType = Literal[
     "email",
     "slack_channel",
-    "teams_conversation",
     "output_hole",
 ]
 DestinationConfig = Annotated[
     EmailDestinationConfig
     | SlackChannelDestinationConfig
-    | TeamsConversationDestinationConfig
     | OutputHoleDestinationConfig,
     Field(discriminator="type"),
 ]

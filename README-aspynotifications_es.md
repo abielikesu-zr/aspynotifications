@@ -52,7 +52,7 @@ Adapter LOCALFS | MONGODB
 | `id` | `str` | UUID generado por `DestinationsService` durante la creación. |
 | `name` | `str` | Nombre único y legible de la destination. |
 | `provider` | `str` | Nombre del proveedor de entrega configurado. |
-| `type` | `email`, `slack_channel` o `teams_conversation` | Tipo de endpoint. |
+| `type` | `email`, `slack_channel` u `output_hole` | Tipo de endpoint. |
 | `template` | `str` | Nombre lógico del template. |
 | `routable` | `bool` | Indica si la destination acepta receptores proporcionados por el evento. |
 | `config` | modelo tipado | Configuración específica del endpoint. |
@@ -65,7 +65,7 @@ Los modelos de configuración de endpoint son:
 | --- | --- | --- |
 | `email` | `EmailDestinationConfig` | `type`, `to`, `cc`, `bcc` |
 | `slack_channel` | `SlackChannelDestinationConfig` | `type`, `channel_id` |
-| `teams_conversation` | `TeamsConversationDestinationConfig` | `type`, `service_url`, `conversation_id` |
+| `output_hole` | `OutputHoleDestinationConfig` | `type` |
 
 ## Operaciones de aplicación
 
@@ -149,7 +149,6 @@ prueba el comportamiento de negocio de forma independiente del almacenamiento.
 | --- | --- |
 | Crear una destination de email | Se genera un UUID y se invoca `save_destination`. |
 | Crear una destination de Slack | `config.type: slack_channel` se resuelve como `SlackChannelDestinationConfig`. |
-| Crear una destination de Teams | `config.type: teams_conversation` se resuelve como `TeamsConversationDestinationConfig`. |
 | Discriminador de configuración desconocido | Pydantic rechaza un `config.type` no declarado. |
 | Configuración de endpoint inválida | Pydantic rechaza la configuración sin campos requeridos, por ejemplo Slack sin `channel_id`. |
 | ID duplicado | Se rechaza la creación. |
@@ -176,7 +175,7 @@ configurado `var/` ni en datos del desarrollador.
 | Crear dos → listar | Se retornan ambas destinations persistidas. |
 | Crear → actualizar → consultar | El ID se conserva y la actualización se almacena. |
 | Crear → eliminar → consultar | La destination deja de encontrarse. |
-| Persistir cada variante de configuración de endpoint | Email, Slack y Teams conservan su `config.type` discriminado después de leer. |
+| Persistir cada variante de configuración de endpoint | Email y Slack conservan su `config.type` discriminado después de leer. |
 | Ping a almacenamiento local | El directorio temporal de almacenamiento se reporta saludable. |
 
 Las pruebas de integración con MongoDB quedan aplazadas hasta que exista un

@@ -69,7 +69,7 @@ service receives only the store port of its own entity.
 | Model | Main responsibility |
 | --- | --- |
 | `CloudEvent` | CloudEvents 1.0 envelope, severity extension, and `event`/`error`/`routing`/`context` data. |
-| `Template` | Named email, Slack, and Teams template representations with inline or file sources. |
+| `Template` | Named email, Slack, and output-hole template representations with inline or file sources. |
 | `NotificationPolicy` | Subject pattern, envelope and destination policies, and destinations selected by a policy match. |
 | `Destination` | Named delivery endpoint with a Provider name, template name, routability, and typed endpoint configuration. |
 | `NotificationProvider` | Named configured delivery integration with a discriminated provider configuration. |
@@ -83,7 +83,7 @@ service receives only the store port of its own entity.
 | --- | --- | --- |
 | `email` | `EmailDestinationConfig` | `to`, `cc`, `bcc` |
 | `slack_channel` | `SlackChannelDestinationConfig` | `channel_id` |
-| `teams_conversation` | `TeamsConversationDestinationConfig` | `service_url`, `conversation_id` |
+| `output_hole` | `OutputHoleDestinationConfig` | No additional fields. |
 
 `create_destination` receives the typed `DestinationConfig`; it determines the
 entity `type` from `config.type`, generates a UUID, rejects a duplicate name,
@@ -125,9 +125,7 @@ and structured-logging differences between these stores, see
 
 `NotificationTemplateRenderer` currently supports only `email` and
 `slack_channel` destinations. Email and Slack renderers use Jinja2 and write a
-rendered YAML artifact under `var/rendered/`. Although the `Template` model and
-Destination configuration include Teams, no Teams renderer or sender is
-implemented.
+rendered YAML artifact under `var/rendered/`.
 
 The current facade does not connect CloudEvent ingestion, policy matching,
 template lookup, rendering, Provider resolution, and delivery. Those components

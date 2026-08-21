@@ -36,7 +36,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--type",
         required=True,
-        choices=("email", "slack_channel", "teams_conversation"),
+        choices=("email", "slack_channel", "output_hole"),
     )
     parser.add_argument("--template", required=True)
     parser.add_argument("--routable", action="store_true")
