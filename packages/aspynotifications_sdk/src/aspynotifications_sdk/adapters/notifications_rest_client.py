@@ -12,6 +12,18 @@ from aspyadapters.adapters.http_exceptions import (
 )
 from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspyplugs.registry import register_plugin
+from aspynotifications_dtos.notifications_dtos import (
+    CreateDestinationRequest,
+    CreateNotificationPolicyRequest,
+    CreateTemplateRequest,
+    DestinationDTO,
+    NotificationPolicyDTO,
+    TemplateDTO,
+)
+from aspynotifications_dtos.providers_dtos import (
+    CreateNotificationProviderRequest,
+    NotificationProviderDTO,
+)
 
 from aspynotifications_sdk.entities.config import RestClientConfig
 from aspynotifications_sdk.errors import (
@@ -75,3 +87,48 @@ class NotificationsRestClient(INotificationsClientPort):
             payload=request.model_dump(),
         )
         return resp.json()
+
+    async def create_notification_policy(
+        self,
+        request: CreateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug("create notification policy rest client request", request=request)
+        resp = await self._handle_request(
+            "POST",
+            "/api/v1/policies",
+            payload=request.model_dump(),
+        )
+        return NotificationPolicyDTO.model_validate(resp.json())
+
+    async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
+        logger.debug("create template rest client request", request=request)
+        resp = await self._handle_request(
+            "POST",
+            "/api/v1/templates",
+            payload=request.model_dump(),
+        )
+        return TemplateDTO.model_validate(resp.json())
+
+    async def create_destination(
+        self,
+        request: CreateDestinationRequest,
+    ) -> DestinationDTO:
+        logger.debug("create destination rest client request", request=request)
+        resp = await self._handle_request(
+            "POST",
+            "/api/v1/destinations",
+            payload=request.model_dump(),
+        )
+        return DestinationDTO.model_validate(resp.json())
+
+    async def create_notification_provider(
+        self,
+        request: CreateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        logger.debug("create notification provider rest client request", request=request)
+        resp = await self._handle_request(
+            "POST",
+            "/api/v1/providers",
+            payload=request.model_dump(),
+        )
+        return NotificationProviderDTO.model_validate(resp.json())
