@@ -1,0 +1,14 @@
+aspyplugs_static:
+  root_modules:
+    aspyevents_sdk:
+      load_at_startup: []
+      lazy_loaded:
+      - name: events_client
+        adapters:
+        - type: NATS
+          module: aspyevents_sdk.adapters.events_nats_client
+          eager: false
+        - type: REST
+          module: aspyevents_sdk.adapters.events_rest_client
+          eager: false
+      user_decorators: []
