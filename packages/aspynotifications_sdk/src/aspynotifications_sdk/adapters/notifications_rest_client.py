@@ -10,7 +10,7 @@ from aspyadapters.adapters.http_exceptions import (
     HttpClientServerError,
     HttpClientTimeoutError,
 )
-from aspyevents_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.save_event_request import CreateNotifyRequest
 from aspyplugs.registry import register_plugin
 from aspynotifications_dtos.notifications_dtos import (
     CreateDestinationRequest,

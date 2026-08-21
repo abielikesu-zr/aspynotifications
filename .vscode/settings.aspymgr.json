@@ -8,6 +8,7 @@
         "../aspy/packages/aspytracing/src",
         "../aspyconfig/src",
         "./packages/aspyevents/src",
+        "./packages/aspyevents_archive/src",
         "./packages/aspyevents_cli/src",
         "./packages/aspyevents_dtos/src",
         "./packages/aspyevents_rest/src",

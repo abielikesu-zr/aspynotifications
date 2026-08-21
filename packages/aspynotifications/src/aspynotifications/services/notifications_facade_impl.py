@@ -2,8 +2,6 @@ from typing import Any
 
 import structlog
 from aspyevents.entities.cloud_event import CloudEvent
-from aspyevents.services.cloud_event_service import CloudEventService
-from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from aspynotifications_dtos.notifications_dtos import (
     CreateDestinationRequest,
@@ -14,6 +12,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationSubscriptionsDTO,
     TemplateDTO,
 )
+from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
@@ -40,7 +39,6 @@ logger = structlog.get_logger(__name__)
 class NotificationsFacadeImpl(NotificationsFacade):
     def __init__(
         self,
-        cloud_event_service: CloudEventService,
         template_service: TemplateService,
         destinations_service: DestinationsService,
         notification_provider_service: NotificationProviderService,
@@ -49,7 +47,6 @@ class NotificationsFacadeImpl(NotificationsFacade):
         config: dict[str, Any],
     ) -> None:
         self.config = NotificationFacadeConfig.model_validate(config)
-        self._cloud_event_service = cloud_event_service
         self._template_service = template_service
         self._destinations_service = destinations_service
         self._notification_provider_service = notification_provider_service
@@ -69,30 +66,6 @@ class NotificationsFacadeImpl(NotificationsFacade):
             event_type=cloud_event.type,
             source=cloud_event.source,
             subject=cloud_event.subject,
-        )
-
-        existing_event = await self._cloud_event_service.get_cloud_event_by_id(
-            cloud_event.id
-        )
-
-        logger.debug(
-            "Checked for existing CloudEvent",
-            event_id=cloud_event.id,
-            exists=existing_event is not None,
-        )
-
-        if existing_event is not None:
-            logger.info(
-                "Notification already processed",
-                event_id=cloud_event.id,
-            )
-            return "ok"
-
-        await self._cloud_event_service.create_cloud_event(cloud_event)
-
-        logger.debug(
-            "CloudEvent persisted",
-            event_id=cloud_event.id,
         )
 
         event = cloud_event.model_dump(exclude_none=True)

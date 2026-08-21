@@ -1,29 +1,25 @@
 from typing import Any
 
 import structlog
+from aspyevents.services.events_facade import EventsFacade
 from aspyevents_dtos.cloud_event_dto import CloudEventDTO
+from aspyevents_dtos.save_event_request import SaveEventRequest
 from aspyevents_worker.config.cloud_events_worker_config import CloudEventsWorkerConfig
 from aspyevents_worker.workers.cloud_events_worker import CloudEventsWorker
-from aspynotifications.services.notifications_facade import NotificationsFacade
-from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 
 logger = structlog.get_logger(__name__)
 
 
-class NotificationsWorker(CloudEventsWorker):
+class EventsArchiveWorker(CloudEventsWorker):
     def __init__(
         self,
         config: dict[str, Any],
-        notifications_facade: NotificationsFacade,
+        events_facade: EventsFacade,
     ) -> None:
         self.config = CloudEventsWorkerConfig.model_validate(config)
         self.name = self.config.name
         super().__init__(name=self.name, config=self.config)
-        self.notifications_facade = notifications_facade
-
-    async def get_subscriptions(self) -> list[str]:
-        response = await self.notifications_facade.get_subscriptions()
-        return response.subscriptions
+        self.events_facade = events_facade
 
     async def handle(self, cloud_event: CloudEventDTO) -> None:
         logger.info(
@@ -35,8 +31,8 @@ class NotificationsWorker(CloudEventsWorker):
         )
 
         try:
-            request = CreateNotifyRequest(event=cloud_event)
-            await self.notifications_facade.notify(request)
+            request = SaveEventRequest(event=cloud_event)
+            await self.events_facade.save_event(request)
 
             logger.info(
                 "CloudEvent processed",

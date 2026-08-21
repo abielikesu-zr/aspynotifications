@@ -1,6 +1,5 @@
 from typing import Protocol
 
-from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspynotifications_dtos.notifications_dtos import (
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
@@ -9,6 +8,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
 )
+from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,

@@ -5,7 +5,7 @@ from typing import Any
 
 import yaml
 from aspyconfig import get_config
-from aspyevents_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.save_event_request import CreateNotifyRequest
 from aspylogger.services.logging_setup import bootstrap_logging
 from aspynotifications_sdk import get_notifications_sdk
 
