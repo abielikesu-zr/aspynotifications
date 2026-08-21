@@ -1,0 +1,17 @@
+# Type: AspyEventsRestAppConfigParams
+aspyevents_rest:
+
+  # Type: AspyEventsRestServerConfig
+  rest_server:
+
+    # REST server host
+
+    # Type: str
+
+    host: "127.0.0.1"
+
+    # REST server port
+
+    # Type: int
+
+    port: "50012"

@@ -1,0 +1,12 @@
+aspyplugs_static:
+  root_modules:
+    aspyevents_rest:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: asynccontextmanager
+        module: aspyevents_rest.api.main
+        params: []
+      - name: events_router
+        module: aspyevents_rest.api.events_handlers
+        params: []

@@ -1,0 +1,40 @@
+# Type: TracingAdapterConfig
+tracing:
+
+  # Configuration for the tracing adapter
+
+  # Type: aspytracing.config.noop_tracer_config.NoopAdapterConfig | aspytracing.config.otel_tracer_config.OtelAdapterConfig
+  # Switch Variable: g_app_t_adapter_type
+  adapter:
+
+    {% if  g_app_t_adapter_type | default('NOOP') == 'NOOP' %}
+
+      type: 'NOOP'
+
+      # Noop-specific configuration
+
+      # Type: NoopConfig
+      config:
+
+        # Global tracer name
+
+        # Type: str
+
+        tracer_name: "{{  g_app_t_noop_tracer_name | default('noop')   }}"
+
+    {% elif  g_app_t_adapter_type == 'OTEL' %}
+
+      type: 'OTEL'
+
+      # LocalFS-specific configuration
+
+      # Type: OtelConfig
+      config:
+
+        # Global tracer name
+
+        # Type: str
+
+        tracer_name: "{{  g_app_t_otel_tracer_name | default(None)   }}"
+
+    {% endif %}

@@ -1,0 +1,9 @@
+aspyplugs_static:
+  root_modules:
+    aspyevents_cli:
+      load_at_startup: []
+      lazy_loaded: []
+      user_decorators:
+      - name: common_logging_options
+        module: aspyevents_cli.cli.main
+        params: []

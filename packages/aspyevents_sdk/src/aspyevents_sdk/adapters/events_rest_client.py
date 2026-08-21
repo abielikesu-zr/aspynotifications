@@ -71,7 +71,7 @@ class EventsRestClient(IEventsClientPort):
         logger.debug("notify rest client request", request=request)
         resp = await self._handle_request(
             "POST",
-            "/api/v1/notifies/",
+            "/api/v1/publishes/",
             payload=request.model_dump(),
         )
         return resp.json()
