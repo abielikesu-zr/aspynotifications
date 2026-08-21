@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any
 
 from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyplugs.registry import register_plugin
@@ -28,13 +28,22 @@ class ZeptoMailNotificationSender(INotificationProviderSender):
         destination: Destination,
         message: Any,
     ) -> DeliveryResult:
-        provider_config = cast(ZeptoMailProvider, provider.provider).config
-        destination_config = cast(EmailDestinationConfig, destination.config)
+        provider_config = provider.provider
+        if not isinstance(provider_config, ZeptoMailProvider):
+            raise TypeError(
+                "ZeptoMailNotificationSender requires a ZeptoMailProvider"
+            )
+
+        destination_config = destination.config
+        if not isinstance(destination_config, EmailDestinationConfig):
+            raise TypeError(
+                "ZeptoMailNotificationSender requires an EmailDestinationConfig"
+            )
 
         payload: dict[str, Any] = {
             "from": {
-                "address": provider_config.from_address,
-                "name": provider_config.from_name,
+                "address": provider_config.config.from_address,
+                "name": provider_config.config.from_name,
             },
             "to": [
                 {"email_address": {"address": address}}
@@ -62,7 +71,7 @@ class ZeptoMailNotificationSender(INotificationProviderSender):
                 "Accept": "application/json",
                 "Authorization": (
                     "Zoho-enczapikey "
-                    f"{provider_config.credentials.send_mail_token}"
+                    f"{provider_config.config.credentials.send_mail_token}"
                 ),
             },
             payload=payload,

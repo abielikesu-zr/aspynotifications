@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any
 
 from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyplugs.registry import register_plugin
@@ -27,10 +27,12 @@ class SlackNotificationSender(INotificationProviderSender):
         destination: Destination,
         message: Any,
     ) -> DeliveryResult:
-        provider_config = cast(SlackProvider, provider.provider).config
+        provider_config = provider.provider
+        if not isinstance(provider_config, SlackProvider):
+            raise TypeError("SlackNotificationSender requires a SlackProvider")
 
         response = await self._http.post(
-            provider_config.webhook_url,
+            provider_config.config.webhook_url,
             headers={"Content-Type": "application/json"},
             payload=message,
         )
