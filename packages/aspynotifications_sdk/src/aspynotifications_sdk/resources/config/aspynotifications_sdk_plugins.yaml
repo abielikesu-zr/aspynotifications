@@ -5,9 +5,6 @@ aspyplugs_static:
       lazy_loaded:
       - name: notifications_client
         adapters:
-        - type: NATS
-          module: aspynotifications_sdk.adapters.notifications_nats_client
-          eager: false
         - type: REST
           module: aspynotifications_sdk.adapters.notifications_rest_client
           eager: false

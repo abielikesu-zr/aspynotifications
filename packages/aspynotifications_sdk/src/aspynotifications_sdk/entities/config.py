@@ -1,7 +1,6 @@
 from typing import Literal
 
 from aspyadapters.adapters.http_client_config import HttpClientConfig
-from aspynats.config.nats_client_config import NatsClientAdapterConfig
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
@@ -15,9 +14,7 @@ class RestClientAdapterConfig(BaseModel):
 
 
 class NotificationClientConfig(BaseModel):
-    adapter: RestClientAdapterConfig | NatsClientAdapterConfig = Field(
-        ..., discriminator="type"
-    )
+    adapter: RestClientAdapterConfig
 
 
 class NotificationsSdkParams(BaseModel):
