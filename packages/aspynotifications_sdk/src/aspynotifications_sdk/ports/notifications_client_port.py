@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 
 
 class INotificationsClientPort(Protocol):

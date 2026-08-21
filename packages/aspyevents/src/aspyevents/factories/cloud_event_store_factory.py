@@ -2,7 +2,7 @@ import structlog
 from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
 from aspyplugs.templates.typed_plugin_factory import TypedPluginFactory
 
-from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
+from aspyevents.ports.cloud_event_port import ICloudEventStorePort
 
 logger = structlog.get_logger(__name__)
 

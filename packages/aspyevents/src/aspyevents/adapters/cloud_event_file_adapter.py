@@ -3,8 +3,8 @@ from aspyadapters.adapters.generic_local_fs import GenericLocalFSAdapter
 from aspyplugs.registry import register_plugin
 from pydantic import BaseModel, ValidationError
 
-from aspynotifications.entities.cloud_event import CloudEvent
-from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
+from aspyevents.entities.cloud_event import CloudEvent
+from aspyevents.ports.cloud_event_port import ICloudEventStorePort
 
 logger = structlog.get_logger(__name__)
 

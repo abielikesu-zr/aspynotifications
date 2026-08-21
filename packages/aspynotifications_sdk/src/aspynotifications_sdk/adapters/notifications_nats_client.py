@@ -3,10 +3,10 @@ from typing import Any
 
 import nats
 import structlog
+from aspyevents_dtos.cloud_event_dto import CloudEventDTO
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspynats.config.nats_client_config import NatsClientConfig
 from aspynats.workers.manager_worker import ensure_stream
-from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
 from aspyplugs.registry import register_plugin
 from nats.aio.client import Client as NATS
 from nats.js import JetStreamContext

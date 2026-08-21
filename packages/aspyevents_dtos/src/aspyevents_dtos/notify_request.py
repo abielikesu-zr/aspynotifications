@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
+from aspyevents_dtos.cloud_event_dto import CloudEventDTO
 
 
 class CreateNotifyRequest(BaseModel):

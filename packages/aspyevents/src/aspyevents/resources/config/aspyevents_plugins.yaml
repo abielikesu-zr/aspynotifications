@@ -1,0 +1,14 @@
+aspyplugs_static:
+  root_modules:
+    aspyevents:
+      load_at_startup: []
+      lazy_loaded:
+      - name: cloud_event_store
+        adapters:
+        - type: LOCALFS
+          module: aspyevents.adapters.cloud_event_file_adapter
+          eager: false
+        - type: MONGODB
+          module: aspyevents.adapters.cloud_event_mongo_adapter
+          eager: false
+      user_decorators: []

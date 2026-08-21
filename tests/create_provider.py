@@ -7,12 +7,10 @@ from pathlib import Path
 
 from aspyconfig import get_config
 from aspyconfig.utils.os_utils import get_os_username
-
-from aspynotifications.config.app_config import AspynotificationsAppConfig
+from aspynotifications.config.app_config import AspyEventsAppConfig
 from aspynotifications.entities.provider import Provider
 from aspynotifications.factories.providers_store_factory import create_providers_store
 from aspynotifications.services.providers_service import ProvidersService
-
 
 PACKAGE_NAME = "aspynotifications"
 
@@ -39,7 +37,7 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
+def load_app_config(config_dir: Path | None) -> AspyEventsAppConfig:
     """Load default, local, and optional application configuration."""
 
     config = get_config()
@@ -59,7 +57,7 @@ def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
         local_config_paths=local_config_paths,
     )
     config.load()
-    return config.to_pydantic(AspynotificationsAppConfig)
+    return config.to_pydantic(AspyEventsAppConfig)
 
 
 def load_provider_config(arguments: argparse.Namespace) -> dict:

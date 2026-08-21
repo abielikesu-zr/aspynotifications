@@ -1,14 +1,15 @@
 from aspyadapters.adapters.http_client import AspyHttpClient
+from aspyevents.factories.cloud_event_store_factory import (
+    create_cloud_event_store,
+)
+from aspyevents.services.cloud_event_context_transformer import (
+    CloudEventPolicyContextTransformer,
+)
+from aspyevents.services.cloud_event_service import CloudEventService
 from aspyplugs.z_plug_resolver import PluginDependencyResolver
 from aspypolicies import get_policy_service
 from dependency_injector import containers, providers
 
-from aspynotifications.adapters.cloud_event_context_transformer import (
-    CloudEventPolicyContextTransformer,
-)
-from aspynotifications.factories.cloud_event_store_factory import (
-    create_cloud_event_store,
-)
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
@@ -20,7 +21,6 @@ from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
 from aspynotifications.factories.template_store_factory import create_template_store
-from aspynotifications.services.cloud_event_service import CloudEventService
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
@@ -32,7 +32,7 @@ from aspynotifications.services.subject_trie import SubjectTrie
 from aspynotifications.services.template_service import TemplateService
 
 
-class AspyNotificationsContainer(containers.DeclarativeContainer):
+class AspyNotifictionsContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     # --- 1. Infrastructure / Stores ---

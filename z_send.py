@@ -10,7 +10,7 @@ from aspynotifications import (
     get_notifications_config,
 )
 from aspynotifications.containers.notifications_container import (
-    AspyNotificationsContainer,
+    AspyNotifictionsContainer,
 )
 
 logger = structlog.get_logger(__name__)
@@ -38,7 +38,7 @@ async def main() -> None:
     # ---------------------------------------------------------------
     # 2. Initialize the REAL DI container
     # ---------------------------------------------------------------
-    container: AspyNotificationsContainer = _initialize_container()
+    container: AspyNotifictionsContainer = _initialize_container()
 
     logger.info("Notifications container initialized")
 

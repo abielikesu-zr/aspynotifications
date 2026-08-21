@@ -2,8 +2,8 @@ import abc
 import asyncio
 
 import structlog
+from aspyevents_dtos.cloud_event_dto import CloudEventDTO
 from aspynats.config.nats_stream_config import NatsStreamConfig
-from aspynotifications_dtos.cloud_event_dto import CloudEventDTO
 from aspytracing import SpanType, get_tracing
 from nats import errors
 from nats.js import JetStreamContext

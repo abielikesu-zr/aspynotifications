@@ -1,9 +1,10 @@
-import structlog
 import uuid
 
-from aspynotifications.config.cloud_template import CloudEventServiceConfig
-from aspynotifications.entities.cloud_event import CloudEvent
-from aspynotifications.ports.cloud_event_port import ICloudEventStorePort
+import structlog
+
+from aspyevents.config.cloud_events_service import CloudEventServiceConfig
+from aspyevents.entities.cloud_event import CloudEvent
+from aspyevents.ports.cloud_event_port import ICloudEventStorePort
 
 logger = structlog.get_logger(__name__)
 

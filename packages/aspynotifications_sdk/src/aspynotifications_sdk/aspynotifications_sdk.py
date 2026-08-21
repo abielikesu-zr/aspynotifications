@@ -1,5 +1,5 @@
 import structlog
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 
 from aspynotifications_sdk.ports.notifications_client_port import (
     INotificationsClientPort,

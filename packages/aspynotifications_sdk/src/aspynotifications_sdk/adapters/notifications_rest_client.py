@@ -10,9 +10,10 @@ from aspyadapters.adapters.http_exceptions import (
     HttpClientServerError,
     HttpClientTimeoutError,
 )
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
-from aspynotifications_sdk.entities.config import RestClientConfig
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspyplugs.registry import register_plugin
+
+from aspynotifications_sdk.entities.config import RestClientConfig
 from aspynotifications_sdk.errors import (
     BadRequestError,
     NotFoundError,
@@ -28,9 +29,9 @@ from aspynotifications_sdk.ports.notifications_client_port import (
 
 logger = structlog.get_logger(__name__)
 
+
 @register_plugin("notifications_client", "REST")
 class NotificationsRestClient(INotificationsClientPort):
-
     def __init__(self, config: dict[str, Any], http_client: AspyHttpClient):
         self.config = RestClientConfig.model_validate(config)
         self._base_url = self.config.base_url

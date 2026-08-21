@@ -1,11 +1,12 @@
 import structlog
 from aspyconfig import get_config as aspy_get_config
 
-from aspynotifications.config.app_config import AspynotificationsAppConfig
-from aspynotifications.containers.notifications_container import (
-    AspyNotificationsContainer,
+from aspynotifications.config.app_config import (
+    AspyNotificationAppConfig,
 )
-from aspynotifications.services.cloud_event_service import CloudEventService
+from aspynotifications.containers.notifications_container import (
+    AspyNotifictionsContainer,
+)
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
@@ -18,13 +19,13 @@ logger = structlog.get_logger(__name__)
 
 # Singleton instances for the DI container and config.
 
-_notifications_container: AspyNotificationsContainer | None = None
-_notifications_app_config: AspynotificationsAppConfig | None = None
+_notifications_container: AspyNotifictionsContainer | None = None
+_notifications_app_config: AspyNotificationAppConfig | None = None
 
 
-def get_notifications_config() -> AspynotificationsAppConfig:
+def get_notifications_config() -> AspyNotificationAppConfig:
     """
-    Provides the initialized AspynotificationsAppConfig Pydantic model,
+    Provides the initialized AspyNotificationAppConfig Pydantic model,
     loading configuration only once.
     """
     global _notifications_app_config
@@ -32,20 +33,20 @@ def get_notifications_config() -> AspynotificationsAppConfig:
     if _notifications_app_config is None:
         config = aspy_get_config()
 
-        model = config.to_pydantic(AspynotificationsAppConfig)
+        model = config.to_pydantic(AspyNotificationAppConfig)
 
-        if not isinstance(model, AspynotificationsAppConfig):
+        if not isinstance(model, AspyNotificationAppConfig):
             raise TypeError(
-                "Expected AspynotificationsAppConfig from configuration system."
+                "Expected AspyNotificationAppConfig from configuration system."
             )
 
         _notifications_app_config = model
-        logger.debug("Notifications configuration loaded and validated")
+        logger.debug("AspyNotificationAppConfig configuration loaded and validated")
 
     return _notifications_app_config
 
 
-def _initialize_container() -> AspyNotificationsContainer:
+def _initialize_container() -> AspyNotifictionsContainer:
     """
     Initializes the AspyNotificationsContainer with the validated configuration.
     """
@@ -54,7 +55,7 @@ def _initialize_container() -> AspyNotificationsContainer:
     if _notifications_container is None:
         config = get_notifications_config()
 
-        _notifications_container = AspyNotificationsContainer()
+        _notifications_container = AspyNotifictionsContainer()
 
         dict_config = config.model_dump()
 
@@ -65,11 +66,6 @@ def _initialize_container() -> AspyNotificationsContainer:
         logger.info("Notifications container initialized and wired via DI")
 
     return _notifications_container
-
-
-def get_cloud_event_service() -> CloudEventService:
-    """Return the CloudEventService singleton."""
-    return _initialize_container().cloud_event_service()
 
 
 def get_template_service() -> TemplateService:

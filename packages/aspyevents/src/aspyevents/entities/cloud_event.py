@@ -77,7 +77,7 @@ class CloudEvent(BaseModel):
         description="Event source",
     )
     id: str = Field(
-        default=None,
+        default="",
         description="Unique event identifier",
     )
 

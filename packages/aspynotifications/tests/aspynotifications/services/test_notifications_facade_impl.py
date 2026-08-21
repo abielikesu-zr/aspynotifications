@@ -2,11 +2,10 @@ from types import SimpleNamespace
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspynotifications.services.notifications_facade_impl import (
     NotificationsFacadeImpl,
 )
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
 
 
 def _request() -> CreateNotifyRequest:
@@ -51,12 +50,18 @@ def _facade() -> tuple[
 
     template_service = MagicMock()
     template_service.get_template_by_name = AsyncMock(
-        side_effect=[SimpleNamespace(name="email-template"), SimpleNamespace(name="slack-template")]
+        side_effect=[
+            SimpleNamespace(name="email-template"),
+            SimpleNamespace(name="slack-template"),
+        ]
     )
 
     notification_provider_service = MagicMock()
     notification_provider_service.get_notification_provider_by_name = AsyncMock(
-        side_effect=[SimpleNamespace(name="mail-provider"), SimpleNamespace(name="slack-provider")]
+        side_effect=[
+            SimpleNamespace(name="mail-provider"),
+            SimpleNamespace(name="slack-provider"),
+        ]
     )
     notification_provider_service.send = AsyncMock()
 

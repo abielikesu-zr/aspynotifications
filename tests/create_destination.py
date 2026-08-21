@@ -7,16 +7,14 @@ from pathlib import Path
 
 from aspyconfig import get_config
 from aspyconfig.utils.os_utils import get_os_username
-from pydantic import TypeAdapter
-
-from aspynotifications.config.app_config import AspynotificationsAppConfig
+from aspynotifications.config.app_config import AspyEventsAppConfig
 from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.entities.destination import Destination
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
 from aspynotifications.services.destinations_service import DestinationsService
-
+from pydantic import TypeAdapter
 
 PACKAGE_NAME = "aspynotifications"
 
@@ -50,7 +48,7 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
+def load_app_config(config_dir: Path | None) -> AspyEventsAppConfig:
     """Load default, local, and optional application configuration."""
 
     config = get_config()
@@ -70,7 +68,7 @@ def load_app_config(config_dir: Path | None) -> AspynotificationsAppConfig:
         local_config_paths=local_config_paths,
     )
     config.load()
-    return config.to_pydantic(AspynotificationsAppConfig)
+    return config.to_pydantic(AspyEventsAppConfig)
 
 
 def load_destination_config(arguments: argparse.Namespace) -> DestinationConfig:

@@ -3,12 +3,12 @@ from typing import Any
 from uuid import uuid4
 
 import structlog
+from aspyevents.services.cloud_event_context_transformer import (
+    CloudEventPolicyContextTransformer,
+)
 from aspypolicies.entities.eval_result import PolicyEvaluationResult
 from aspypolicies.services.policy_service import PolicyService
 
-from aspynotifications.adapters.cloud_event_context_transformer import (
-    CloudEventPolicyContextTransformer,
-)
 from aspynotifications.config.notification_config import NotificationPolicyServiceConfig
 from aspynotifications.entities.notification_policy import NotificationPolicy
 from aspynotifications.ports.policies_store import NotificationPolicyStore

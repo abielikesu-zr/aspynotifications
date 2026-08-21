@@ -5,7 +5,6 @@ from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
 from pydantic import BaseModel, ConfigDict, Field
 
 from aspynotifications.config.cloud_template import (
-    CloudEventServiceConfig,
     TemplateServiceConfig,
 )
 from aspynotifications.config.notification_config import NotificationPolicyServiceConfig
@@ -35,9 +34,6 @@ class AspynotificationsAppParams(BaseModel):
     template_store: StorageAdapterConfig
     template_service: TemplateServiceConfig
 
-    cloud_event_store: StorageAdapterConfig
-    cloud_event_service: CloudEventServiceConfig
-
     notification_provider_store: StorageAdapterConfig
     notification_provider_service: NotificationProviderServiceConfig = Field(
         default_factory=NotificationProviderServiceConfig
@@ -51,7 +47,7 @@ class AspynotificationsAppParams(BaseModel):
     )
 
 
-class AspynotificationsAppConfig(BaseModel):
+class AspyNotificationAppConfig(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     aspynotifications: AspynotificationsAppParams

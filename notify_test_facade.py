@@ -1,6 +1,7 @@
 import asyncio
 
 from aspyconfig import get_config
+from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspylogger.services.logging_setup import bootstrap_logging
 from aspynotifications import (
     get_destinations_service,
@@ -15,7 +16,6 @@ from aspynotifications.entities.template import (
     Template,
     TemplateSource,
 )
-from aspynotifications_dtos.notify_request import CreateNotifyRequest
 from aspypolicies.entities.aspy_policy import AspyPolicy
 
 from notify_test_helpers import (

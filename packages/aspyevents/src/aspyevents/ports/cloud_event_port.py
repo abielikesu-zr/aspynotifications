@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from aspynotifications.entities.cloud_event import CloudEvent
+from aspyevents.entities.cloud_event import CloudEvent
 
 
 class ICloudEventStorePort(ABC):
