@@ -10,7 +10,7 @@ from aspyadapters.adapters.http_exceptions import (
     HttpClientServerError,
     HttpClientTimeoutError,
 )
-from aspyevents_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.publish_event_request import PublishEventRequest
 from aspyplugs.registry import register_plugin
 
 from aspyevents_sdk.entities.config import RestClientConfig
@@ -67,7 +67,7 @@ class EventsRestClient(IEventsClientPort):
         except Exception as e:
             raise EventsClientError(f"Unexpected error: {e!s}") from e
 
-    async def notify(self, request: CreateNotifyRequest) -> str:
+    async def publish(self, request: PublishEventRequest) -> str:
         logger.debug("notify rest client request", request=request)
         resp = await self._handle_request(
             "POST",

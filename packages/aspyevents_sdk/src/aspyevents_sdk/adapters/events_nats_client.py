@@ -3,8 +3,8 @@ from typing import Any
 
 import nats
 import structlog
-from aspyevents_dtos.notify_request import CreateNotifyRequest
 from aspyevents_dtos.cloud_event_dto import CloudEventDTO
+from aspyevents_dtos.publish_event_request import PublishEventRequest
 from aspynats.config.nats_client_config import NatsClientConfig
 from aspynats.workers.manager_worker import ensure_stream
 from aspyplugs.registry import register_plugin
@@ -34,14 +34,12 @@ class EveentsNatsClient:
         if not self.js or not self.nc:
             await self.connect()
 
-    async def publish(self, event: CloudEventDTO) -> None:
+    async def publish(self, request: PublishEventRequest) -> str:
+        event: CloudEventDTO = request.event
         await self.ensure_connection()
         subject = event.type
         if not subject.startswith("events."):
             subject = f"events.{subject}"
         payload = json.dumps(event.model_dump(mode="json")).encode()
         await self.js.publish(subject, payload)  # type: ignore[union-attr]
-
-    async def notify(self, request: CreateNotifyRequest) -> str:
-        await self.publish(request.event)
         return "published"

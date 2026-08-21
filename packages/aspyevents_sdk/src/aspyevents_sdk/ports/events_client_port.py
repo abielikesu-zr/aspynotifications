@@ -1,5 +1,5 @@
 from typing import Protocol
-from aspyevents_dtos.notify_request import CreateNotifyRequest
+from aspyevents_dtos.publish_event_request import PublishEventRequest
 
 class IEventsClientPort(Protocol):
-    async def notify(self, request: CreateNotifyRequest) -> str: ...
+    async def publish(self, request: PublishEventRequest) -> str: ...
