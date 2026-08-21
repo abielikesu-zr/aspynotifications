@@ -17,8 +17,14 @@ from aspynotifications_cli.cli.create_slack_channel_destination_handler import (
 from aspynotifications_cli.cli.create_notification_policy_handler import (
     create_notification_policy_handler,
 )
-from aspynotifications_cli.cli.create_notification_provider_handler import (
-    create_notification_provider_handler,
+from aspynotifications_cli.cli.create_shole_provider_handler import (
+    create_shole_provider_handler,
+)
+from aspynotifications_cli.cli.create_slack_provider_handler import (
+    create_slack_provider_handler,
+)
+from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
+    create_zeptomail_provider_handler,
 )
 from aspynotifications_cli.cli.create_template_handler import create_template_handler
 from aspynotifications_cli.cli.send_event_handler import send_event_handler
@@ -77,23 +83,63 @@ def send_event(
 cli.add_command(send_event)
 
 
-@click.command("create-provider")
+@click.command("create-slack-provider")
 @click.option("--name", required=True)
-@click.option("--type", "provider_type", type=click.Choice(["SLACK", "ZEPTOMAIL", "SHOLE"]), required=True)
-@click.option("--webhook-url")
-@click.option("--from-address")
+@click.option("--webhook-url", required=True)
+@common_logging_options
+def create_slack_provider(
+    name: str,
+    webhook_url: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        create_slack_provider_handler(
+            name=name,
+            webhook_url=webhook_url,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("create-zeptomail-provider")
+@click.option("--name", required=True)
+@click.option("--from-address", required=True)
 @click.option("--from-name")
-@click.option("--send-mail-token")
+@click.option("--send-mail-token", required=True)
+@common_logging_options
+def create_zeptomail_provider(
+    name: str,
+    from_address: str,
+    from_name: str | None,
+    send_mail_token: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        create_zeptomail_provider_handler(
+            name=name,
+            from_address=from_address,
+            from_name=from_name,
+            send_mail_token=send_mail_token,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("create-shole-provider")
+@click.option("--name", required=True)
 @click.option("--level", default="WARN", show_default=True)
 @click.option("--cows/--no-cows", default=True)
 @common_logging_options
-def create_provider(
+def create_shole_provider(
     name: str,
-    provider_type: str,
-    webhook_url: str | None,
-    from_address: str | None,
-    from_name: str | None,
-    send_mail_token: str | None,
     level: str,
     cows: bool,
     output_format: str,
@@ -103,13 +149,8 @@ def create_provider(
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
-        create_notification_provider_handler(
+        create_shole_provider_handler(
             name=name,
-            provider_type=provider_type,
-            webhook_url=webhook_url,
-            from_address=from_address,
-            from_name=from_name,
-            send_mail_token=send_mail_token,
             level=level,
             cows=cows,
             output_format=output_format,
@@ -284,7 +325,9 @@ def create_policy(
     )
 
 
-cli.add_command(create_provider)
+cli.add_command(create_slack_provider)
+cli.add_command(create_zeptomail_provider)
+cli.add_command(create_shole_provider)
 cli.add_command(create_template)
 cli.add_command(create_email_destination)
 cli.add_command(create_slack_channel_destination)
