@@ -1,0 +1,15 @@
+# Type: AspynotificationsWorkerParams
+aspynotifications_worker:
+  # Type: CloudEventsWorkerConfig
+  nats_worker:
+    # Unique name identifying the CloudEvents worker.
+
+    # Type: str
+
+    name: "notifications_worker"
+
+    # List of NATS subjects to which the worker subscribes for CloudEvents.
+
+    # Type: list[str]
+
+    subscriptions: []

@@ -16,13 +16,13 @@ class AspyEventsContainer(containers.DeclarativeContainer):
     # --- 1. Infrastructure / Stores ---
     cloud_event_store = providers.Singleton(
         create_cloud_event_store,
-        config=config.aspynotifications.cloud_event_store,
+        config=config.aspyevents.cloud_event_store,
     )
 
     cloud_event_service = providers.Singleton(
         CloudEventService,
         store=cloud_event_store,
-        config=config.aspynotifications.cloud_event_service,
+        config=config.aspyevents.cloud_event_service,
     )
 
     context_transformer = providers.Singleton(

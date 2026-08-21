@@ -1,0 +1,66 @@
+# Type: ArchiveWorkerParams
+events_archive_worker:
+
+  # Type: CloudEventsWorkerConfig
+  nats_worker:
+
+    # Unique name identifying the CloudEvents worker.
+
+    # Type: str
+
+    name: "{{  g_app_eaw_nats_worker_name | default(None)   }}"
+
+    # List of NATS subjects to which the worker subscribes for CloudEvents.
+
+    # Type: list[str]
+
+    subscriptions: "{{  g_app_eaw_nats_worker_subscriptions | default() | list  }}"
+
+    # Maximum number of CloudEvents processed in a single batch.
+
+    # Type: int
+
+    batch: "{{  g_app_eaw_nats_worker_batch | default(1) | int  }}"
+
+    # Maximum time in seconds that a message may remain unacknowledged before JetStream considers it eligible for redelivery.
+
+    # Type: float
+
+    ack_wait_seconds: "{{  g_app_eaw_nats_worker_ack_wait_seconds | default(300) | float  }}"
+
+    # Maximum number of delivery attempts allowed for a message before it is considered undeliverable.
+
+    # Type: int
+
+    max_deliver: "{{  g_app_eaw_nats_worker_max_deliver | default(2) | int  }}"
+
+  # Type: NatsClientConfig
+  nats_client:
+
+    # Name of the JetStream stream used to store CloudEvents.
+
+    # Type: NatsConnectionConfig
+    connection:
+
+      # URL of the NATS server to connect to.
+
+      # Type: str
+
+      nats_url: "{{  g_app_eaw_nats_client_connection_nats_url | default('nats://127.0.0.1:4222')   }}"
+
+    # Subject pattern used by the stream to capture CloudEvents.
+
+    # Type: NatsStreamConfig
+    stream:
+
+      # Name of the JetStream stream used to store CloudEvents.
+
+      # Type: str
+
+      name: "{{  g_app_eaw_nats_client_stream_name | default('EVENTS')   }}"
+
+      # Subject pattern used by the stream to capture CloudEvents.
+
+      # Type: str
+
+      subject: "{{  g_app_eaw_nats_client_stream_subject | default('events.>')   }}"

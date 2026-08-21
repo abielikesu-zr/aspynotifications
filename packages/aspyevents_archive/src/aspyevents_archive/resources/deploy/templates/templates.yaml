@@ -1,0 +1,12 @@
+aspyevents_archive:
+  deploy:
+    templates:
+    - src: aspyevents.yaml.j2
+      dest: '{{ install_dir }}/config/aspyevents.yaml'
+      permissions: '0600'
+    - src: aspyevents_archive.yaml.j2
+      dest: '{{ install_dir }}/config/aspyevents_archive.yaml'
+      permissions: '0600'
+    - src: aspytracing.yaml.j2
+      dest: '{{ install_dir }}/config/aspytracing.yaml'
+      permissions: '0600'

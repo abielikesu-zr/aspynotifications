@@ -1,0 +1,42 @@
+# Type: AspyEventsAppParams
+aspyevents:
+
+  # Type: StorageAdapterConfig
+  cloud_event_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    # Switch Variable: g_app_a_cloud_event_store_adapter_type
+    adapter:
+
+      
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/cloud_event_store"
+
+      
+
+  # Type: CloudEventServiceConfig
+  cloud_event_service:
+
+    # Type: Literal['yes']
+
+    keep: 'yes'
+
+  # Type: EventsFacadeConfig
+  events_facade:
+
+    # Type: Literal['keep']
+
+    keep: "keep"
