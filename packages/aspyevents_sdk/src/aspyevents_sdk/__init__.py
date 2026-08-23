@@ -9,8 +9,8 @@ from aspyevents_sdk.entities.config import EventsSdkConfig
 
 logger = structlog.get_logger(__name__)
 
-_events_sdk_container: Optional[EventsSdkContainer] = None
-_events_sdk_config: Optional[EventsSdkConfig] = None
+_events_sdk_container: EventsSdkContainer | None = None
+_events_sdk_config: EventsSdkConfig | None = None
 
 
 def get_events_sdk_config() -> EventsSdkConfig:

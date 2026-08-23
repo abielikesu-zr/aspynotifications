@@ -1,5 +1,6 @@
 import structlog
 from aspyevents_dtos.publish_event_request import PublishEventRequest
+
 from aspyevents_sdk.ports.events_client_port import IEventsClientPort
 
 logger = structlog.get_logger(__name__)
