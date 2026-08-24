@@ -1,9 +1,11 @@
+# Tracing subsystem configuration, including the chosen adapter.
+
 # Type: TracingAdapterConfig
 tracing:
 
-  # Configuration for the tracing adapter
+  # Concrete tracing adapter configuration. Discriminated by the 'type' field (NOOP | OTEL | LOGGER).
 
-  # Type: aspytracing.config.noop_tracer_config.NoopAdapterConfig | aspytracing.config.otel_tracer_config.OtelAdapterConfig
+  # Type: aspytracing.config.noop_tracer_config.NoopAdapterConfig | aspytracing.config.otel_tracer_config.OtelAdapterConfig | aspytracing.config.logger_tracer_config.LoggerAdapterConfig
   # Switch Variable: g_app_t_adapter_type
   adapter:
 
@@ -28,13 +30,70 @@ tracing:
 
       # LocalFS-specific configuration
 
-      # Type: OtelConfig
+      # Type: OTelTracingConfig
       config:
 
-        # Global tracer name
+        # Whether OpenTelemetry tracing is enabled.
+
+        # Type: bool
+
+        enabled: "{{  (g_app_t_otel_enabled | default(True)) is sameas true  }}"
+
+        # Optional OpenTelemetry tracer name.
+
+        # Type: str | None
+
+        tracer_name: "{{  g_app_t_otel_tracer_name | default(None)   }}"
+
+        # OpenTelemetry span exporter to use.
+
+        # Type: Literal['console', 'otlp_grpc', 'otlp_http']
+
+        exporter: "{{  g_app_t_otel_exporter | default('otlp_http')   }}"
+
+        # OTLP endpoint used to export traces.
 
         # Type: str
 
-        tracer_name: "{{  g_app_t_otel_tracer_name | default(None)   }}"
+        otlp_endpoint: "{{  g_app_t_otel_otlp_endpoint | default('http://localhost:4318/v1/traces')   }}"
+
+        # Whether the OTLP exporter should use an insecure connection.
+
+        # Type: bool
+
+        insecure: "{{  (g_app_t_otel_insecure | default(True)) is sameas true  }}"
+
+        # Fraction of traces to sample, between 0.0 and 1.0.
+
+        # Type: float
+
+        sampling_ratio: "{{  g_app_t_otel_sampling_ratio | default(1.0) | float  }}"
+
+    {% elif  g_app_t_adapter_type == 'LOGGER' %}
+
+      type: 'LOGGER'
+
+      # Logger-specific settings (tracer name and log levels).
+
+      # Type: LoggerTracerConfig
+      config:
+
+        # Name that identifies this tracer in log output.
+
+        # Type: str
+
+        tracer_name: "{{  g_app_t_logger_tracer_name | default('logger')   }}"
+
+        # Log level used for START, END, ATTRIBUTE, CONFIGURE and SHUTDOWN events.
+
+        # Type: str
+
+        log_level: "{{  g_app_t_logger_log_level | default('info')   }}"
+
+        # Optional log level override for ERROR events. When omitted, falls back to log_level.
+
+        # Type: str | None
+
+        error_log_level: "{{  g_app_t_logger_error_log_level | default(None)   }}"
 
     {% endif %}

@@ -8,7 +8,7 @@ aspynotifications_worker:
 
     # Type: str
 
-    name: "notifications_worker"
+    name: "events_worker"
 
     # List of NATS subjects to which the worker subscribes for CloudEvents.
 

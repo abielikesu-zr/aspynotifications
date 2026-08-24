@@ -59,7 +59,7 @@ start_lnav()
     echo "Starting lnav..."
     echo "Press 'q' to exit."
 
-    "$LNAV_BIN" "${LOG_SOURCES[@]}"
+    "$LNAV_BIN" -I "$LNAV_CONFIG_DIR" "${LOG_SOURCES[@]}"
 }
 
 stop_lnav()

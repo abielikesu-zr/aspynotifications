@@ -157,6 +157,30 @@ aspynotifications:
 
     keep: "{{  g_app_a_destinations_service_keep | default('keep')   }}"
 
+  # Type: AdminUrlGeneratorConfig
+  admin_url_generator:
+
+    # Name of the system providing the admin UI.
+
+    # Type: str
+
+    system_name: "{{  g_app_a_admin_url_generator_system_name | default('asai_admin')   }}"
+
+    # Base URL of the admin UI.
+
+    # Type: str
+
+    base_url: "{{  g_app_a_admin_url_generator_base_url | default('https://localhost:50003')   }}"
+
+  # Type: NotificationTemplateRendererConfig
+  template_renderer:
+
+    # Root directory containing notification templates.
+
+    # Type: str
+
+    template_root: "{{  g_app_a_template_renderer_template_root | default('.')   }}"
+
   # Type: StorageAdapterConfig
   template_store:
 
@@ -230,84 +254,6 @@ aspynotifications:
 
   # Type: TemplateServiceConfig
   template_service:
-
-    # Type: Literal['yes']
-
-    keep: 'yes'
-
-  # Type: StorageAdapterConfig
-  cloud_event_store:
-
-    # Configuration for the storage adapter
-
-    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
-    # Switch Variable: g_app_a_cloud_event_store_adapter_type
-    adapter:
-
-      {% if  g_app_a_cloud_event_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
-
-        type: 'LOCALFS'
-
-        # LocalFS-specific configuration
-
-        # Type: LocalFSConfig
-        config:
-
-          # Directory where JSON files will be stored
-
-          # Type: str
-
-          data_dir: "{{  g_app_a_cloud_event_store_localfs_data_dir | default(None)   }}"
-
-      {% elif  g_app_a_cloud_event_store_adapter_type == 'MONGODB' %}
-
-        type: 'MONGODB'
-
-        # MongoDB-specific configuration
-
-        # Type: MongoDBConfig
-        config:
-
-          # MongoDB connection URI
-
-          # Type: str
-
-          uri: "{{  g_app_a_cloud_event_store_mongodb_uri | default(None)   }}"
-
-          # Database name
-
-          # Type: str
-
-          database: "{{  g_app_a_cloud_event_store_mongodb_database | default(None)   }}"
-
-          # Username for authentication, if required
-
-          # Type: str | None
-
-          username: "{{  g_app_a_cloud_event_store_mongodb_username | default(None)   }}"
-
-          # Password for authentication, if required
-
-          # Type: str | None
-
-          password: "{{  g_app_a_cloud_event_store_mongodb_password | default(None)   }}"
-
-          # Authentication source database, if required
-
-          # Type: str | None
-
-          auth_source: "{{  g_app_a_cloud_event_store_mongodb_auth_source | default(None)   }}"
-
-          # Use TLS/SSL connection
-
-          # Type: bool
-
-          tls: "{{  (g_app_a_cloud_event_store_mongodb_tls | default(False)) is sameas true  }}"
-
-      {% endif %}
-
-  # Type: CloudEventServiceConfig
-  cloud_event_service:
 
     # Type: Literal['yes']
 

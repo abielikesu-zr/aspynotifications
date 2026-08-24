@@ -37,41 +37,16 @@ notifications_sdk:
   # Type: NotificationClientConfig
   notification_client:
 
-    # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
-    # Switch Variable: g_app_ns_notification_client_adapter_type
+    # Type: RestClientAdapterConfig
     adapter:
 
-      
+      # Type: Literal['REST']
 
-        type: 'NATS'
+      type: "REST"
 
-        # Type: NatsClientConfig
-        config:
+      # Type: RestClientConfig
+      config:
 
-          # Name of the JetStream stream used to store CloudEvents.
+        # Type: HttpUrl
 
-          # Type: NatsConnectionConfig
-          connection:
-
-            # URL of the NATS server to connect to.
-
-            # Type: str
-
-            nats_url: "nats://127.0.0.1:4222"
-
-          # Subject pattern used by the stream to capture CloudEvents.
-
-          # Type: NatsStreamConfig
-          stream:
-
-            # Name of the JetStream stream used to store CloudEvents.
-
-            # Type: str
-
-            name: "EVENTS"
-
-            # Subject pattern used by the stream to capture CloudEvents.
-
-            # Type: str
-
-            subject: "events.>"
+        base_url: "REPLACE_ME"
