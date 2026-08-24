@@ -5,6 +5,7 @@ from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
 from aspyevents.config.cloud_events_service import CloudEventServiceConfig
 from pydantic import BaseModel, ConfigDict, Field
 
+from aspynotifications.config.admin_url_config import AdminUrlGeneratorConfig
 from aspynotifications.config.cloud_template import (
     TemplateServiceConfig,
 )
@@ -12,6 +13,9 @@ from aspynotifications.config.notification_config import NotificationPolicyServi
 from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
 from aspynotifications.config.notification_provider_config import (
     NotificationProviderServiceConfig,
+)
+from aspynotifications.config.notification_renderer_config import (
+    NotificationTemplateRendererConfig,
 )
 
 
@@ -30,6 +34,13 @@ class AspynotificationsAppParams(BaseModel):
     destinations_store: StorageAdapterConfig
     destinations_service: DestinationsServiceConfig = Field(
         default_factory=DestinationsServiceConfig
+    )
+
+    admin_url_generator: AdminUrlGeneratorConfig = Field(
+        default_factory=AdminUrlGeneratorConfig
+    )
+    template_renderer: NotificationTemplateRendererConfig = Field(
+        default_factory=NotificationTemplateRendererConfig
     )
 
     template_store: StorageAdapterConfig

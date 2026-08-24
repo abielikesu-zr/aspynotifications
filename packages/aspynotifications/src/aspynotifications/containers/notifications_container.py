@@ -17,6 +17,7 @@ from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
 from aspynotifications.factories.template_store_factory import create_template_store
+from aspynotifications.services.admin_url_generator import AdminUrlGenerator
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
     NotificationProviderService,
@@ -53,6 +54,12 @@ class AspyNotifictionsContainer(containers.DeclarativeContainer):
         create_destinations_store,
         config=config.aspynotifications.destinations_store,
     )
+
+    admin_url_generator = providers.Singleton(
+        AdminUrlGenerator,
+        config=config.aspynotifications.admin_url_generator,
+    )
+
     notification_provider_store = providers.Singleton(
         create_notification_provider_store,
         config=config.aspynotifications.notification_provider_store,
@@ -107,7 +114,8 @@ class AspyNotifictionsContainer(containers.DeclarativeContainer):
     )
     notification_template_renderer = providers.Singleton(
         NotificationTemplateRenderer,
-        template_root=".",
+        config=config.aspynotifications.template_renderer,
+        admin_url_generator=admin_url_generator,
     )
 
     notifications_facade = providers.Singleton(
