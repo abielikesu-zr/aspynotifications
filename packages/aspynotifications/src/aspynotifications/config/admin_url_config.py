@@ -12,6 +12,6 @@ class AdminUrlGeneratorConfig(BaseModel):
     )
 
     base_url: str = Field(
-        default="https://localhost:50003",
+        default="http://localhost:50031",
         description="Base URL of the admin UI.",
     )

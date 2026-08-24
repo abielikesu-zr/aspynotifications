@@ -25,7 +25,6 @@ class CloudEventsWorker(abc.ABC):
         self.batch_size = config.batch
         self.js: JetStreamContext | None = None
         self.stream_config: NatsStreamConfig | None = None
-        self.subs: list[JetStreamContext.PullSubscription] = []
 
     async def get_subscriptions(self) -> list[str]:
         return self.config.subscriptions
@@ -59,51 +58,42 @@ class CloudEventsWorker(abc.ABC):
         max_deliver = self.config.max_deliver
 
         subs = await self.get_subscriptions()
-        # Append the STREAM subject
         subs = self._get_stream_subscriptions(subs)
-        logger.info("Subscribing", subscriptions=subs)
 
-        for index, subject in enumerate(subs):
-            durable = f"worker-{self.name.replace(' ', '-')}-{index}"
+        logger.info(
+            "Subscribing",
+            worker=self.name,
+            subscriptions=subs,
+        )
 
-            consumer_config = ConsumerConfig(
-                durable_name=durable,
-                filter_subject=subject,
-                ack_policy=AckPolicy.EXPLICIT,
-                ack_wait=ack_wait,
-                max_deliver=max_deliver,
-            )
+        durable = f"worker-{self.name.replace(' ', '-')}"
 
-            subscription = await self.js.pull_subscribe(
-                subject,
-                durable=durable,
-                config=consumer_config,
-            )
+        consumer_config = ConsumerConfig(
+            durable_name=durable,
+            filter_subjects=subs,
+            ack_policy=AckPolicy.EXPLICIT,
+            ack_wait=ack_wait,
+            max_deliver=max_deliver,
+        )
 
-            self.subs.append(subscription)
+        await self.js.add_consumer(
+            self.stream_config.name,
+            config=consumer_config,
+        )
 
-            logger.info(
-                "Worker subscription active",
-                worker=self.name,
-                subject=subject,
-                durable=durable,
-            )
+        subscription = await self.js.pull_subscribe_bind(
+            durable,
+            self.stream_config.name,
+        )
 
-        tasks = [
-            asyncio.create_task(
-                self._consume(subscription),
-                name=f"{self.name}-consumer-{index}",
-            )
-            for index, subscription in enumerate(self.subs)
-        ]
+        logger.info(
+            "Worker subscription active",
+            worker=self.name,
+            subscriptions=subs,
+            durable=durable,
+        )
 
-        try:
-            await asyncio.gather(*tasks)
-        finally:
-            for task in tasks:
-                task.cancel()
-
-            await asyncio.gather(*tasks, return_exceptions=True)
+        await self._consume(subscription)
 
     async def _consume(self, subscription) -> None:
         while True:
