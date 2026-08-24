@@ -2,7 +2,6 @@ from typing import Literal
 
 from aspyadapters.adapters.http_client_config import HttpClientConfig
 from aspyadapters.config.storage_adapter_config import StorageAdapterConfig
-from aspyevents.config.cloud_events_service import CloudEventServiceConfig
 from pydantic import BaseModel, ConfigDict, Field
 
 from aspynotifications.config.admin_url_config import AdminUrlGeneratorConfig
@@ -45,9 +44,6 @@ class AspynotificationsAppParams(BaseModel):
 
     template_store: StorageAdapterConfig
     template_service: TemplateServiceConfig
-
-    cloud_event_store: StorageAdapterConfig
-    cloud_event_service: CloudEventServiceConfig
 
     notification_provider_store: StorageAdapterConfig
     notification_provider_service: NotificationProviderServiceConfig = Field(

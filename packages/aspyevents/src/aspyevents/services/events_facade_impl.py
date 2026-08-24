@@ -1,13 +1,13 @@
 from typing import Any
 
 import structlog
+from aspyevents_dtos.cloud_event_context_transformer import (
+    CloudEventPolicyContextTransformer,
+)
 from aspyevents_dtos.save_event_request import SaveEventRequest
 
 from aspyevents.config.events_facade_config import EventsFacadeConfig
 from aspyevents.entities.cloud_event import CloudEvent
-from aspyevents.services.cloud_event_context_transformer import (
-    CloudEventPolicyContextTransformer,
-)
 from aspyevents.services.cloud_event_service import CloudEventService
 from aspyevents.services.events_facade import EventsFacade
 

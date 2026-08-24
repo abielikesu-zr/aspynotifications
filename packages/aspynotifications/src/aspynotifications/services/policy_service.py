@@ -3,7 +3,7 @@ from typing import Any
 from uuid import uuid4
 
 import structlog
-from aspyevents.services.cloud_event_context_transformer import (
+from aspyevents_dtos.cloud_event_context_transformer import (
     CloudEventPolicyContextTransformer,
 )
 from aspypolicies.entities.eval_result import PolicyEvaluationResult

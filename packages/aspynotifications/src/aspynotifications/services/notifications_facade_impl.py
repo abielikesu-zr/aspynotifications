@@ -1,7 +1,7 @@
 from typing import Any
 
 import structlog
-from aspyevents.entities.cloud_event import CloudEvent
+from aspyevents_dtos.cloud_event_dto import CloudEventDTO
 from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from aspynotifications_dtos.notifications_dtos import (
     CreateDestinationRequest,
@@ -56,7 +56,7 @@ class NotificationsFacadeImpl(NotificationsFacade):
     async def notify(self, request: CreateNotifyRequest) -> str:
         logger.debug("Processing notification request")
 
-        cloud_event = CloudEvent.model_validate(
+        cloud_event = CloudEventDTO.model_validate(
             request.event.model_dump(exclude_none=True)
         )
 

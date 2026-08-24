@@ -1,10 +1,10 @@
+from aspyevents_dtos.cloud_event_context_transformer import (
+    CloudEventPolicyContextTransformer,
+)
 from dependency_injector import containers, providers
 
 from aspyevents.factories.cloud_event_store_factory import (
     create_cloud_event_store,
-)
-from aspyevents.services.cloud_event_context_transformer import (
-    CloudEventPolicyContextTransformer,
 )
 from aspyevents.services.cloud_event_service import CloudEventService
 from aspyevents.services.events_facade_impl import EventsFacadeImpl

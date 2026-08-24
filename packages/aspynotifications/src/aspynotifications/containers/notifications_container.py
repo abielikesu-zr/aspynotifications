@@ -1,5 +1,5 @@
 from aspyadapters.adapters.http_client import AspyHttpClient
-from aspyevents.services.cloud_event_context_transformer import (
+from aspyevents_dtos.cloud_event_context_transformer import (
     CloudEventPolicyContextTransformer,
 )
 from aspyplugs.z_plug_resolver import PluginDependencyResolver
