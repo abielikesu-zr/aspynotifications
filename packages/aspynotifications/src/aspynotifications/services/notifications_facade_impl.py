@@ -283,7 +283,7 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self,
         request: CreateDestinationRequest,
     ) -> DestinationDTO:
-        config = TypeAdapter(DestinationConfig).validate_python(
+        config: DestinationConfig = TypeAdapter(DestinationConfig).validate_python(
             request.config.model_dump()
         )
         try:
