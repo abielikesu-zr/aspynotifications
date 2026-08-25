@@ -32,6 +32,16 @@ class CreateNotificationPolicyRequest(BaseModel):
     destinations: list[str] = Field(..., min_length=1)
 
 
+class UpdateNotificationPolicyRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(..., min_length=1)
+    subject: str = Field(..., min_length=1)
+    envelope_policies: list[PolicyExpressionDTO] = Field(default_factory=list)
+    destination_policies: list[PolicyExpressionDTO] = Field(default_factory=list)
+    destinations: list[str] = Field(..., min_length=1)
+
+
 class NotificationPolicyDTO(CreateNotificationPolicyRequest):
     id: str = Field(..., min_length=1)
 

@@ -29,6 +29,9 @@ from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
 from aspynotifications_cli.cli.create_template_handler import create_template_handler
 from aspynotifications_cli.cli.send_event_handler import send_event_handler
 from aspynotifications_cli.cli.update_template_handler import update_template_handler
+from aspynotifications_cli.cli.update_notification_policy_handler import (
+    update_notification_policy_handler,
+)
 from aspynotifications_cli.cli.update_email_destination_handler import (
     update_email_destination_handler,
 )
@@ -537,6 +540,43 @@ def create_policy(
     )
 
 
+@click.command("update-policy")
+@click.option("--id", "policy_id", required=True)
+@click.option("--subject", required=True)
+@click.option("--destination", "destinations", multiple=True, required=True)
+@click.option("--envelope-policy", type=(str, str, str), multiple=True)
+@click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
+@click.option("--destination-policy", type=(str, str, str), multiple=True)
+@click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@common_logging_options
+def update_policy(
+    policy_id: str,
+    subject: str,
+    destinations: tuple[str, ...],
+    envelope_policy: tuple[tuple[str, str, str], ...],
+    negative_envelope_policy: tuple[tuple[str, str, str], ...],
+    destination_policy: tuple[tuple[str, str, str], ...],
+    negative_destination_policy: tuple[tuple[str, str, str], ...],
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_notification_policy_handler(
+            policy_id=policy_id,
+            subject=subject,
+            destinations=destinations,
+            envelope_policy=envelope_policy,
+            negative_envelope_policy=negative_envelope_policy,
+            destination_policy=destination_policy,
+            negative_destination_policy=negative_destination_policy,
+            output_format=output_format,
+        )
+    )
+
+
 cli.add_command(create_slack_provider)
 cli.add_command(create_zeptomail_provider)
 cli.add_command(create_shole_provider)
@@ -552,6 +592,7 @@ cli.add_command(update_email_destination)
 cli.add_command(update_slack_channel_destination)
 cli.add_command(update_output_hole_destination)
 cli.add_command(create_policy)
+cli.add_command(update_policy)
 
 
 if __name__ == "__main__":

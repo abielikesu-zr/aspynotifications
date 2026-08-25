@@ -21,6 +21,7 @@ update-email-destination --id DESTINATION_ID --provider PROVIDER --template TEMP
 update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
 update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
+update-policy --id POLICY_ID --subject SUBJECT --destination DESTINATION
 ```
 
 ## Actualizar un Template Slack
@@ -97,6 +98,21 @@ notify update-output-hole-destination \
   --provider output-hole-provider \
   --template output-hole-template \
   --routable \
+  --output-format json
+```
+
+## Actualizar Policies de notificaciones
+
+`update-policy` identifica la Policy existente por `id` y conserva su nombre.
+Reemplaza por completo el subject, las policies de envelope, las policies de
+Destination y los Destinations.
+
+```bash
+notify update-policy \
+  --id POLICY_ID \
+  --subject "*.created" \
+  --destination entity-slack-destination \
+  --envelope-policy environment "context.environment == 'production'" "Solo produccion" \
   --output-format json
 ```
 

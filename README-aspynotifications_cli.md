@@ -23,6 +23,7 @@ update-email-destination --id DESTINATION_ID --provider PROVIDER --template TEMP
 update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
 update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
+update-policy --id POLICY_ID --subject SUBJECT --destination DESTINATION
 ```
 
 It reads a JSON file, validates it as `CreateNotifyRequest`, loads the SDK configuration, obtains the configured `NotificationsSDK`, and calls `notify`.
@@ -109,6 +110,21 @@ notify update-output-hole-destination \
   --provider output-hole-provider \
   --template output-hole-template \
   --routable \
+  --output-format json
+```
+
+## Updating notification policies
+
+`update-policy` identifies the existing Policy by `id` and preserves its name.
+It fully replaces the subject, envelope policies, destination policies, and
+destinations.
+
+```bash
+notify update-policy \
+  --id POLICY_ID \
+  --subject "*.created" \
+  --destination entity-slack-destination \
+  --envelope-policy environment "context.environment == 'production'" "Production only" \
   --output-format json
 ```
 

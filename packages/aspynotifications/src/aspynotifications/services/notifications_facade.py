@@ -9,6 +9,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationSubscriptionsDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
@@ -36,6 +37,14 @@ class NotificationsFacade(ABC):
         request: CreateNotificationPolicyRequest,
     ) -> NotificationPolicyDTO:
         """Create a notification policy."""
+        ...
+
+    @abstractmethod
+    async def update_notification_policy(
+        self,
+        request: UpdateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        """Update a notification policy."""
         ...
 
     @abstractmethod

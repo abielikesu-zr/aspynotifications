@@ -8,6 +8,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
 from aspynotifications_dtos.providers_dtos import (
@@ -41,6 +42,34 @@ async def create_notification_policy(
     policy: NotificationPolicyDTO = await facade.create_notification_policy(body)
     logger.info(
         "Notification policy created",
+        policy_id=policy.id,
+        name=policy.name,
+    )
+    return JSONResponse(content=policy.model_dump())
+
+
+@notification_administration_router.put("/policies/{policy_id}")
+async def update_notification_policy(
+    policy_id: str,
+    body: UpdateNotificationPolicyRequest,
+    request: Request,
+) -> JSONResponse:
+    if body.id != policy_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Path policy ID does not match request body ID",
+        )
+
+    logger.info(
+        "Updating notification policy",
+        policy_id=body.id,
+        subject=body.subject,
+        destinations=body.destinations,
+    )
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    policy: NotificationPolicyDTO = await facade.update_notification_policy(body)
+    logger.info(
+        "Notification policy updated",
         policy_id=policy.id,
         name=policy.name,
     )

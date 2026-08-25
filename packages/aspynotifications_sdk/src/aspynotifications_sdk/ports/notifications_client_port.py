@@ -8,6 +8,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
@@ -24,6 +25,11 @@ class INotificationsClientPort(Protocol):
     async def create_notification_policy(
         self,
         request: CreateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO: ...
+
+    async def update_notification_policy(
+        self,
+        request: UpdateNotificationPolicyRequest,
     ) -> NotificationPolicyDTO: ...
 
     async def create_template(
