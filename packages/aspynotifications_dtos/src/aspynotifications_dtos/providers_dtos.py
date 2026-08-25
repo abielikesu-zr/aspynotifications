@@ -67,5 +67,12 @@ class CreateNotificationProviderRequest(BaseModel):
     provider: NotificationProviderConfigDTO
 
 
+class UpdateNotificationProviderRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(..., min_length=1)
+    provider: NotificationProviderConfigDTO
+
+
 class NotificationProviderDTO(CreateNotificationProviderRequest):
     id: str = Field(..., min_length=1)

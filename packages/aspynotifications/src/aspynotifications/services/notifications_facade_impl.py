@@ -17,6 +17,7 @@ from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
+    UpdateNotificationProviderRequest,
 )
 from aspypolicies.entities.aspy_policy import AspyPolicy
 from pydantic import TypeAdapter
@@ -316,4 +317,15 @@ class NotificationsFacadeImpl(NotificationsFacade):
             )
         )
 
+        return NotificationProviderDTO.model_validate(provider.model_dump())
+
+    async def update_notification_provider(
+        self,
+        request: UpdateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        provider = await self._notification_provider_service.update_notification_provider(
+            provider_id=request.id,
+            provider_type=request.provider.type,
+            config=request.provider.config.model_dump(),
+        )
         return NotificationProviderDTO.model_validate(provider.model_dump())

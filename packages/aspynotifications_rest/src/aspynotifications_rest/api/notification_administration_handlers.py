@@ -12,6 +12,7 @@ from aspynotifications_dtos.notifications_dtos import (
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
+    UpdateNotificationProviderRequest,
 )
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -115,6 +116,33 @@ async def create_notification_provider(
 
     logger.info(
         "Notification provider created",
+        provider_id=provider.id,
+        name=provider.name,
+    )
+    return JSONResponse(content=provider.model_dump())
+
+
+@notification_administration_router.put("/providers/{provider_id}")
+async def update_notification_provider(
+    provider_id: str,
+    body: UpdateNotificationProviderRequest,
+    request: Request,
+) -> JSONResponse:
+    if body.id != provider_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Path provider ID does not match request body ID",
+        )
+
+    logger.info(
+        "Updating notification provider",
+        provider_id=body.id,
+        provider_type=body.provider.type,
+    )
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    provider: NotificationProviderDTO = await facade.update_notification_provider(body)
+    logger.info(
+        "Notification provider updated",
         provider_id=provider.id,
         name=provider.name,
     )

@@ -12,6 +12,7 @@ from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
+    UpdateNotificationProviderRequest,
 )
 
 from aspynotifications_sdk.ports.notifications_client_port import (
@@ -57,3 +58,10 @@ class NotificationsSDK:
     ) -> NotificationProviderDTO:
         logger.debug("create notification provider sdk request", request=request)
         return await self._client.create_notification_provider(request)
+
+    async def update_notification_provider(
+        self,
+        request: UpdateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        logger.debug("update notification provider sdk request", request=request)
+        return await self._client.update_notification_provider(request)

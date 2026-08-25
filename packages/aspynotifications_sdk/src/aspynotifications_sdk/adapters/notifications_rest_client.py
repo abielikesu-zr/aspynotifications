@@ -24,6 +24,7 @@ from aspynotifications_dtos.notifications_dtos import (
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
+    UpdateNotificationProviderRequest,
 )
 
 from aspynotifications_sdk.entities.config import RestClientConfig
@@ -140,5 +141,17 @@ class NotificationsRestClient(INotificationsClientPort):
             "POST",
             "/api/v1/providers",
             payload=request.model_dump(),
+        )
+        return NotificationProviderDTO.model_validate(resp.json())
+
+    async def update_notification_provider(
+        self,
+        request: UpdateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        logger.debug("update notification provider rest client request", request=request)
+        resp = await self._handle_request(
+            "PUT",
+            f"/api/v1/providers/{request.id}",
+            payload=request.model_dump(mode="json"),
         )
         return NotificationProviderDTO.model_validate(resp.json())

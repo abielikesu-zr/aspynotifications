@@ -29,6 +29,15 @@ from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
 from aspynotifications_cli.cli.create_template_handler import create_template_handler
 from aspynotifications_cli.cli.send_event_handler import send_event_handler
 from aspynotifications_cli.cli.update_template_handler import update_template_handler
+from aspynotifications_cli.cli.update_shole_provider_handler import (
+    update_shole_provider_handler,
+)
+from aspynotifications_cli.cli.update_slack_provider_handler import (
+    update_slack_provider_handler,
+)
+from aspynotifications_cli.cli.update_zeptomail_provider_handler import (
+    update_zeptomail_provider_handler,
+)
 
 
 @click.group()
@@ -152,6 +161,81 @@ def create_shole_provider(
     asyncio.run(
         create_shole_provider_handler(
             name=name,
+            level=level,
+            cows=cows,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-slack-provider")
+@click.option("--id", "provider_id", required=True)
+@click.option("--webhook-url", required=True)
+@common_logging_options
+def update_slack_provider(
+    provider_id: str,
+    webhook_url: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_slack_provider_handler(
+            provider_id=provider_id,
+            webhook_url=webhook_url,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-zeptomail-provider")
+@click.option("--id", "provider_id", required=True)
+@click.option("--from-address", required=True)
+@click.option("--from-name")
+@click.option("--send-mail-token", required=True)
+@common_logging_options
+def update_zeptomail_provider(
+    provider_id: str,
+    from_address: str,
+    from_name: str | None,
+    send_mail_token: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_zeptomail_provider_handler(
+            provider_id=provider_id,
+            from_address=from_address,
+            from_name=from_name,
+            send_mail_token=send_mail_token,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-shole-provider")
+@click.option("--id", "provider_id", required=True)
+@click.option("--level", default="WARN", show_default=True)
+@click.option("--cows/--no-cows", default=True)
+@common_logging_options
+def update_shole_provider(
+    provider_id: str,
+    level: str,
+    cows: bool,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_shole_provider_handler(
+            provider_id=provider_id,
             level=level,
             cows=cows,
             output_format=output_format,
@@ -351,6 +435,9 @@ def create_policy(
 cli.add_command(create_slack_provider)
 cli.add_command(create_zeptomail_provider)
 cli.add_command(create_shole_provider)
+cli.add_command(update_slack_provider)
+cli.add_command(update_zeptomail_provider)
+cli.add_command(update_shole_provider)
 cli.add_command(create_template)
 cli.add_command(update_template)
 cli.add_command(create_email_destination)

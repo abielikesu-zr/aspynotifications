@@ -9,6 +9,9 @@ send-event --from-file PATH [--output-format print|json] [-v|-q] [--log-format p
 create-slack-provider --name NAME --webhook-url URL
 create-zeptomail-provider --name NAME --from-address ADDRESS --send-mail-token TOKEN
 create-shole-provider --name NAME
+update-slack-provider --id PROVIDER_ID --webhook-url URL
+update-zeptomail-provider --id PROVIDER_ID --from-address ADDRESS --send-mail-token TOKEN
+update-shole-provider --id PROVIDER_ID
 create-template --name NAME [--slack-blocks-inline BLOCKS]
 update-template --name NAME --slack-blocks-inline BLOCKS
 create-email-destination --name NAME --provider PROVIDER --template TEMPLATE
@@ -29,6 +32,34 @@ notify update-template \
 ```
 
 El Template debe existir. El comando carga la configuracion del CLI y delega la solicitud en `aspynotifications_sdk`; no llama REST directamente.
+
+## Actualizar Providers de notificaciones
+
+Cada tipo de Provider tiene su propio comando de actualizacion. El Provider se identifica por `id`; su nombre se conserva para que los Destinations existentes que lo referencian por nombre continuen funcionando.
+
+```bash
+notify update-slack-provider \
+  --id PROVIDER_ID \
+  --webhook-url "https://hooks.slack.com/services/..." \
+  --output-format json
+```
+
+```bash
+notify update-zeptomail-provider \
+  --id PROVIDER_ID \
+  --from-address notifications@example.com \
+  --from-name "Notifications" \
+  --send-mail-token TOKEN \
+  --output-format json
+```
+
+```bash
+notify update-shole-provider \
+  --id PROVIDER_ID \
+  --level WARN \
+  --cows \
+  --output-format json
+```
 
 ## Configuracion
 

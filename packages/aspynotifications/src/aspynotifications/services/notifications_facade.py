@@ -14,6 +14,7 @@ from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
+    UpdateNotificationProviderRequest,
 )
 
 
@@ -60,4 +61,12 @@ class NotificationsFacade(ABC):
         request: CreateNotificationProviderRequest,
     ) -> NotificationProviderDTO:
         """Create a notification provider."""
+        ...
+
+    @abstractmethod
+    async def update_notification_provider(
+        self,
+        request: UpdateNotificationProviderRequest,
+    ) -> NotificationProviderDTO:
+        """Update a notification provider."""
         ...

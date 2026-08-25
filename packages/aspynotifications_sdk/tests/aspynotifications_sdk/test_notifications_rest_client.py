@@ -7,6 +7,11 @@ from aspynotifications_dtos.notifications_dtos import (
     SlackTemplateDTO,
     UpdateTemplateRequest,
 )
+from aspynotifications_dtos.providers_dtos import (
+    SlackProviderDTO,
+    SlackProviderSettingsDTO,
+    UpdateNotificationProviderRequest,
+)
 from aspynotifications_sdk.adapters.notifications_rest_client import (
     NotificationsRestClient,
 )
@@ -38,5 +43,39 @@ async def test_update_template_uses_put_with_the_template_name() -> None:
     assert result.name == request.name
     http_client.put.assert_awaited_once_with(
         "http://notifications.example/api/v1/templates/slack-template",
+        payload=request.model_dump(mode="json"),
+    )
+
+
+@pytest.mark.asyncio
+async def test_update_provider_uses_put_with_the_provider_id() -> None:
+    request = UpdateNotificationProviderRequest(
+        id="provider-001",
+        provider=SlackProviderDTO(
+            config=SlackProviderSettingsDTO(
+                webhook_url="https://hooks.slack.com/services/new"
+            )
+        ),
+    )
+    http_client = MagicMock()
+    http_client.put = AsyncMock(
+        return_value=_Response(
+            {
+                "id": request.id,
+                "name": "operations-slack",
+                "provider": request.provider.model_dump(),
+            }
+        )
+    )
+    client = NotificationsRestClient(
+        config={"base_url": "http://notifications.example"},
+        http_client=http_client,
+    )
+
+    result = await client.update_notification_provider(request)
+
+    assert result.id == request.id
+    http_client.put.assert_awaited_once_with(
+        "http://notifications.example/api/v1/providers/provider-001",
         payload=request.model_dump(mode="json"),
     )
