@@ -27,6 +27,17 @@ aspyplugs_static:
         - type: MONGODB
           module: aspynotifications.adapters.provider_mongo_store
           eager: false
+      - name: notification_renderer
+        adapters:
+        - type: email
+          module: aspynotifications.adapters.notify_renderer_email
+          eager: false
+        - type: output_hole
+          module: aspynotifications.adapters.notify_renderer_ohooe
+          eager: false
+        - type: slack_channel
+          module: aspynotifications.adapters.notify_renderer_slack
+          eager: false
       - name: notification_sender
         adapters:
         - type: SHOLE

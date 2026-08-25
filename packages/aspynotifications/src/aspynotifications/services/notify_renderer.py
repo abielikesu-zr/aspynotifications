@@ -1,17 +1,10 @@
 from typing import Any
 
-from aspynotifications.adapters.notify_renderer_email import EmailNotificationAdapter
-from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
-from aspynotifications.adapters.notify_renderer_ohooe import (
-    OutputHoleNotificationAdapter,
-)
-from aspynotifications.adapters.notify_renderer_slack import SlackNotificationAdapter
-from aspynotifications.config.notification_renderer_config import (
-    NotificationTemplateRendererConfig,
-)
 from aspynotifications.entities.destination import Destination
 from aspynotifications.entities.template import Template
-from aspynotifications.ports.notification_renderer import NotificationRendererPort
+from aspynotifications.factories.notification_renderer_factory import (
+    NotificationRendererFactory,
+)
 from aspynotifications.services.admin_url_generator import AdminUrlGenerator
 
 
@@ -20,19 +13,11 @@ class NotificationTemplateRenderer:
 
     def __init__(
         self,
-        config: dict[str, Any],
         admin_url_generator: AdminUrlGenerator,
+        renderer_factory: NotificationRendererFactory,
     ) -> None:
-        self.config = NotificationTemplateRendererConfig.model_validate(config)
         self.admin_url_generator = admin_url_generator
-
-        renderer = Jinja2TemplateRenderer(self.config.template_root)
-
-        self._adapters: dict[str, NotificationRendererPort] = {
-            "email": EmailNotificationAdapter(renderer),
-            "slack_channel": SlackNotificationAdapter(renderer),
-            "output_hole": OutputHoleNotificationAdapter(renderer),
-        }
+        self.renderer_factory = renderer_factory
 
     def render(
         self,
@@ -40,10 +25,7 @@ class NotificationTemplateRenderer:
         template: Template,
         context: dict[str, Any],
     ) -> Any:
-        adapter = self._adapters.get(destination.type)
-
-        if adapter is None:
-            raise ValueError(f"Unsupported notification provider: {destination.type}")
+        adapter = self.renderer_factory.create(destination.type)
 
         subject = context["envelope"]["subject"]
         entity_type, _ = subject.split("/", 1)

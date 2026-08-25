@@ -1,10 +1,13 @@
 from typing import Any
 
+from aspyplugs.registry import register_plugin
+
 from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.entities.template import Template
 from aspynotifications.ports.notification_renderer import NotificationRendererPort
 
 
+@register_plugin("notification_renderer", "output_hole")
 class OutputHoleNotificationAdapter(NotificationRendererPort):
     """Renders notification templates for output-hole destinations."""
 

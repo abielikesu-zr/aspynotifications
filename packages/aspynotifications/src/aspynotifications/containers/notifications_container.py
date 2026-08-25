@@ -12,11 +12,15 @@ from aspynotifications.factories.destinations_store_factory import (
 from aspynotifications.factories.notification_provider_sender_factory import (
     NotificationProviderSenderFactory,
 )
+from aspynotifications.factories.notification_renderer_factory import (
+    NotificationRendererFactory,
+)
 from aspynotifications.factories.policy_factory import create_notification_policy_store
 from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
 from aspynotifications.factories.template_store_factory import create_template_store
+from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.services.admin_url_generator import AdminUrlGenerator
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
@@ -98,6 +102,25 @@ class AspyNotifictionsContainer(containers.DeclarativeContainer):
         NotificationProviderSenderFactory, resolver=provider_sender_resolver
     )
 
+    template_renderer = providers.Singleton(
+        Jinja2TemplateRenderer,
+        template_root=config.aspynotifications.template_renderer.template_root,
+    )
+
+    notification_renderer_resolver = providers.Singleton(
+        PluginDependencyResolver,
+        dependencies=providers.Dict(
+            {
+                Jinja2TemplateRenderer: template_renderer,
+            }
+        ),
+    )
+
+    notification_renderer_factory = providers.Singleton(
+        NotificationRendererFactory,
+        resolver=notification_renderer_resolver,
+    )
+
     notification_provider_service = providers.Singleton(
         NotificationProviderService,
         notification_provider_store=notification_provider_store,
@@ -114,8 +137,8 @@ class AspyNotifictionsContainer(containers.DeclarativeContainer):
     )
     notification_template_renderer = providers.Singleton(
         NotificationTemplateRenderer,
-        config=config.aspynotifications.template_renderer,
         admin_url_generator=admin_url_generator,
+        renderer_factory=notification_renderer_factory,
     )
 
     notifications_facade = providers.Singleton(

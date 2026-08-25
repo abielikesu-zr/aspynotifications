@@ -3,12 +3,14 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from aspyplugs.registry import register_plugin
 
 from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.entities.template import Template
 from aspynotifications.ports.notification_renderer import NotificationRendererPort
 
 
+@register_plugin("notification_renderer", "email")
 class EmailNotificationAdapter(NotificationRendererPort):
     """Renders notification templates for email destinations."""
 
