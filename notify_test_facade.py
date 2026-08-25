@@ -119,7 +119,6 @@ async def main() -> None:
         provider="corporate-mail",
         destination_type="email",
         template="email-notification-template",
-        routable=True,
         config={
             "type": "email",
             "to": ["operations@example.com"],
@@ -132,10 +131,8 @@ async def main() -> None:
         provider="operations-slack",
         destination_type="slack_channel",
         template="slack-notification-template",
-        routable=True,
         config={
             "type": "slack_channel",
-            "channel_id": "xx",
         },
     )
 

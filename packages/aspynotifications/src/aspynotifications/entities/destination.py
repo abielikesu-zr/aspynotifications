@@ -14,5 +14,4 @@ class Destination(BaseModel):
     provider: str = Field(..., min_length=1)
     type: DestinationType
     template: str = Field(..., min_length=1)
-    routable: bool = False
     config: DestinationConfig

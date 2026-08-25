@@ -62,7 +62,6 @@ async def test_create_destination_generates_uuid_and_persists_email_destination(
         name="email-alerts",
         provider="email",
         template="incident-template",
-        routable=False,
         config=_email_config(),
     )
 
@@ -83,8 +82,7 @@ async def test_create_destination_resolves_slack_config_variant() -> None:
         name="slack-alerts",
         provider="slack",
         template="incident-template",
-        routable=False,
-        config=SlackChannelDestinationConfig(channel_id="C123"),
+        config=SlackChannelDestinationConfig(),
     )
 
     # Assert
@@ -100,10 +98,10 @@ async def test_create_destination_rejects_unknown_config_discriminator() -> None
 
 
 @pytest.mark.asyncio
-async def test_create_destination_rejects_incomplete_config() -> None:
-    # Act / Assert
-    with pytest.raises(ValidationError):
-        SlackChannelDestinationConfig.model_validate({"type": "slack_channel"})
+async def test_create_destination_accepts_slack_config_without_additional_fields() -> None:
+    config = SlackChannelDestinationConfig.model_validate({"type": "slack_channel"})
+
+    assert config.type == "slack_channel"
 
 
 @pytest.mark.asyncio
@@ -125,7 +123,6 @@ async def test_create_destination_rejects_duplicate_name(
             name="email-alerts",
             provider="email",
             template="incident-template",
-            routable=False,
             config=_email_config(),
         )
 
@@ -208,7 +205,6 @@ async def test_update_destination_persists_replacement_values() -> None:
         update={
             "provider": "replacement-provider",
             "template": "replacement-template",
-            "routable": True,
             "config": EmailDestinationConfig(to=["replacement@example.com"]),
         }
     )
@@ -223,7 +219,6 @@ async def test_update_destination_persists_replacement_values() -> None:
     assert result.name == existing_destination.name
     assert result.provider == "replacement-provider"
     assert result.template == "replacement-template"
-    assert result.routable is True
     assert result.config.to == ["replacement@example.com"]
     store.save_destination.assert_awaited_once_with(updated_destination)
 

@@ -18,7 +18,6 @@ class SlackChannelDestinationConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     type: Literal["slack_channel"] = "slack_channel"
-    channel_id: str = Field(..., min_length=1)
 
 
 DestinationType = Literal[

@@ -321,7 +321,6 @@ def update_template(
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
 @click.option("--to", multiple=True)
 @click.option("--cc", multiple=True)
 @click.option("--bcc", multiple=True)
@@ -330,7 +329,6 @@ def create_email_destination(
     name: str,
     provider: str,
     template: str,
-    routable: bool,
     to: tuple[str, ...],
     cc: tuple[str, ...],
     bcc: tuple[str, ...],
@@ -345,7 +343,6 @@ def create_email_destination(
             name=name,
             provider=provider,
             template=template,
-            routable=routable,
             to=to,
             cc=cc,
             bcc=bcc,
@@ -358,15 +355,11 @@ def create_email_destination(
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
-@click.option("--channel-id", required=True)
 @common_logging_options
 def create_slack_channel_destination(
     name: str,
     provider: str,
     template: str,
-    routable: bool,
-    channel_id: str,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -378,8 +371,6 @@ def create_slack_channel_destination(
             name=name,
             provider=provider,
             template=template,
-            routable=routable,
-            channel_id=channel_id,
             output_format=output_format,
         )
     )
@@ -389,13 +380,11 @@ def create_slack_channel_destination(
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
 @common_logging_options
 def create_output_hole_destination(
     name: str,
     provider: str,
     template: str,
-    routable: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -407,7 +396,6 @@ def create_output_hole_destination(
             name=name,
             provider=provider,
             template=template,
-            routable=routable,
             output_format=output_format,
         )
     )
@@ -417,7 +405,6 @@ def create_output_hole_destination(
 @click.option("--id", "destination_id", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
 @click.option("--to", multiple=True)
 @click.option("--cc", multiple=True)
 @click.option("--bcc", multiple=True)
@@ -426,7 +413,6 @@ def update_email_destination(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
     to: tuple[str, ...],
     cc: tuple[str, ...],
     bcc: tuple[str, ...],
@@ -441,7 +427,6 @@ def update_email_destination(
             destination_id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
             to=to,
             cc=cc,
             bcc=bcc,
@@ -454,15 +439,11 @@ def update_email_destination(
 @click.option("--id", "destination_id", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
-@click.option("--channel-id", required=True)
 @common_logging_options
 def update_slack_channel_destination(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
-    channel_id: str,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -474,8 +455,6 @@ def update_slack_channel_destination(
             destination_id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
-            channel_id=channel_id,
             output_format=output_format,
         )
     )
@@ -485,13 +464,11 @@ def update_slack_channel_destination(
 @click.option("--id", "destination_id", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
-@click.option("--routable/--not-routable", default=False)
 @common_logging_options
 def update_output_hole_destination(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -503,7 +480,6 @@ def update_output_hole_destination(
             destination_id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
             output_format=output_format,
         )
     )

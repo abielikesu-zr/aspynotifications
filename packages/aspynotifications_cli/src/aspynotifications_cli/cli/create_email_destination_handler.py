@@ -17,7 +17,6 @@ async def create_email_destination_handler(
     name: str,
     provider: str,
     template: str,
-    routable: bool,
     to: tuple[str, ...],
     cc: tuple[str, ...],
     bcc: tuple[str, ...],
@@ -32,7 +31,6 @@ async def create_email_destination_handler(
             name=name,
             provider=provider,
             template=template,
-            routable=routable,
             config=EmailDestinationConfigDTO(
                 to=list(to),
                 cc=list(cc),

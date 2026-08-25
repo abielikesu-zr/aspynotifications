@@ -129,7 +129,6 @@ async def prepare_notification_configuration() -> None:
         provider="corporate-mail",
         destination_type="email",
         template="email-notification-template",
-        routable=True,
         config={"type": "email", "to": ["operations@example.com"]},
     )
     await ensure_destination(
@@ -138,8 +137,7 @@ async def prepare_notification_configuration() -> None:
         provider="operations-slack",
         destination_type="slack_channel",
         template="slack-notification-template",
-        routable=True,
-        config={"type": "slack_channel", "channel_id": "xx"},
+        config={"type": "slack_channel"},
     )
 
 

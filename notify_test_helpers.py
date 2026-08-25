@@ -43,7 +43,6 @@ async def ensure_destination(
     provider: str,
     destination_type: DestinationType,
     template: str,
-    routable: bool,
     config: dict[str, Any],
 ):
     existing = await service.get_destination_by_name(name)
@@ -62,7 +61,6 @@ async def ensure_destination(
         name=name,
         provider=provider,
         template=template,
-        routable=routable,
         config=destination_config,
     )
 

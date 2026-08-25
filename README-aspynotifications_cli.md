@@ -17,10 +17,10 @@ update-shole-provider --id PROVIDER_ID
 create-template --name NAME [--slack-blocks-inline BLOCKS]
 update-template --name NAME --slack-blocks-inline BLOCKS
 create-email-destination --name NAME --provider PROVIDER --template TEMPLATE
-create-slack-channel-destination --name NAME --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
+create-slack-channel-destination --name NAME --provider PROVIDER --template TEMPLATE
 create-output-hole-destination --name NAME --provider PROVIDER --template TEMPLATE
 update-email-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
-update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
+update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
 update-policy --id POLICY_ID --subject SUBJECT --destination DESTINATION
@@ -82,15 +82,14 @@ notify update-shole-provider \
 ## Updating notification destinations
 
 Each Destination type has its own update command. The Destination is identified
-by `id` and retains its name; the Provider, Template, routable flag, and typed
-Destination configuration are replaced completely.
+by `id` and retains its name; the Provider, Template, and typed Destination
+configuration are replaced completely.
 
 ```bash
 notify update-email-destination \
   --id DESTINATION_ID \
   --provider corporate-mail \
   --template email-notification-template \
-  --routable \
   --to alerts@example.com \
   --cc audit@example.com \
   --output-format json
@@ -101,8 +100,6 @@ notify update-slack-channel-destination \
   --id DESTINATION_ID \
   --provider operations-slack \
   --template slack-notification-template \
-  --routable \
-  --channel-id CHANNEL_ID \
   --output-format json
 ```
 
@@ -111,7 +108,6 @@ notify update-output-hole-destination \
   --id DESTINATION_ID \
   --provider output-hole-provider \
   --template output-hole-template \
-  --routable \
   --output-format json
 ```
 

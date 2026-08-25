@@ -54,7 +54,6 @@ Adapter LOCALFS | MONGODB
 | `provider` | `str` | Nombre del proveedor de entrega configurado. |
 | `type` | `email`, `slack_channel` u `output_hole` | Tipo de endpoint. |
 | `template` | `str` | Nombre lógico del template. |
-| `routable` | `bool` | Indica si la destination acepta receptores proporcionados por el evento. |
 | `config` | modelo tipado | Configuración específica del endpoint. |
 
 `Destination` rechaza campos adicionales mediante `ConfigDict(extra="forbid")`.
@@ -64,7 +63,7 @@ Los modelos de configuración de endpoint son:
 | Tipo | Modelo de configuración | Campos |
 | --- | --- | --- |
 | `email` | `EmailDestinationConfig` | `type`, `to`, `cc`, `bcc` |
-| `slack_channel` | `SlackChannelDestinationConfig` | `type`, `channel_id` |
+| `slack_channel` | `SlackChannelDestinationConfig` | `type` |
 | `output_hole` | `OutputHoleDestinationConfig` | `type` |
 
 ## Operaciones de aplicación
@@ -150,7 +149,6 @@ prueba el comportamiento de negocio de forma independiente del almacenamiento.
 | Crear una destination de email | Se genera un UUID y se invoca `save_destination`. |
 | Crear una destination de Slack | `config.type: slack_channel` se resuelve como `SlackChannelDestinationConfig`. |
 | Discriminador de configuración desconocido | Pydantic rechaza un `config.type` no declarado. |
-| Configuración de endpoint inválida | Pydantic rechaza la configuración sin campos requeridos, por ejemplo Slack sin `channel_id`. |
 | ID duplicado | Se rechaza la creación. |
 | Nombre duplicado | Se rechaza la creación. |
 | Consultar por ID y nombre | El servicio retorna el resultado del store. |

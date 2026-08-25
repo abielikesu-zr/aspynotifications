@@ -148,7 +148,6 @@ async def create_destination(
         provider=body.provider,
         template=body.template,
         destination_type=body.config.type,
-        routable=body.routable,
     )
     facade: NotificationsFacade = request.app.state.notifications_facade
     destination: DestinationDTO = await facade.create_destination(body)
@@ -178,7 +177,6 @@ async def update_destination(
         provider=body.provider,
         template=body.template,
         destination_type=body.config.type,
-        routable=body.routable,
     )
     facade: NotificationsFacade = request.app.state.notifications_facade
     destination: DestinationDTO = await facade.update_destination(body)

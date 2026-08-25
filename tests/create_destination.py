@@ -39,7 +39,6 @@ def parse_arguments() -> argparse.Namespace:
         choices=("email", "slack_channel", "output_hole"),
     )
     parser.add_argument("--template", required=True)
-    parser.add_argument("--routable", action="store_true")
     parser.add_argument(
         "--destination-config",
         required=True,
@@ -94,7 +93,6 @@ async def create_destination(arguments: argparse.Namespace) -> Destination:
         name=arguments.name,
         provider=arguments.provider,
         template=arguments.template,
-        routable=arguments.routable,
         config=load_destination_config(arguments),
     )
 

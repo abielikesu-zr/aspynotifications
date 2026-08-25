@@ -61,22 +61,18 @@ notify create-email-destination \
   --to "alerts-${run_id}@example.invalid" \
   --cc "audit-${run_id}@example.invalid" \
   --bcc "archive-${run_id}@example.invalid" \
-  --routable \
   --output-format json
 
 notify create-slack-channel-destination \
   --name "${slack_destination_name}" \
   --provider "${slack_provider_name}" \
   --template "${slack_template_name}" \
-  --channel-id "C${run_id//-/}" \
-  --routable \
   --output-format json
 
 notify create-output-hole-destination \
   --name "${output_hole_destination_name}" \
   --provider "${shole_provider_name}" \
   --template "${output_hole_template_name}" \
-  --routable \
   --output-format json
 
 notify create-policy \
@@ -87,6 +83,5 @@ notify create-policy \
   --destination "${output_hole_destination_name}" \
   --envelope-policy "cli-envelope-policy" "envelope.source == 'cli-test'" "CLI envelope policy" \
   --negative-envelope-policy "cli-negative-envelope-policy" "envelope.type == 'ignored'" "CLI negative envelope policy" \
-  --destination-policy "cli-destination-policy" "destination.routable == true" "CLI destination policy" \
   --negative-destination-policy "cli-negative-destination-policy" "destination.name == 'ignored'" "CLI negative destination policy" \
   --output-format json

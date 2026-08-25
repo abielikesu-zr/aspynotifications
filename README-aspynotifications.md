@@ -82,7 +82,7 @@ service receives only the store port of its own entity.
 | Type | Configuration model | Fields |
 | --- | --- | --- |
 | `email` | `EmailDestinationConfig` | `to`, `cc`, `bcc` |
-| `slack_channel` | `SlackChannelDestinationConfig` | `channel_id` |
+| `slack_channel` | `SlackChannelDestinationConfig` | No additional fields. |
 | `output_hole` | `OutputHoleDestinationConfig` | No additional fields. |
 
 `create_destination` receives the typed `DestinationConfig`; it determines the

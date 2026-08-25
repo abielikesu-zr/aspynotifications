@@ -22,7 +22,6 @@ class DestinationsService:
         name: str,
         provider: str,
         template: str,
-        routable: bool,
         config: DestinationConfig,
     ) -> Destination:
         destination = Destination(
@@ -31,7 +30,6 @@ class DestinationsService:
             provider=provider,
             type=config.type,
             template=template,
-            routable=routable,
             config=config,
         )
 

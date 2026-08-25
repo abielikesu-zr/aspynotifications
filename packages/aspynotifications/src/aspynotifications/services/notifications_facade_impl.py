@@ -339,7 +339,6 @@ class NotificationsFacadeImpl(NotificationsFacade):
                 name=request.name,
                 provider=request.provider,
                 template=request.template,
-                routable=request.routable,
                 config=config,
             )
         except DestinationAlreadyExistsError as exc:

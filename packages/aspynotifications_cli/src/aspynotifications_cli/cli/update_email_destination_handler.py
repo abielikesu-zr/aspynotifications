@@ -17,7 +17,6 @@ async def update_email_destination_handler(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
     to: tuple[str, ...],
     cc: tuple[str, ...],
     bcc: tuple[str, ...],
@@ -32,7 +31,6 @@ async def update_email_destination_handler(
             id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
             config=EmailDestinationConfigDTO(
                 to=list(to),
                 cc=list(cc),

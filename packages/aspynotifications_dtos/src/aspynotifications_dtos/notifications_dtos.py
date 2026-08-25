@@ -103,7 +103,6 @@ class SlackChannelDestinationConfigDTO(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     type: Literal["slack_channel"] = "slack_channel"
-    channel_id: str = Field(..., min_length=1)
 
 
 DestinationConfigDTO = Annotated[
@@ -120,7 +119,6 @@ class CreateDestinationRequest(BaseModel):
     name: str = Field(..., min_length=1)
     provider: str = Field(..., min_length=1)
     template: str = Field(..., min_length=1)
-    routable: bool = False
     config: DestinationConfigDTO
 
 
@@ -130,7 +128,6 @@ class UpdateDestinationRequest(BaseModel):
     id: str = Field(..., min_length=1)
     provider: str = Field(..., min_length=1)
     template: str = Field(..., min_length=1)
-    routable: bool = False
     config: DestinationConfigDTO
 
 

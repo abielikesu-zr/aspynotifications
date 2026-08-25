@@ -15,7 +15,6 @@ async def update_output_hole_destination_handler(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
     output_format: str,
 ) -> None:
     log = logger.bind(function="update_output_hole_destination_handler")
@@ -27,7 +26,6 @@ async def update_output_hole_destination_handler(
             id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
             config=OutputHoleDestinationConfigDTO(),
         )
     )

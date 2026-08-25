@@ -25,15 +25,13 @@ async def test_localfs_create_retrieve_list_update_and_delete(tmp_path: Path) ->
         name="email-alerts",
         provider="email",
         template="incident-template",
-        routable=False,
         config=EmailDestinationConfig(to=["alerts@example.com"]),
     )
     second = await service.create_destination(
         name="slack-alerts",
         provider="slack",
         template="incident-template",
-        routable=False,
-        config=SlackChannelDestinationConfig(channel_id="C123"),
+        config=SlackChannelDestinationConfig(),
     )
 
     # Assert
@@ -64,15 +62,13 @@ async def test_localfs_persists_all_endpoint_configuration_variants(
         name="email-alerts",
         provider="email",
         template="incident-template",
-        routable=False,
         config=EmailDestinationConfig(to=["alerts@example.com"]),
     )
     slack = await service.create_destination(
         name="slack-alerts",
         provider="slack",
         template="incident-template",
-        routable=False,
-        config=SlackChannelDestinationConfig(channel_id="C123"),
+        config=SlackChannelDestinationConfig(),
     )
     # Assert
     for destination in (email, slack):

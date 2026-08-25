@@ -17,8 +17,6 @@ async def update_slack_channel_destination_handler(
     destination_id: str,
     provider: str,
     template: str,
-    routable: bool,
-    channel_id: str,
     output_format: str,
 ) -> None:
     log = logger.bind(function="update_slack_channel_destination_handler")
@@ -30,8 +28,7 @@ async def update_slack_channel_destination_handler(
             id=destination_id,
             provider=provider,
             template=template,
-            routable=routable,
-            config=SlackChannelDestinationConfigDTO(channel_id=channel_id),
+            config=SlackChannelDestinationConfigDTO(),
         )
     )
     data = result.model_dump(mode="json")

@@ -56,7 +56,7 @@ def _provider(provider_type: str) -> NotificationProvider:
 def _destination(destination_type: str) -> Destination:
     config_by_type = {
         "email": {"type": "email", "to": ["alerts@example.com"]},
-        "slack_channel": {"type": "slack_channel", "channel_id": "C123"},
+        "slack_channel": {"type": "slack_channel"},
     }
     return Destination.model_validate(
         {
