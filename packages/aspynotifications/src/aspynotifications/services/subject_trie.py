@@ -35,6 +35,44 @@ class SubjectTrie:
 
         return [".".join(key) for key, _ in self._trie.items()]
 
+    def get_subscription_subjects(self) -> list[str]:
+        """Return subjects after removing those covered by a broader pattern.
+
+        Policy matching retains every subject in the trie.  Worker subscriptions,
+        however, must not contain both a broad pattern and one of its subsets:
+        subscribing to ``*.created`` already receives ``tenant.created``.
+        """
+        subjects = self.get_subjects()
+
+        return [
+            subject
+            for subject in subjects
+            if not any(
+                broader_subject != subject
+                and self._subject_covers(broader_subject, subject)
+                for broader_subject in subjects
+            )
+        ]
+
+    @staticmethod
+    def _subject_covers(broader_subject: str, narrower_subject: str) -> bool:
+        """Whether every event matching ``narrower_subject`` matches the broader one."""
+        broader_tokens = broader_subject.split(".")
+        narrower_tokens = narrower_subject.split(".")
+
+        for index, broader_token in enumerate(broader_tokens):
+            if broader_token == ">":
+                return index < len(narrower_tokens)
+
+            if index >= len(narrower_tokens):
+                return False
+
+            narrower_token = narrower_tokens[index]
+            if broader_token not in ("*", narrower_token):
+                return False
+
+        return len(broader_tokens) == len(narrower_tokens)
+
     def build(self, pairs: Iterable[tuple[str, str]]) -> None:
         """Rebuild the trie from a list of (subject_pattern, id) pairs."""
         self.reset()

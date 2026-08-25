@@ -408,4 +408,4 @@ class NotificationPolicyService:
 
     async def get_subscriptions(self) -> list[str]:
         await self._ensure_subject_trie()
-        return self.subject_trie.get_subjects()
+        return self.subject_trie.get_subscription_subjects()
