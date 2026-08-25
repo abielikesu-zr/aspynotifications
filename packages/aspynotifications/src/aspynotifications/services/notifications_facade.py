@@ -8,6 +8,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     NotificationSubscriptionsDTO,
     TemplateDTO,
+    UpdateTemplateRequest,
 )
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
@@ -38,6 +39,11 @@ class NotificationsFacade(ABC):
     @abstractmethod
     async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
         """Create a notification template."""
+        ...
+
+    @abstractmethod
+    async def update_template(self, request: UpdateTemplateRequest) -> TemplateDTO:
+        """Update a notification template."""
         ...
 
     @abstractmethod

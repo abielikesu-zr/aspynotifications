@@ -11,6 +11,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     NotificationSubscriptionsDTO,
     TemplateDTO,
+    UpdateTemplateRequest,
 )
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.providers_dtos import (
@@ -278,6 +279,11 @@ class NotificationsFacadeImpl(NotificationsFacade):
         template = Template.model_validate(request.model_dump())
         created_template = await self._template_service.create_template(template)
         return TemplateDTO.model_validate(created_template.model_dump())
+
+    async def update_template(self, request: UpdateTemplateRequest) -> TemplateDTO:
+        template = Template.model_validate(request.model_dump())
+        updated_template = await self._template_service.update_template(template)
+        return TemplateDTO.model_validate(updated_template.model_dump())
 
     async def create_destination(
         self,

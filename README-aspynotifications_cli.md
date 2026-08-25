@@ -2,12 +2,21 @@
 
 `aspynotifications_cli` is the command-line client for submitting notification requests to the Notifications REST service through `aspynotifications_sdk`.
 
-## Available command
+## Available commands
 
-The package exposes one Click command:
+The package exposes the `send-event` command and administrative commands for notification resources:
 
 ```text
 send-event --from-file PATH [--output-format print|json] [-v|-q] [--log-format plain|json]
+create-slack-provider --name NAME --webhook-url URL
+create-zeptomail-provider --name NAME --from-address ADDRESS --send-mail-token TOKEN
+create-shole-provider --name NAME
+create-template --name NAME [--slack-blocks-inline BLOCKS]
+update-template --name NAME --slack-blocks-inline BLOCKS
+create-email-destination --name NAME --provider PROVIDER --template TEMPLATE
+create-slack-channel-destination --name NAME --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
+create-output-hole-destination --name NAME --provider PROVIDER --template TEMPLATE
+create-policy --name NAME --subject SUBJECT --destination DESTINATION
 ```
 
 It reads a JSON file, validates it as `CreateNotifyRequest`, loads the SDK configuration, obtains the configured `NotificationsSDK`, and calls `notify`.
@@ -19,6 +28,19 @@ python -m aspynotifications_cli.cli.main send-event --from-file notification.jso
 ```
 
 The current handler always prints the server response. `--output-format` is accepted by the command but is not yet used to alter that output.
+
+## Updating a Slack template
+
+`update-template` replaces the Slack blocks of an existing template and preserves its name. It is a full replacement of the Slack representation; it does not merge content with the stored template.
+
+```bash
+notify update-template \
+  --name entity-created-slack-template \
+  --slack-blocks-inline "$(cat /path/entity.created-slack.yaml)" \
+  --output-format json
+```
+
+The template must already exist. The command loads CLI configuration and delegates the request to `aspynotifications_sdk`; it does not call REST directly.
 
 ## Request file
 

@@ -59,6 +59,10 @@ class CreateTemplateRequest(BaseModel):
     output_hole: BHoleTemplateDTO | None = None
 
 
+class UpdateTemplateRequest(CreateTemplateRequest):
+    """Full replacement request for an existing notification template."""
+
+
 class TemplateDTO(CreateTemplateRequest):
     pass
 

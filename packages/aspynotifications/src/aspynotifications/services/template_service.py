@@ -32,6 +32,10 @@ class TemplateService:
     async def update_template(self, template: Template) -> Template:
         log = logger.bind(function="update_template")
         try:
+            existing_template = await self.get_template_by_name(template.name)
+            if existing_template is None:
+                raise ValueError(f"Template not found: {template.name}")
+
             await self._store.save_template(template)
 
             log.debug("Template updated", name=template.name)

@@ -19,6 +19,7 @@ from aspynotifications_dtos.notifications_dtos import (
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
+    UpdateTemplateRequest,
 )
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
@@ -106,6 +107,15 @@ class NotificationsRestClient(INotificationsClientPort):
             "POST",
             "/api/v1/templates",
             payload=request.model_dump(),
+        )
+        return TemplateDTO.model_validate(resp.json())
+
+    async def update_template(self, request: UpdateTemplateRequest) -> TemplateDTO:
+        logger.debug("update template rest client request", request=request)
+        resp = await self._handle_request(
+            "PUT",
+            f"/api/v1/templates/{request.name}",
+            payload=request.model_dump(mode="json"),
         )
         return TemplateDTO.model_validate(resp.json())
 

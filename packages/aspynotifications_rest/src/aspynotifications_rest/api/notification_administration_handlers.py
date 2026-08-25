@@ -7,12 +7,13 @@ from aspynotifications_dtos.notifications_dtos import (
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
+    UpdateTemplateRequest,
 )
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     NotificationProviderDTO,
 )
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 logger = structlog.get_logger(__name__)
@@ -53,6 +54,25 @@ async def create_template(
     facade: NotificationsFacade = request.app.state.notifications_facade
     template: TemplateDTO = await facade.create_template(body)
     logger.info("Notification template created", name=template.name)
+    return JSONResponse(content=template.model_dump())
+
+
+@notification_administration_router.put("/templates/{template_name}")
+async def update_template(
+    template_name: str,
+    body: UpdateTemplateRequest,
+    request: Request,
+) -> JSONResponse:
+    if body.name != template_name:
+        raise HTTPException(
+            status_code=400,
+            detail="Path template name does not match request body name",
+        )
+
+    logger.info("Updating notification template", name=body.name)
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    template: TemplateDTO = await facade.update_template(body)
+    logger.info("Notification template updated", name=template.name)
     return JSONResponse(content=template.model_dump())
 
 

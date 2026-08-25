@@ -28,6 +28,7 @@ from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
 )
 from aspynotifications_cli.cli.create_template_handler import create_template_handler
 from aspynotifications_cli.cli.send_event_handler import send_event_handler
+from aspynotifications_cli.cli.update_template_handler import update_template_handler
 
 
 @click.group()
@@ -192,6 +193,28 @@ def create_template(
     )
 
 
+@click.command("update-template")
+@click.option("--name", required=True)
+@click.option("--slack-blocks-inline", required=True)
+@common_logging_options
+def update_template(
+    name: str,
+    slack_blocks_inline: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_template_handler(
+            name=name,
+            slack_blocks_inline=slack_blocks_inline,
+            output_format=output_format,
+        )
+    )
+
+
 @click.command("create-email-destination")
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
@@ -329,6 +352,7 @@ cli.add_command(create_slack_provider)
 cli.add_command(create_zeptomail_provider)
 cli.add_command(create_shole_provider)
 cli.add_command(create_template)
+cli.add_command(update_template)
 cli.add_command(create_email_destination)
 cli.add_command(create_slack_channel_destination)
 cli.add_command(create_output_hole_destination)
