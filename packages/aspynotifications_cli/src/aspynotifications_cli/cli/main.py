@@ -32,6 +32,12 @@ from aspynotifications_cli.cli.update_template_handler import update_template_ha
 from aspynotifications_cli.cli.update_notification_policy_handler import (
     update_notification_policy_handler,
 )
+from aspynotifications_cli.cli.activate_notification_policy_handler import (
+    activate_notification_policy_handler,
+)
+from aspynotifications_cli.cli.deactivate_notification_policy_handler import (
+    deactivate_notification_policy_handler,
+)
 from aspynotifications_cli.cli.update_email_destination_handler import (
     update_email_destination_handler,
 )
@@ -577,6 +583,44 @@ def update_policy(
     )
 
 
+@click.command("activate-policy")
+@click.option("--id", "policy_id", required=True)
+@common_logging_options
+def activate_policy(
+    policy_id: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        activate_notification_policy_handler(
+            policy_id=policy_id,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("deactivate-policy")
+@click.option("--id", "policy_id", required=True)
+@common_logging_options
+def deactivate_policy(
+    policy_id: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        deactivate_notification_policy_handler(
+            policy_id=policy_id,
+            output_format=output_format,
+        )
+    )
+
+
 cli.add_command(create_slack_provider)
 cli.add_command(create_zeptomail_provider)
 cli.add_command(create_shole_provider)
@@ -593,6 +637,8 @@ cli.add_command(update_slack_channel_destination)
 cli.add_command(update_output_hole_destination)
 cli.add_command(create_policy)
 cli.add_command(update_policy)
+cli.add_command(activate_policy)
+cli.add_command(deactivate_policy)
 
 
 if __name__ == "__main__":

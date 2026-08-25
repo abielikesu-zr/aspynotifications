@@ -24,6 +24,8 @@ update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --templ
 update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
 update-policy --id POLICY_ID --subject SUBJECT --destination DESTINATION
+activate-policy --id POLICY_ID
+deactivate-policy --id POLICY_ID
 ```
 
 It reads a JSON file, validates it as `CreateNotifyRequest`, loads the SDK configuration, obtains the configured `NotificationsSDK`, and calls `notify`.
@@ -126,6 +128,16 @@ notify update-policy \
   --destination entity-slack-destination \
   --envelope-policy environment "context.environment == 'production'" "Production only" \
   --output-format json
+```
+
+## Activating and deactivating notification policies
+
+New Policies are active by default. A deactivated Policy remains stored but
+does not participate in event matching or notification delivery.
+
+```bash
+notify deactivate-policy --id POLICY_ID --output-format json
+notify activate-policy --id POLICY_ID --output-format json
 ```
 
 ## Request file

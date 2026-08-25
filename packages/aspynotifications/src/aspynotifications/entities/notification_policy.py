@@ -15,6 +15,7 @@ class NotificationPolicy(BaseModel):
         destination_policies: Policies evaluated against the full policy
             context.
         destinations: Notification destinations to use when the policy matches.
+        is_active: Whether the notification policy participates in matching.
     """
 
     model_config = ConfigDict(
@@ -50,4 +51,9 @@ class NotificationPolicy(BaseModel):
     destinations: list[str] = Field(
         min_length=1,
         description="Destinations used when the notification policy matches.",
+    )
+
+    is_active: bool = Field(
+        default=True,
+        description="Whether the notification policy is active.",
     )

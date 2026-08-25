@@ -1,8 +1,10 @@
 import structlog
 from aspynotifications_dtos.notifications_dtos import (
+    ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
     CreateTemplateRequest,
+    DeactivateNotificationPolicyRequest,
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
@@ -45,6 +47,20 @@ class NotificationsSDK:
     ) -> NotificationPolicyDTO:
         logger.debug("update notification policy sdk request", request=request)
         return await self._client.update_notification_policy(request)
+
+    async def activate_notification_policy(
+        self,
+        request: ActivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug("activate notification policy sdk request", request=request)
+        return await self._client.activate_notification_policy(request)
+
+    async def deactivate_notification_policy(
+        self,
+        request: DeactivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug("deactivate notification policy sdk request", request=request)
+        return await self._client.deactivate_notification_policy(request)
 
     async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
         logger.debug("create template sdk request", request=request)

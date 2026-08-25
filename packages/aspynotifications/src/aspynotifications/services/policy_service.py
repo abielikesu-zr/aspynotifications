@@ -56,7 +56,11 @@ class NotificationPolicyService:
 
             policies = await self.notification_policy_store.list_notification_policies()
 
-            self.subject_trie.build((policy.subject, policy.id) for policy in policies)
+            self.subject_trie.build(
+                (policy.subject, policy.id)
+                for policy in policies
+                if policy.is_active
+            )
             self._policy_cache = {policy.id: policy for policy in policies}
             self._policy_cache_valid = True
 
@@ -173,6 +177,38 @@ class NotificationPolicyService:
         self._invalidate_caches()
         logger.info(
             "Notification policy updated",
+            policy_id=policy.id,
+            name=policy.name,
+        )
+        return policy
+
+    async def activate_notification_policy(
+        self,
+        policy_id: str,
+    ) -> NotificationPolicy:
+        """Activate an existing notification policy."""
+        policy = await self._get_notification_policy_or_raise(policy_id)
+        policy.is_active = True
+        await self.notification_policy_store.save_notification_policy(policy)
+        self._invalidate_caches()
+        logger.info(
+            "Notification policy activated",
+            policy_id=policy.id,
+            name=policy.name,
+        )
+        return policy
+
+    async def deactivate_notification_policy(
+        self,
+        policy_id: str,
+    ) -> NotificationPolicy:
+        """Deactivate an existing notification policy."""
+        policy = await self._get_notification_policy_or_raise(policy_id)
+        policy.is_active = False
+        await self.notification_policy_store.save_notification_policy(policy)
+        self._invalidate_caches()
+        logger.info(
+            "Notification policy deactivated",
             policy_id=policy.id,
             name=policy.name,
         )

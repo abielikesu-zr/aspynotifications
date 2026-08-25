@@ -13,9 +13,11 @@ from aspyadapters.adapters.http_exceptions import (
 from aspyplugs.registry import register_plugin
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
 from aspynotifications_dtos.notifications_dtos import (
+    ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
     CreateTemplateRequest,
+    DeactivateNotificationPolicyRequest,
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
@@ -64,6 +66,8 @@ class NotificationsRestClient(INotificationsClientPort):
                 return await self._http.post(self._url(path), **kwargs)
             elif method == "PUT":
                 return await self._http.put(self._url(path), **kwargs)
+            elif method == "PATCH":
+                return await self._http.patch(self._url(path), **kwargs)
             elif method == "DELETE":
                 return await self._http.delete(self._url(path), **kwargs)
             else:
@@ -113,6 +117,28 @@ class NotificationsRestClient(INotificationsClientPort):
             "PUT",
             f"/api/v1/policies/{request.id}",
             payload=request.model_dump(mode="json"),
+        )
+        return NotificationPolicyDTO.model_validate(resp.json())
+
+    async def activate_notification_policy(
+        self,
+        request: ActivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug("activate notification policy rest client request", request=request)
+        resp = await self._handle_request(
+            "PATCH",
+            f"/api/v1/policies/{request.policy_id}/activate",
+        )
+        return NotificationPolicyDTO.model_validate(resp.json())
+
+    async def deactivate_notification_policy(
+        self,
+        request: DeactivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug("deactivate notification policy rest client request", request=request)
+        resp = await self._handle_request(
+            "PATCH",
+            f"/api/v1/policies/{request.policy_id}/deactivate",
         )
         return NotificationPolicyDTO.model_validate(resp.json())
 

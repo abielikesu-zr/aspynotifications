@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 
 from aspynotifications_dtos.notifications_dtos import (
+    ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
     CreateTemplateRequest,
+    DeactivateNotificationPolicyRequest,
     DestinationDTO,
     NotificationPolicyDTO,
     NotificationSubscriptionsDTO,
@@ -45,6 +47,22 @@ class NotificationsFacade(ABC):
         request: UpdateNotificationPolicyRequest,
     ) -> NotificationPolicyDTO:
         """Update a notification policy."""
+        ...
+
+    @abstractmethod
+    async def activate_notification_policy(
+        self,
+        request: ActivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        """Activate a notification policy."""
+        ...
+
+    @abstractmethod
+    async def deactivate_notification_policy(
+        self,
+        request: DeactivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        """Deactivate a notification policy."""
         ...
 
     @abstractmethod

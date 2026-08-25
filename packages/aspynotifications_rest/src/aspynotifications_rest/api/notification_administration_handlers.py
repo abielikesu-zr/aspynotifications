@@ -1,9 +1,11 @@
 import structlog
 from aspynotifications.services.notifications_facade import NotificationsFacade
 from aspynotifications_dtos.notifications_dtos import (
+    ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
     CreateTemplateRequest,
+    DeactivateNotificationPolicyRequest,
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
@@ -73,6 +75,34 @@ async def update_notification_policy(
         policy_id=policy.id,
         name=policy.name,
     )
+    return JSONResponse(content=policy.model_dump())
+
+
+@notification_administration_router.patch("/policies/{policy_id}/activate")
+async def activate_notification_policy(
+    policy_id: str,
+    request: Request,
+) -> JSONResponse:
+    logger.info("Activating notification policy", policy_id=policy_id)
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    policy: NotificationPolicyDTO = await facade.activate_notification_policy(
+        ActivateNotificationPolicyRequest(policy_id=policy_id)
+    )
+    logger.info("Notification policy activated", policy_id=policy.id, name=policy.name)
+    return JSONResponse(content=policy.model_dump())
+
+
+@notification_administration_router.patch("/policies/{policy_id}/deactivate")
+async def deactivate_notification_policy(
+    policy_id: str,
+    request: Request,
+) -> JSONResponse:
+    logger.info("Deactivating notification policy", policy_id=policy_id)
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    policy: NotificationPolicyDTO = await facade.deactivate_notification_policy(
+        DeactivateNotificationPolicyRequest(policy_id=policy_id)
+    )
+    logger.info("Notification policy deactivated", policy_id=policy.id, name=policy.name)
     return JSONResponse(content=policy.model_dump())
 
 

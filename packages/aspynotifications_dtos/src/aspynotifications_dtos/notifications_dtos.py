@@ -42,8 +42,21 @@ class UpdateNotificationPolicyRequest(BaseModel):
     destinations: list[str] = Field(..., min_length=1)
 
 
+class ActivateNotificationPolicyRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    policy_id: str = Field(..., min_length=1)
+
+
+class DeactivateNotificationPolicyRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    policy_id: str = Field(..., min_length=1)
+
+
 class NotificationPolicyDTO(CreateNotificationPolicyRequest):
     id: str = Field(..., min_length=1)
+    is_active: bool
 
 
 class EmailTemplateDTO(BaseModel):

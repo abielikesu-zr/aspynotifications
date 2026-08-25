@@ -4,9 +4,11 @@ import structlog
 from aspyevents_dtos.cloud_event_dto import CloudEventDTO
 from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from aspynotifications_dtos.notifications_dtos import (
+    ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
     CreateNotificationPolicyRequest,
     CreateTemplateRequest,
+    DeactivateNotificationPolicyRequest,
     DestinationDTO,
     NotificationPolicyDTO,
     NotificationSubscriptionsDTO,
@@ -294,6 +296,24 @@ class NotificationsFacadeImpl(NotificationsFacade):
                 for policy in request.destination_policies
             ],
             destinations=request.destinations,
+        )
+        return NotificationPolicyDTO.model_validate(policy.model_dump())
+
+    async def activate_notification_policy(
+        self,
+        request: ActivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        policy = await self._notification_policy_service.activate_notification_policy(
+            request.policy_id
+        )
+        return NotificationPolicyDTO.model_validate(policy.model_dump())
+
+    async def deactivate_notification_policy(
+        self,
+        request: DeactivateNotificationPolicyRequest,
+    ) -> NotificationPolicyDTO:
+        policy = await self._notification_policy_service.deactivate_notification_policy(
+            request.policy_id
         )
         return NotificationPolicyDTO.model_validate(policy.model_dump())
 
