@@ -17,6 +17,9 @@ update-template --name NAME --slack-blocks-inline BLOCKS
 create-email-destination --name NAME --provider PROVIDER --template TEMPLATE
 create-slack-channel-destination --name NAME --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
 create-output-hole-destination --name NAME --provider PROVIDER --template TEMPLATE
+update-email-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
+update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE --channel-id CHANNEL_ID
+update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
 ```
 
@@ -58,6 +61,42 @@ notify update-shole-provider \
   --id PROVIDER_ID \
   --level WARN \
   --cows \
+  --output-format json
+```
+
+## Actualizar Destinations de notificaciones
+
+Cada tipo de Destination tiene su propio comando de actualizacion. El
+Destination se identifica por `id` y conserva su nombre; se reemplazan por
+completo el Provider, Template, bandera routable y configuracion tipada.
+
+```bash
+notify update-email-destination \
+  --id DESTINATION_ID \
+  --provider corporate-mail \
+  --template email-notification-template \
+  --routable \
+  --to alerts@example.com \
+  --cc audit@example.com \
+  --output-format json
+```
+
+```bash
+notify update-slack-channel-destination \
+  --id DESTINATION_ID \
+  --provider operations-slack \
+  --template slack-notification-template \
+  --routable \
+  --channel-id CHANNEL_ID \
+  --output-format json
+```
+
+```bash
+notify update-output-hole-destination \
+  --id DESTINATION_ID \
+  --provider output-hole-provider \
+  --template output-hole-template \
+  --routable \
   --output-format json
 ```
 

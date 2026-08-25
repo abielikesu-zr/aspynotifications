@@ -11,6 +11,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     NotificationSubscriptionsDTO,
     TemplateDTO,
+    UpdateDestinationRequest,
     UpdateTemplateRequest,
 )
 from aspynotifications_dtos.notify_event_request import CreateNotifyRequest
@@ -304,6 +305,25 @@ class NotificationsFacadeImpl(NotificationsFacade):
         except DestinationAlreadyExistsError as exc:
             raise ResourceAlreadyExistsError(str(exc)) from exc
         return DestinationDTO.model_validate(destination.model_dump())
+
+    async def update_destination(
+        self,
+        request: UpdateDestinationRequest,
+    ) -> DestinationDTO:
+        existing_destination = await self._destinations_service.get_destination_by_id(
+            request.id
+        )
+        if existing_destination is None:
+            raise ValueError(f"Destination not found: {request.id}")
+
+        destination_data = existing_destination.model_dump()
+        destination_data.update(request.model_dump())
+        destination_data["type"] = request.config.type
+        destination = Destination.model_validate(destination_data)
+        updated_destination = await self._destinations_service.update_destination(
+            destination
+        )
+        return DestinationDTO.model_validate(updated_destination.model_dump())
 
     async def create_notification_provider(
         self,

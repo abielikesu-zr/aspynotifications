@@ -101,6 +101,16 @@ class CreateDestinationRequest(BaseModel):
     config: DestinationConfigDTO
 
 
+class UpdateDestinationRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(..., min_length=1)
+    provider: str = Field(..., min_length=1)
+    template: str = Field(..., min_length=1)
+    routable: bool = False
+    config: DestinationConfigDTO
+
+
 class DestinationDTO(CreateDestinationRequest):
     id: str = Field(..., min_length=1)
     type: Literal["email", "slack_channel", "output_hole"]

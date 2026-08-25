@@ -7,6 +7,7 @@ from aspynotifications_dtos.notifications_dtos import (
     DestinationDTO,
     NotificationPolicyDTO,
     TemplateDTO,
+    UpdateDestinationRequest,
     UpdateTemplateRequest,
 )
 from aspynotifications_dtos.providers_dtos import (
@@ -94,6 +95,36 @@ async def create_destination(
     destination: DestinationDTO = await facade.create_destination(body)
     logger.info(
         "Notification destination created",
+        destination_id=destination.id,
+        name=destination.name,
+    )
+    return JSONResponse(content=destination.model_dump())
+
+
+@notification_administration_router.put("/destinations/{destination_id}")
+async def update_destination(
+    destination_id: str,
+    body: UpdateDestinationRequest,
+    request: Request,
+) -> JSONResponse:
+    if body.id != destination_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Path destination ID does not match request body ID",
+        )
+
+    logger.info(
+        "Updating notification destination",
+        destination_id=body.id,
+        provider=body.provider,
+        template=body.template,
+        destination_type=body.config.type,
+        routable=body.routable,
+    )
+    facade: NotificationsFacade = request.app.state.notifications_facade
+    destination: DestinationDTO = await facade.update_destination(body)
+    logger.info(
+        "Notification destination updated",
         destination_id=destination.id,
         name=destination.name,
     )

@@ -200,6 +200,35 @@ async def test_update_destination_persists_existing_destination() -> None:
 
 
 @pytest.mark.asyncio
+async def test_update_destination_persists_replacement_values() -> None:
+    # Arrange
+    store = _store()
+    existing_destination = _destination()
+    updated_destination = existing_destination.model_copy(
+        update={
+            "provider": "replacement-provider",
+            "template": "replacement-template",
+            "routable": True,
+            "config": EmailDestinationConfig(to=["replacement@example.com"]),
+        }
+    )
+    store.get_destination = AsyncMock(return_value=existing_destination)
+    store.get_destination_by_name = AsyncMock(return_value=existing_destination)
+
+    # Act
+    result = await _service(store).update_destination(updated_destination)
+
+    # Assert
+    assert result.id == existing_destination.id
+    assert result.name == existing_destination.name
+    assert result.provider == "replacement-provider"
+    assert result.template == "replacement-template"
+    assert result.routable is True
+    assert result.config.to == ["replacement@example.com"]
+    store.save_destination.assert_awaited_once_with(updated_destination)
+
+
+@pytest.mark.asyncio
 async def test_update_destination_rejects_missing_destination() -> None:
     # Arrange
     store = _store()

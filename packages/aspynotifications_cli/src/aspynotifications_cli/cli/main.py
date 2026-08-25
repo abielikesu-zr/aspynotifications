@@ -29,6 +29,12 @@ from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
 from aspynotifications_cli.cli.create_template_handler import create_template_handler
 from aspynotifications_cli.cli.send_event_handler import send_event_handler
 from aspynotifications_cli.cli.update_template_handler import update_template_handler
+from aspynotifications_cli.cli.update_email_destination_handler import (
+    update_email_destination_handler,
+)
+from aspynotifications_cli.cli.update_output_hole_destination_handler import (
+    update_output_hole_destination_handler,
+)
 from aspynotifications_cli.cli.update_shole_provider_handler import (
     update_shole_provider_handler,
 )
@@ -37,6 +43,9 @@ from aspynotifications_cli.cli.update_slack_provider_handler import (
 )
 from aspynotifications_cli.cli.update_zeptomail_provider_handler import (
     update_zeptomail_provider_handler,
+)
+from aspynotifications_cli.cli.update_slack_channel_destination_handler import (
+    update_slack_channel_destination_handler,
 )
 
 
@@ -395,6 +404,102 @@ def create_output_hole_destination(
     )
 
 
+@click.command("update-email-destination")
+@click.option("--id", "destination_id", required=True)
+@click.option("--provider", required=True)
+@click.option("--template", required=True)
+@click.option("--routable/--not-routable", default=False)
+@click.option("--to", multiple=True)
+@click.option("--cc", multiple=True)
+@click.option("--bcc", multiple=True)
+@common_logging_options
+def update_email_destination(
+    destination_id: str,
+    provider: str,
+    template: str,
+    routable: bool,
+    to: tuple[str, ...],
+    cc: tuple[str, ...],
+    bcc: tuple[str, ...],
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_email_destination_handler(
+            destination_id=destination_id,
+            provider=provider,
+            template=template,
+            routable=routable,
+            to=to,
+            cc=cc,
+            bcc=bcc,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-slack-channel-destination")
+@click.option("--id", "destination_id", required=True)
+@click.option("--provider", required=True)
+@click.option("--template", required=True)
+@click.option("--routable/--not-routable", default=False)
+@click.option("--channel-id", required=True)
+@common_logging_options
+def update_slack_channel_destination(
+    destination_id: str,
+    provider: str,
+    template: str,
+    routable: bool,
+    channel_id: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_slack_channel_destination_handler(
+            destination_id=destination_id,
+            provider=provider,
+            template=template,
+            routable=routable,
+            channel_id=channel_id,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-output-hole-destination")
+@click.option("--id", "destination_id", required=True)
+@click.option("--provider", required=True)
+@click.option("--template", required=True)
+@click.option("--routable/--not-routable", default=False)
+@common_logging_options
+def update_output_hole_destination(
+    destination_id: str,
+    provider: str,
+    template: str,
+    routable: bool,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_output_hole_destination_handler(
+            destination_id=destination_id,
+            provider=provider,
+            template=template,
+            routable=routable,
+            output_format=output_format,
+        )
+    )
+
+
 @click.command("create-policy")
 @click.option("--name", required=True)
 @click.option("--subject", required=True)
@@ -443,6 +548,9 @@ cli.add_command(update_template)
 cli.add_command(create_email_destination)
 cli.add_command(create_slack_channel_destination)
 cli.add_command(create_output_hole_destination)
+cli.add_command(update_email_destination)
+cli.add_command(update_slack_channel_destination)
+cli.add_command(update_output_hole_destination)
 cli.add_command(create_policy)
 
 
