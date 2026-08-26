@@ -31,3 +31,33 @@ aspyplugs_static:
       - name: common_logging_options
         module: aspynotifications_cli.cli.main
         params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
+      - name: common_logging_options
+        module: aspynotifications_cli.cli.main
+        params: []
