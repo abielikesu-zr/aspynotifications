@@ -25,6 +25,18 @@ aspyplugs_static:
       - name: notification_administration_router
         module: aspynotifications_rest.api.notification_administration_handlers
         params: []
+      - name: notification_administration_router
+        module: aspynotifications_rest.api.notification_administration_handlers
+        params: []
+      - name: notification_administration_router
+        module: aspynotifications_rest.api.notification_administration_handlers
+        params: []
+      - name: notification_administration_router
+        module: aspynotifications_rest.api.notification_administration_handlers
+        params: []
+      - name: notification_administration_router
+        module: aspynotifications_rest.api.notification_administration_handlers
+        params: []
       - name: notifications_router
         module: aspynotifications_rest.api.notifications_handlers
         params: []
