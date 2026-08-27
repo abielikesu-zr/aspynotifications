@@ -1,0 +1,52 @@
+# Type: EventsSdkParams
+events_sdk:
+
+  # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
+  http_client:
+
+    # Maximum time in seconds to wait for an HTTP request to complete.
+
+    # Type: float
+
+    timeout: "5.0"
+
+    # Maximum number of times a failed HTTP request is retried.
+
+    # Type: int
+
+    max_retries: "1"
+
+    # Initial backoff delay in seconds used before retrying a failed request.
+
+    # Type: float
+
+    backoff_base: "0.15"
+
+    # Maximum backoff delay in seconds between retry attempts.
+
+    # Type: float
+
+    backoff_max: "1.0"
+
+    # Whether TLS certificates are verified for HTTPS requests.
+
+    # Type: bool
+
+    verify: "True"
+
+  # Type: EventClientConfig
+  events_client:
+
+    # Type: NopClientAdapterConfig
+    adapter:
+
+      # Type: Literal['NOP']
+
+      type: "NOP"
+
+      # Type: NopClientConfig
+      config:
+
+        # Type: str
+
+        status: "ok"

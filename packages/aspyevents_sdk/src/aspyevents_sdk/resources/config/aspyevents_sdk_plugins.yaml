@@ -8,6 +8,9 @@ aspyplugs_static:
         - type: NATS
           module: aspyevents_sdk.adapters.events_nats_client
           eager: false
+        - type: NOP
+          module: aspyevents_sdk.adapters.events_nop_client
+          eager: false
         - type: REST
           module: aspyevents_sdk.adapters.events_rest_client
           eager: false

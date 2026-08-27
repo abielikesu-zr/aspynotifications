@@ -1,0 +1,6 @@
+aspyevents_sdk:
+  deploy:
+    templates:
+    - src: aspyevents_sdk.yaml.j2
+      dest: '{{ install_dir }}/config/aspyevents_sdk.yaml'
+      permissions: '0600'

@@ -14,10 +14,19 @@ class RestClientAdapterConfig(BaseModel):
     config: RestClientConfig = Field(...)
 
 
+class NopClientConfig(BaseModel):
+    status: str = "ok"
+
+
+class NopClientAdapterConfig(BaseModel):
+    type: Literal["NOP"] = "NOP"
+    config: NopClientConfig = Field(...)
+
+
 class EventClientConfig(BaseModel):
-    adapter: RestClientAdapterConfig | NatsClientAdapterConfig = Field(
-        ..., discriminator="type"
-    )
+    adapter: (
+        NopClientAdapterConfig | RestClientAdapterConfig | NatsClientAdapterConfig
+    ) = Field(..., discriminator="type")
 
 
 class EventsSdkParams(BaseModel):
