@@ -16,9 +16,8 @@ class EventsArchiveWorker(CloudEventsWorker):
         config: dict[str, Any],
         events_facade: EventsFacade,
     ) -> None:
-        self.config = CloudEventsWorkerConfig.model_validate(config)
-        self.name = self.config.name
-        super().__init__(name=self.name, config=self.config)
+        cfg = CloudEventsWorkerConfig.model_validate(config)
+        super().__init__(name=cfg.name, config=cfg)
         self.events_facade = events_facade
 
     async def handle(self, cloud_event: CloudEventDTO) -> None:
@@ -30,24 +29,13 @@ class EventsArchiveWorker(CloudEventsWorker):
             subject=cloud_event.subject,
         )
 
-        try:
-            request = SaveEventRequest(event=cloud_event)
-            await self.events_facade.save_event(request)
+        request = SaveEventRequest(event=cloud_event)
+        await self.events_facade.save_event(request)
 
-            logger.info(
-                "CloudEvent processed",
-                worker=self.name,
-                event_type=cloud_event.type,
-                source=cloud_event.source,
-                subject=cloud_event.subject,
-            )
-
-        except Exception:
-            logger.exception(
-                "CloudEvent processing failed",
-                worker=self.name,
-                event_type=cloud_event.type,
-                source=cloud_event.source,
-                subject=cloud_event.subject,
-            )
-            raise
+        logger.info(
+            "CloudEvent processed",
+            worker=self.name,
+            event_type=cloud_event.type,
+            source=cloud_event.source,
+            subject=cloud_event.subject,
+        )

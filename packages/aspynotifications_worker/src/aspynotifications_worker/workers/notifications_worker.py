@@ -16,9 +16,8 @@ class NotificationsWorker(CloudEventsWorker):
         config: dict[str, Any],
         notifications_facade: NotificationsFacade,
     ) -> None:
-        self.config = CloudEventsWorkerConfig.model_validate(config)
-        self.name = self.config.name
-        super().__init__(name=self.name, config=self.config)
+        cfg = CloudEventsWorkerConfig.model_validate(config)
+        super().__init__(name=cfg.name, config=cfg)
         self.notifications_facade = notifications_facade
 
     async def get_subscriptions(self) -> list[str]:
@@ -34,24 +33,13 @@ class NotificationsWorker(CloudEventsWorker):
             subject=cloud_event.subject,
         )
 
-        try:
-            request = CreateNotifyRequest(event=cloud_event)
-            await self.notifications_facade.notify(request)
+        request = CreateNotifyRequest(event=cloud_event)
+        await self.notifications_facade.notify(request)
 
-            logger.info(
-                "CloudEvent processed",
-                worker=self.name,
-                event_type=cloud_event.type,
-                source=cloud_event.source,
-                subject=cloud_event.subject,
-            )
-
-        except Exception:
-            logger.exception(
-                "CloudEvent processing failed",
-                worker=self.name,
-                event_type=cloud_event.type,
-                source=cloud_event.source,
-                subject=cloud_event.subject,
-            )
-            raise
+        logger.info(
+            "CloudEvent processed",
+            worker=self.name,
+            event_type=cloud_event.type,
+            source=cloud_event.source,
+            subject=cloud_event.subject,
+        )
