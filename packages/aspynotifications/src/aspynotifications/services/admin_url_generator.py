@@ -26,6 +26,9 @@ class AdminUrlGenerator:
         routes = {
             "tenant": lambda c: f"/admin/tenant/{c['tenant_id']}?tab=overview",
             "bot": lambda c: f"/admin/tenant/{c['tenant_id']}?tab=bots",
+            "kb": lambda c: (
+                f"/admin/tenant/{c['tenant_id']}/kb/{c['kb_id']}?tab=overview"
+            ),
             "bot_installation": lambda c: (
                 f"/admin/tenant/{c['tenant_id']}?tab=installations"
             ),
