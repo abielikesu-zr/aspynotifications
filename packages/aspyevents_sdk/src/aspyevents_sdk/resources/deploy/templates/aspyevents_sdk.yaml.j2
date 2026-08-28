@@ -37,14 +37,14 @@ events_sdk:
   # Type: EventClientConfig
   events_client:
 
-    # Type: NopClientAdapterConfig
+    # Type: NoopClientAdapterConfig
     adapter:
 
-      # Type: Literal['NOP']
+      # Type: Literal['NOOP']
 
-      type: "{{  g_app_es_events_client_adapter_type | default('NOP')   }}"
+      type: "{{  g_app_es_events_client_adapter_type | default('NOOP')   }}"
 
-      # Type: NopClientConfig
+      # Type: NoopClientConfig
       config:
 
         # Type: str

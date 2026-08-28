@@ -37,14 +37,14 @@ events_sdk:
   # Type: EventClientConfig
   events_client:
 
-    # Type: NopClientAdapterConfig
+    # Type: NoopClientAdapterConfig
     adapter:
 
-      # Type: Literal['NOP']
+      # Type: Literal['NOOP']
 
-      type: "NOP"
+      type: "NOOP"
 
-      # Type: NopClientConfig
+      # Type: NoopClientConfig
       config:
 
         # Type: str

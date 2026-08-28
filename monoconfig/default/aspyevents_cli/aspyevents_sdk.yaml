@@ -43,7 +43,7 @@ events_sdk:
 
       
 
-        type: 'NOP'
+        type: 'NOOP'
 
         # Type: NatsClientConfig
         config:

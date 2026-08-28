@@ -14,18 +14,18 @@ class RestClientAdapterConfig(BaseModel):
     config: RestClientConfig = Field(...)
 
 
-class NopClientConfig(BaseModel):
+class NoopClientConfig(BaseModel):
     status: str = "ok"
 
 
-class NopClientAdapterConfig(BaseModel):
-    type: Literal["NOP"] = "NOP"
-    config: NopClientConfig = Field(...)
+class NoopClientAdapterConfig(BaseModel):
+    type: Literal["NOOP"] = "NOOP"
+    config: NoopClientConfig = Field(...)
 
 
 class EventClientConfig(BaseModel):
     adapter: (
-        NopClientAdapterConfig | RestClientAdapterConfig | NatsClientAdapterConfig
+        NoopClientAdapterConfig | RestClientAdapterConfig | NatsClientAdapterConfig
     ) = Field(..., discriminator="type")
 
 
