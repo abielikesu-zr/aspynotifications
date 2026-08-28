@@ -101,6 +101,10 @@ install-packages-to-all-repos.json
 build.sh
 publish.sh
 Makefile
+devrun.sh
+lnav.sh
+nats.sh
+otel.sh
 .gitignore.save
 
 # ---------- Editor / IDE ----------
