@@ -14,7 +14,7 @@ logger = structlog.get_logger(__name__)
 
 
 @register_plugin("events_client", "NOOP")
-class EventsNopClient(IEventsClientPort):
+class EventsNoopClient(IEventsClientPort):
     def __init__(self, config: dict[str, Any]):
         self.config = NoopClientConfig.model_validate(config)
 
