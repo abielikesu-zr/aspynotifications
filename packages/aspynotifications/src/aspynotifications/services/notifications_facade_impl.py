@@ -2,6 +2,7 @@ from typing import Any
 
 import structlog
 from aspyevents_dtos.cloud_event_dto import CloudEventDTO
+from aspynotifications.entities.destination import Destination
 from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from aspynotifications_dtos.notifications_dtos import (
     ActivateNotificationPolicyRequest,

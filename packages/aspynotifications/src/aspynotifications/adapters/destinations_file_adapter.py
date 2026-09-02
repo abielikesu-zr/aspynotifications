@@ -27,6 +27,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Persistence error saving destination to local filesystem",
                 destination_id=destination.id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(
                 f"Error saving destination {destination.id} to local filesystem"
@@ -42,6 +43,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Corrupted destination data in local filesystem",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise ValueError(
                 f"Corrupted destination data for {destination_id}"
@@ -51,6 +53,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Persistence error retrieving destination from local filesystem",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(
                 f"Error retrieving destination {destination_id} from local filesystem"
@@ -70,6 +73,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Corrupted destination data in local filesystem",
                 destination_name=destination_name,
                 error=str(error),
+                exc_info=error,
             )
             raise ValueError(
                 f"Corrupted destination data for {destination_name}"
@@ -79,6 +83,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Persistence error retrieving destination by name from local filesystem",
                 destination_name=destination_name,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(
                 "Error retrieving destination by name from local filesystem"
@@ -91,12 +96,14 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
             logger.error(
                 "Corrupted destination data in local filesystem",
                 error=str(error),
+                exc_info=error,
             )
             raise ValueError("Corrupted destination data") from error
         except Exception as error:
             logger.error(
                 "Persistence error listing destinations from local filesystem",
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(
                 "Error listing destinations from local filesystem"
@@ -112,6 +119,7 @@ class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
                 "Persistence error deleting destination from local filesystem",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(
                 f"Error deleting destination {destination_id} from local filesystem"

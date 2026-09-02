@@ -11,7 +11,7 @@ from aspynotifications.ports.notification_provider_store import (
     NotificationProviderStore,
 )
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(__name__)
 
 
 @register_plugin("notification_provider_store", "MONGODB")
@@ -50,6 +50,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Persistence error saving notification provider",
                 provider_id=provider.id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error saving notification provider {provider.id}: {e!s}"
@@ -73,6 +74,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Corrupted data found for notification provider",
                 provider_id=provider_id,
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(
                 f"Corrupted data in notification provider {provider_id}: {e!s}"
@@ -82,6 +84,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Persistence error retrieving notification provider",
                 provider_id=provider_id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error retrieving notification provider {provider_id}: {e!s}"
@@ -105,6 +108,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Corrupted data found while retrieving notification provider by name",
                 name=name,
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(
                 f"Corrupted data in notification provider with name {name}: {e!s}"
@@ -114,6 +118,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Persistence error retrieving notification provider by name",
                 name=name,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error retrieving notification provider with name {name}: {e!s}"
@@ -133,12 +138,14 @@ class NotificationProviderStoreMongoAdapter(
             logger.error(
                 "Corrupted data found while listing notification providers",
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(f"Corrupted data in notification providers: {e!s}") from e
         except Exception as e:
             logger.error(
                 "Persistence error listing notification providers",
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(f"Error listing notification providers: {e!s}") from e
 
@@ -160,6 +167,7 @@ class NotificationProviderStoreMongoAdapter(
                 "Persistence error deleting notification provider",
                 provider_id=provider_id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error deleting notification provider {provider_id}: {e!s}"

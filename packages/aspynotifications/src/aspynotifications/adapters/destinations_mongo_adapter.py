@@ -30,6 +30,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error saving destination to MongoDB",
                 destination_id=destination.id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(  # noqa: TRY002
                 f"Error saving destination {destination.id} to MongoDB"
@@ -45,6 +46,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Corrupted destination data in MongoDB",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise ValueError(
                 f"Corrupted destination data for {destination_id}"
@@ -54,6 +56,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error retrieving destination from MongoDB",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(  # noqa: TRY002
                 f"Error retrieving destination {destination_id} from MongoDB"
@@ -70,6 +73,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Corrupted destination data in MongoDB",
                 destination_name=destination_name,
                 error=str(error),
+                exc_info=error,
             )
             raise ValueError(
                 f"Corrupted destination data for {destination_name}"
@@ -79,6 +83,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error retrieving destination by name from MongoDB",
                 destination_name=destination_name,
                 error=str(error),
+               exc_info=error,
             )
             raise Exception(  # noqa: TRY002
                 "Error retrieving destination by name from MongoDB"
@@ -91,6 +96,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
             logger.error(
                 "Persistence error listing destinations from MongoDB",
                 error=str(error),
+                exc_info=error,
             )
             raise Exception("Error listing destinations from MongoDB") from error  # noqa: TRY002
 
@@ -102,6 +108,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error deleting destination from MongoDB",
                 destination_id=destination_id,
                 error=str(error),
+                exc_info=error,
             )
             raise Exception(  # noqa: TRY002
                 f"Error deleting destination {destination_id} from MongoDB"

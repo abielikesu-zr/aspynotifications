@@ -9,7 +9,7 @@ from pydantic import BaseModel, ValidationError
 from aspynotifications.entities.notification_policy import NotificationPolicy
 from aspynotifications.ports.policies_store import NotificationPolicyStore
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(__name__)
 
 
 @register_plugin("notification_policy_store", "MONGODB")
@@ -48,6 +48,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Persistence error saving notification policy",
                 policy_id=policy.id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error saving notification policy {policy.id}: {e!s}"
@@ -71,6 +72,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Corrupted data found for notification policy",
                 policy_id=policy_id,
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(
                 f"Corrupted data in notification policy {policy_id}: {e!s}"
@@ -80,6 +82,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Persistence error retrieving notification policy",
                 policy_id=policy_id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error retrieving notification policy {policy_id}: {e!s}"
@@ -103,6 +106,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Corrupted data found while retrieving notification policy by name",
                 name=name,
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(
                 f"Corrupted data in notification policy with name {name}: {e!s}"
@@ -112,6 +116,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Persistence error retrieving notification policy by name",
                 name=name,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error retrieving notification policy with name {name}: {e!s}"
@@ -131,12 +136,14 @@ class NotificationPolicyStoreMongoAdapter(
             logger.error(
                 "Corrupted data found while listing notification policies",
                 error=str(e),
+                exc_info=e,
             )
             raise ValueError(f"Corrupted data in notification policies: {e!s}") from e
         except Exception as e:
             logger.error(
                 "Persistence error listing notification policies",
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(f"Error listing notification policies: {e!s}") from e  # noqa: TRY002
 
@@ -158,6 +165,7 @@ class NotificationPolicyStoreMongoAdapter(
                 "Persistence error deleting notification policy",
                 policy_id=policy_id,
                 error=str(e),
+                exc_info=e,
             )
             raise Exception(  # noqa: TRY002
                 f"Error deleting notification policy {policy_id}: {e!s}"
