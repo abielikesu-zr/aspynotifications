@@ -1,3 +1,4 @@
+from aspycontext import get_context_headers
 from dependency_injector import containers, providers
 from aspyevents_sdk.aspyevents_sdk import EventsSDK
 from aspyplugs.z_plug_resolver import PluginDependencyResolver
@@ -12,7 +13,8 @@ class EventsSdkContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     http_client = providers.Singleton(
-        AspyHttpClient, config=config.events_sdk.http_client
+        AspyHttpClient, config=config.events_sdk.http_client,
+        header_provider=get_context_headers
     )
 
     events_client_resolver = providers.Singleton(
