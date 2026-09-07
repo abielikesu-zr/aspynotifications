@@ -4,3 +4,6 @@ aspyevents_cli:
     - src: aspyevents_sdk.yaml.j2
       dest: '{{ install_dir }}/config/aspyevents_sdk.yaml'
       permissions: '0600'
+    - src: aspytracing.yaml.j2
+      dest: '{{ install_dir }}/config/aspytracing.yaml'
+      permissions: '0600'

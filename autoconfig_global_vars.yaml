@@ -1,6 +1,7 @@
 plugins:
   - LOCALFS
-  - NATS
+  # - NATS
+  - REST
   - NOOP
 
 global_vars:

@@ -37,11 +37,22 @@ events_sdk:
   # Type: EventClientConfig
   events_client:
 
-    # Type: aspyevents_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
+    # Type: aspyevents_sdk.entities.config.NoopClientAdapterConfig | aspyevents_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
     # Switch Variable: g_app_es_events_client_adapter_type
     adapter:
 
-      {% if  g_app_es_events_client_adapter_type | default('REST') == 'REST' %}
+      {% if  g_app_es_events_client_adapter_type | default('NOOP') == 'NOOP' %}
+
+        type: 'NOOP'
+
+        # Type: NoopClientConfig
+        config:
+
+          # Type: str
+
+          status: "{{  g_app_es_events_client_noop_status | default('ok')   }}"
+
+      {% elif  g_app_es_events_client_adapter_type == 'REST' %}
 
         type: 'REST'
 

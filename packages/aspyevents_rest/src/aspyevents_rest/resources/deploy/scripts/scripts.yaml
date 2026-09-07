@@ -1,0 +1,4 @@
+aspynotifications.aspyevents_rest:
+  deploy:
+    pre_package_install: []
+    post_package_install: []
