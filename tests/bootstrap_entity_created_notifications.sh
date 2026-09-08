@@ -5,6 +5,8 @@ notify create-slack-provider \
   --webhook-url "XXX" \
   --output-format json
 
+# --- 
+
 notify create-template \
   --name entity-created-slack-template \
   --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/entity.created-slack.yaml)" \
@@ -21,6 +23,8 @@ notify create-policy \
   --subject "*.created" \
   --destination entity-slack-destination \
   --output-format json
+
+# --- 
 
 notify create-template \
   --name bot-installed-slack-template \
