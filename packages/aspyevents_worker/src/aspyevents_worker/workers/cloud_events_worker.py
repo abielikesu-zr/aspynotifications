@@ -155,11 +155,13 @@ class CloudEventsWorker(abc.ABC):
         except asyncio.CancelledError:
             raise
 
-        except Exception:
-            logger.exception(
+        except Exception as e:
+            logger.debug(
                 "CloudEvent processing failed",
                 worker=self.name,
                 subject=message.subject,
+                exc_info=e,
+                error=str(e)
             )
 
             await message.nak(delay=1)

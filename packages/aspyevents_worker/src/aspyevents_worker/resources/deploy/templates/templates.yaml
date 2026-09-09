@@ -1,0 +1,6 @@
+aspyevents_worker:
+  deploy:
+    templates:
+    - src: aspytracing.yaml.j2
+      dest: '{{ install_dir }}/config/aspytracing.yaml'
+      permissions: '0600'

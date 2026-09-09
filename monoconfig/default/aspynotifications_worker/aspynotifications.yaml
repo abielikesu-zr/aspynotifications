@@ -1,57 +1,75 @@
 # Type: AspynotificationsAppParams
 aspynotifications:
+
   # Type: StorageAdapterConfig
   policy_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     # Switch Variable: g_app_a_policy_store_adapter_type
     adapter:
-      type: "LOCALFS"
 
-      # LocalFS-specific configuration
+      
 
-      # Type: LocalFSConfig
-      config:
-        # Directory where JSON files will be stored
+        type: 'LOCALFS'
 
-        # Type: str
+        # LocalFS-specific configuration
 
-        data_dir: "./var/all_stores/policy_store"
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/policy_store"
+
+      
 
   # Type: NotificationPolicyServiceConfig
   policy_service:
+
     # Type: Literal['keep']
 
     keep: "keep"
 
   # Type: StorageAdapterConfig
   destinations_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     # Switch Variable: g_app_a_destinations_store_adapter_type
     adapter:
-      type: "LOCALFS"
 
-      # LocalFS-specific configuration
+      
 
-      # Type: LocalFSConfig
-      config:
-        # Directory where JSON files will be stored
+        type: 'LOCALFS'
 
-        # Type: str
+        # LocalFS-specific configuration
 
-        data_dir: "./var/all_stores/destinations_store"
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/destinations_store"
+
+      
 
   # Type: DestinationsServiceConfig
   destinations_service:
+
     # Type: Literal['keep']
 
     keep: "keep"
 
   # Type: AdminUrlGeneratorConfig
   admin_url_generator:
+
     # Name of the system providing the admin UI.
 
     # Type: str
@@ -66,6 +84,7 @@ aspynotifications:
 
   # Type: NotificationTemplateRendererConfig
   template_renderer:
+
     # Root directory containing notification templates.
 
     # Type: str
@@ -74,56 +93,73 @@ aspynotifications:
 
   # Type: StorageAdapterConfig
   template_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     # Switch Variable: g_app_a_template_store_adapter_type
     adapter:
-      type: "LOCALFS"
 
-      # LocalFS-specific configuration
+      
 
-      # Type: LocalFSConfig
-      config:
-        # Directory where JSON files will be stored
+        type: 'LOCALFS'
 
-        # Type: str
+        # LocalFS-specific configuration
 
-        data_dir: "./var/all_stores/template_store"
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/template_store"
+
+      
 
   # Type: TemplateServiceConfig
   template_service:
+
     # Type: Literal['yes']
 
-    keep: "yes"
+    keep: 'yes'
 
   # Type: StorageAdapterConfig
   notification_provider_store:
+
     # Configuration for the storage adapter
 
     # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
     # Switch Variable: g_app_a_notification_provider_store_adapter_type
     adapter:
-      type: "LOCALFS"
 
-      # LocalFS-specific configuration
+      
 
-      # Type: LocalFSConfig
-      config:
-        # Directory where JSON files will be stored
+        type: 'LOCALFS'
 
-        # Type: str
+        # LocalFS-specific configuration
 
-        data_dir: "./var/all_stores/notification_provider_store"
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/notification_provider_store"
+
+      
 
   # Type: NotificationProviderServiceConfig
   notification_provider_service:
+
     # Type: Literal['keep']
 
     keep: "keep"
 
   # Type: HttpClientConfig
   notification_sender_http_client:
+
     # Maximum time in seconds to wait for an HTTP request to complete.
 
     # Type: float
@@ -156,6 +192,7 @@ aspynotifications:
 
   # Type: NotificationFacadeConfig
   notification_facade:
+
     # Type: Literal['keep']
 
     keep: "keep"

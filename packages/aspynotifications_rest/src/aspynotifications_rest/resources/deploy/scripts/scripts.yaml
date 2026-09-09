@@ -1,4 +1,4 @@
-aspynotifications.aspynotifications_rest:
+aspynotifications_rest:
   deploy:
     pre_package_install: []
     post_package_install: []
