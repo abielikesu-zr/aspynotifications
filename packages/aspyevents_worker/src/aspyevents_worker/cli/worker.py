@@ -78,14 +78,14 @@ async def run_worker(
     help="NATS jetstream subject. Example: 'events.>' ",
 )
 @click.option(
-    "--configfile",
+    "--config-file",
     help="Configuration file path.",
 )
 def start_worker(
     verbose: int,
     quiet: int,
     log_format: str | None,
-    configfile: str | None,
+    config_file: str | None,
     nats_url: str | None = None,
     stream_name: str | None = None,
     stream_subject: str | None = None,
@@ -116,7 +116,7 @@ def start_worker(
         asyncio.run(
             run_worker(
                 runner=runner,
-                config_file=configfile,
+                config_file=config_file,
                 nats_url=nats_url,
                 stream_name=stream_name,
                 stream_subject=stream_subject,

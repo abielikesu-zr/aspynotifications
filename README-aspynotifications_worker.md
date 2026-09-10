@@ -44,7 +44,7 @@ The package registers the shared worker command:
 python -m aspynotifications_worker.cli.main worker start --help
 ```
 
-It accepts the common worker options, including `--configfile`, `--nats-url`, verbosity controls, and `--log-format`.
+It accepts the common worker options, including `--config-file`, `--nats-url`, verbosity controls, and `--log-format`.
 
 ## Boundaries
 

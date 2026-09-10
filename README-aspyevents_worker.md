@@ -25,7 +25,7 @@
 
 ## Configuration
 
-`BaseWorkerRunner.load_config()` merges, in order, built-in NATS defaults, `monoconfig/default/<package>`, an optional file passed through `--configfile`, and `monoconfig/<os-user>/<package>`.
+`BaseWorkerRunner.load_config()` merges, in order, built-in NATS defaults, `monoconfig/default/<package>`, an optional file passed through `--config-file`, and `monoconfig/<os-user>/<package>`.
 
 The runner subclass defines the configuration root. A concrete worker therefore needs both a NATS connection and worker configuration at its selected root, for example:
 
@@ -46,7 +46,7 @@ The stream defaults to `EVENTS` and `events.>`. Subscriptions not already beginn
 Applications create a Click command by calling `worker_start_command(runner=..., worker_factory=...)`. The resulting command accepts:
 
 ```text
-worker start [--configfile PATH] [--nats-url URL] [-v|-q] [--log-format console|json]
+worker start [--config-file PATH] [--nats-url URL] [-v|-q] [--log-format console|json]
 ```
 
 The runner requires configuration to be loaded before `run()`; the generated command does this automatically.
