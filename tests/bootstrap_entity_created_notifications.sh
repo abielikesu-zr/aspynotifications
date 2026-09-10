@@ -27,7 +27,7 @@ notify create-policy \
 
 notify create-policy --name entity-updated-notification-policy --subject "*.updated" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-deleted-notification-policy  --subject "*.deleted"  --destination entity-slack-destination --output-format json
-notify create-policy --name entity-started-notification-policy --subject "*.started"  --destination entity-slack-destination --output-format json
+notify create-policy --name entity-started-notification-policy --subject "*.started"  --destination entity-slack-destination --negative-envelope-policy "exclude-ingestion-started" "envelope.type == 'ingestion.started'" "Ingestion started has its own Slack destination" --output-format json
 notify create-policy --name entity-completed-notification-policy --subject "*.completed" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-failed-notification-policy --subject "*.failed" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-feedback-positive-notification-policy --subject "*.feedback_positive" --destination entity-slack-destination --output-format json
@@ -57,4 +57,23 @@ notify create-policy \
   --name bot-installed-notification-policy \
   --subject "bot.installed" \
   --destination bot-installed-slack-destination \
+  --output-format json
+
+# ---
+
+notify create-template \
+  --name ingestion-started-slack-template \
+  --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/ingestion.started-slack.yaml)" \
+  --output-format json
+
+notify create-slack-channel-destination \
+  --name ingestion-started-slack-destination \
+  --provider slack-provider \
+  --template ingestion-started-slack-template \
+  --output-format json
+
+notify create-policy \
+  --name ingestion-started-notification-policy \
+  --subject "ingestion.started" \
+  --destination ingestion-started-slack-destination \
   --output-format json
