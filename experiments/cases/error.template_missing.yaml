@@ -1,0 +1,34 @@
+experiment_id: error_template_missing
+
+scenarios:
+  - name: "template missing (explodes)"
+    flow:
+      provider:
+        name: shole-provider
+        level: INFO
+        cows: true
+
+      destination:
+        name: error-missing-template-destination
+        provider: shole-provider
+        template: missing-template
+
+      policy:
+        name: error-template-policy
+        subject: "error.template_missing"
+        destinations:
+          - error-missing-template-destination
+
+    event:
+      type: error.template_missing
+      source: tenant-service
+      subject: "error/probe-001"
+      data:
+        event:
+          name: "probe"
+        context:
+          tenant_id: "tenant-abc"
+
+      cases:
+        - name: "template not found (notification fails)"
+          check: match_test_id

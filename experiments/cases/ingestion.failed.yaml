@@ -1,0 +1,36 @@
+experiment_id: ingestion_failed
+
+scenarios:
+  - name: "failed (explodes)"
+    flow:
+      provider:
+        name: shole-provider
+        level: ERROR
+        cows: true
+
+      destination:
+        name: error-ingestion-failed-destination
+        provider: shole-provider
+        template: missing-template
+
+      policy:
+        name: error-ingestion-failed-policy
+        subject: "ingestion.failed"
+        destinations:
+          - error-ingestion-failed-destination
+
+    event:
+      type: ingestion.failed
+      source: ingestion-service
+      subject: "ingestion/run-001"
+      data:
+        event:
+          run_id: "run-001"
+          error: "connection timeout"
+        context:
+          tenant_id: "tenant-abc"
+          kb_id: "kb-001"
+
+      cases:
+        - name: "ingestion failed (notification fails)"
+          check: match_test_id

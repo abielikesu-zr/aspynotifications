@@ -1,0 +1,35 @@
+experiment_id: workflow_failed
+
+scenarios:
+  - name: "failed (explodes)"
+    flow:
+      provider:
+        name: shole-provider
+        level: ERROR
+        cows: true
+
+      destination:
+        name: error-workflow-failed-destination
+        provider: shole-provider
+        template: missing-template
+
+      policy:
+        name: error-workflow-failed-policy
+        subject: "workflow.failed"
+        destinations:
+          - error-workflow-failed-destination
+
+    event:
+      type: workflow.failed
+      source: workflow-service
+      subject: "workflow/wf-001"
+      data:
+        event:
+          workflow_id: "wf-001"
+          error: "step timed out"
+        context:
+          tenant_id: "tenant-abc"
+
+      cases:
+        - name: "workflow failed (notification fails)"
+          check: match_test_id

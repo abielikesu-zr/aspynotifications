@@ -43,35 +43,35 @@ notifications_sdk:
 
       
 
-        type: 'NATS'
+        type: 'REST'
 
-        # Type: NatsClientConfig
+        # # Type: NatsClientConfig
         config:
+          base_url: "http://127.0.0.1:50011"
+        #   # Name of the JetStream stream used to store CloudEvents.
 
-          # Name of the JetStream stream used to store CloudEvents.
+        #   # Type: NatsConnectionConfig
+        #   connection:
 
-          # Type: NatsConnectionConfig
-          connection:
+        #     # URL of the NATS server to connect to.
 
-            # URL of the NATS server to connect to.
+        #     # Type: str
 
-            # Type: str
+        #     nats_url: "nats://127.0.0.1:4222"
 
-            nats_url: "nats://127.0.0.1:4222"
+        #   # Subject pattern used by the stream to capture CloudEvents.
 
-          # Subject pattern used by the stream to capture CloudEvents.
+        #   # Type: NatsStreamConfig
+        #   stream:
 
-          # Type: NatsStreamConfig
-          stream:
+        #     # Name of the JetStream stream used to store CloudEvents.
 
-            # Name of the JetStream stream used to store CloudEvents.
+        #     # Type: str
 
-            # Type: str
+        #     name: "EVENTS"
 
-            name: "EVENTS"
+        #     # Subject pattern used by the stream to capture CloudEvents.
 
-            # Subject pattern used by the stream to capture CloudEvents.
+        #     # Type: str
 
-            # Type: str
-
-            subject: "events.>"
+        #     subject: "events.>"

@@ -1,0 +1,43 @@
+experiment_id: bot_created
+scenarios:
+  - name: created delivered
+    flow:
+      provider:
+        name: shole-provider
+        level: INFO
+        cows: true
+      template:
+        name: entity-template
+        dumpster_inline:
+          "{{ envelope.type.split('.')[0] | capitalize }} {{ envelope.type.split('.')[1]
+          }}: {{ envelope.subject }} (tenant={{ context.tenant_id }}) test_id={{ context.test_id
+          }} policies={{ policies }}"
+      destination:
+        name: entity-destination
+        provider: shole-provider
+        template: entity-template
+      policy:
+        name: entity-created-policy
+        subject: "*.created"
+        destinations:
+          - entity-destination
+    event:
+      type: bot.created
+      source: tenant-service
+      subject: bot/bot-001
+      data:
+        event:
+          bot_id: bot-001
+          name: sales-bot
+        context:
+          tenant_id: tenant-abc
+          bot_id: bot-001
+      cases:
+        - name: event delivered (test_id in worker log)
+          check: match_test_id
+        - name: output contains subject
+          check: match_text
+          text: bot/bot-001
+        - name: matched wildcard policy (*.created)
+          check: match_text
+          text: entity-created-policy

@@ -1,0 +1,40 @@
+experiment_id: kb_source_updated
+scenarios:
+- name: updated delivered
+  flow:
+    provider:
+      name: shole-provider
+      level: INFO
+      cows: true
+    template:
+      name: entity-template
+      dumpster_inline: '{{ envelope.type.split(''.'')[0] | capitalize }} {{ envelope.type.split(''.'')[1]
+        }}: {{ envelope.subject }} (tenant={{ context.tenant_id }}) test_id={{ context.test_id
+        }} policies={{ policies }}'
+    destination:
+      name: entity-destination
+      provider: shole-provider
+      template: entity-template
+    policy:
+      name: wildcard-updated-policy
+      subject: '*.updated'
+      destinations:
+      - entity-destination
+  event:
+    type: knowledge_base_source.updated
+    source: tenant-service
+    subject: kb/kb-001/source/src-001
+    data:
+      event:
+        name: notion-docs
+        type: notion
+      context:
+        tenant_id: tenant-abc
+        kb_id: kb-001
+        source_id: src-001
+    cases:
+    - name: event delivered (test_id in worker log)
+      check: match_test_id
+    - name: output contains subject
+      check: match_text
+      text: kb/kb-001/source/src-001

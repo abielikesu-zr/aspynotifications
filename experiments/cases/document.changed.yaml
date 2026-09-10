@@ -1,0 +1,42 @@
+experiment_id: document_changed
+scenarios:
+- name: changed delivered
+  flow:
+    provider:
+      name: shole-provider
+      level: INFO
+      cows: true
+    template:
+      name: entity-template
+      dumpster_inline: '{{ envelope.type.split(''.'')[0] | capitalize }} {{ envelope.type.split(''.'')[1]
+        }}: {{ envelope.subject }} (tenant={{ context.tenant_id }}) test_id={{ context.test_id
+        }} policies={{ policies }}'
+    destination:
+      name: entity-destination
+      provider: shole-provider
+      template: entity-template
+    policy:
+      name: wildcard-changed-policy
+      subject: '*.changed'
+      destinations:
+      - entity-destination
+  event:
+    type: document.changed
+    source: tenant-service
+    subject: document/doc-001
+    data:
+      event:
+        document_id: doc-001
+        title: notion page
+      context:
+        tenant_id: tenant-abc
+        kb_id: kb-001
+    cases:
+    - name: event delivered (test_id in worker log)
+      check: match_test_id
+    - name: output contains subject
+      check: match_text
+      text: document/doc-001
+    - name: matched wildcard policy (*.changed)
+      check: match_text
+      text: wildcard-changed-policy
