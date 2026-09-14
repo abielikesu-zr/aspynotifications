@@ -35,5 +35,5 @@ notifications_sdk:
     adapter:
       type: "REST"
       config:
-        #base_url: "http://127.0.0.1:50011"
-        base_url: "https://zrnotifications.zr.internal"
+        base_url: "http://127.0.0.1:50011"
+        #base_url: "https://zrnotifications.zr.internal"
