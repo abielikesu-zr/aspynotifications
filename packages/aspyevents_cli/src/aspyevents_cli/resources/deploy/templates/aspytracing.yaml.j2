@@ -43,7 +43,13 @@ tracing:
 
         # Type: str | None
 
-        tracer_name: "{{  g_app_t_otel_tracer_name | default(None)   }}"
+        tracer_name: "{{  g_app_t_otel_tracer_name | default('aspytracing')   }}"
+
+        # OpenTelemetry resource service.name (Tempo service). Falls back to the calling package, then unknown-service.
+
+        # Type: str | None
+
+        service_name: "{{  g_app_t_otel_service_name | default(None)   }}"
 
         # OpenTelemetry span exporter to use.
 

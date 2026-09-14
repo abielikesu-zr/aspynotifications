@@ -1,11 +1,16 @@
 plugins:
   - LOCALFS
-  # - NATS
+  - NATS
   - REST
   - NOOP
 
 global_vars:
   data_dir: "./var/all_stores"
+  g_app_es_events_client_adapter_type: "NATS"
+  g_app_es_events_client_nats_connection_nats_url: "nats://127.0.0.1:4222"
+  g_app_es_events_client_nats_stream_name: "EVENTS"
+  g_app_es_events_client_nats_stream_subject: "events.>"
+  g_app_es_events_client_rest_base_url: "http://127.0.0.1:50012"
 
 skip_config:
   - connection_username

@@ -2,19 +2,24 @@
 
 # Type: TracingAdapterConfig
 tracing:
+
   # Concrete tracing adapter configuration. Discriminated by the 'type' field (NOOP | OTEL | LOGGER).
 
   # Type: aspytracing.config.noop_tracer_config.NoopAdapterConfig | aspytracing.config.otel_tracer_config.OtelAdapterConfig | aspytracing.config.logger_tracer_config.LoggerAdapterConfig
   # Switch Variable: g_app_t_adapter_type
   adapter:
-    type: "NOOP"
 
-    # Noop-specific configuration
+    
 
-    # Type: NoopConfig
-    config:
-      # Global tracer name
+      type: 'NOOP'
 
-      # Type: str
+      # Noop-specific configuration
 
-      tracer_name: "noop"
+      # Type: NoopConfig
+      config:
+
+        # Global tracer name
+
+        # Type: str
+
+        tracer_name: "noop"
