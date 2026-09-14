@@ -29,7 +29,13 @@ from pydantic import TypeAdapter
 
 from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.config.notification_facade_config import NotificationFacadeConfig
-from aspynotifications.entities.exceptions import DestinationAlreadyExistsError
+from aspynotifications.entities.exceptions import (
+    DestinationAlreadyExistsError,
+    DestinationProviderTemplateAlreadyExistsError,
+    NotificationPolicyAlreadyExistsError,
+    NotificationProviderAlreadyExistsError,
+    TemplateAlreadyExistsError,
+)
 from aspynotifications.entities.template import Template
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (
@@ -266,19 +272,22 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self,
         request: CreateNotificationPolicyRequest,
     ) -> NotificationPolicyDTO:
-        policy = await self._notification_policy_service.create_notification_policy(
-            name=request.name,
-            subject=request.subject,
-            envelope_policies=[
-                AspyPolicy.model_validate(policy.model_dump())
-                for policy in request.envelope_policies
-            ],
-            destination_policies=[
-                AspyPolicy.model_validate(policy.model_dump())
-                for policy in request.destination_policies
-            ],
-            destinations=request.destinations,
-        )
+        try:
+            policy = await self._notification_policy_service.create_notification_policy(
+                name=request.name,
+                subject=request.subject,
+                envelope_policies=[
+                    AspyPolicy.model_validate(policy.model_dump())
+                    for policy in request.envelope_policies
+                ],
+                destination_policies=[
+                    AspyPolicy.model_validate(policy.model_dump())
+                    for policy in request.destination_policies
+                ],
+                destinations=request.destinations,
+            )
+        except NotificationPolicyAlreadyExistsError as exc:
+            raise ResourceAlreadyExistsError(str(exc)) from exc
         return NotificationPolicyDTO.model_validate(policy.model_dump())
 
     async def update_notification_policy(
@@ -320,7 +329,10 @@ class NotificationsFacadeImpl(NotificationsFacade):
 
     async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
         template = Template.model_validate(request.model_dump())
-        created_template = await self._template_service.create_template(template)
+        try:
+            created_template = await self._template_service.create_template(template)
+        except TemplateAlreadyExistsError as exc:
+            raise ResourceAlreadyExistsError(str(exc)) from exc
         return TemplateDTO.model_validate(created_template.model_dump())
 
     async def update_template(self, request: UpdateTemplateRequest) -> TemplateDTO:
@@ -342,7 +354,10 @@ class NotificationsFacadeImpl(NotificationsFacade):
                 template=request.template,
                 config=config,
             )
-        except DestinationAlreadyExistsError as exc:
+        except (
+            DestinationAlreadyExistsError,
+            DestinationProviderTemplateAlreadyExistsError,
+        ) as exc:
             raise ResourceAlreadyExistsError(str(exc)) from exc
         return DestinationDTO.model_validate(destination.model_dump())
 
@@ -369,13 +384,14 @@ class NotificationsFacadeImpl(NotificationsFacade):
         self,
         request: CreateNotificationProviderRequest,
     ) -> NotificationProviderDTO:
-        provider = (
-            await self._notification_provider_service.create_notification_provider(
+        try:
+            provider = await self._notification_provider_service.create_notification_provider(
                 name=request.name,
                 provider_type=request.provider.type,
                 config=request.provider.config.model_dump(),
             )
-        )
+        except NotificationProviderAlreadyExistsError as exc:
+            raise ResourceAlreadyExistsError(str(exc)) from exc
 
         return NotificationProviderDTO.model_validate(provider.model_dump())
 

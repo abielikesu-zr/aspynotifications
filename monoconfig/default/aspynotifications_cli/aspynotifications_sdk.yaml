@@ -42,7 +42,6 @@ notifications_sdk:
       # # Type: NatsClientConfig
       config:
         base_url: "http://127.0.0.1:50011"
-        #base_url: "https://zrnotifications.zr.internal"
       #   # Name of the JetStream stream used to store CloudEvents.
 
       #   # Type: NatsConnectionConfig

@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from aspynotifications.entities.source import TemplateSource
+from aspynotifications.entities.exceptions import TemplateAlreadyExistsError
 from aspynotifications.entities.template import SlackTemplate, Template
 from aspynotifications.ports.template_port import ITemplateStorePort
 from aspynotifications.services.template_service import TemplateService
@@ -46,4 +47,17 @@ async def test_update_template_rejects_a_missing_template() -> None:
     with pytest.raises(ValueError, match="Template not found: slack-template"):
         await TemplateService(config={}, store=store).update_template(template)
 
+    store.save_template.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_create_template_rejects_duplicate_name() -> None:
+    store = _store()
+    store.get_template.return_value = _template()
+    template = _template()
+
+    with pytest.raises(TemplateAlreadyExistsError, match="Template name already exists"):
+        await TemplateService(config={}, store=store).create_template(template)
+
+    store.get_template.assert_awaited_once_with(template.name)
     store.save_template.assert_not_awaited()

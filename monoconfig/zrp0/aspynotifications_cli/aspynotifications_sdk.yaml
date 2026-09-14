@@ -1,9 +1,7 @@
 # Type: NotificationsSdkParams
 notifications_sdk:
-
   # Type: HttpClientConfig
   http_client:
-
     # Request timeout in seconds
 
     # Type: float
@@ -30,11 +28,12 @@ notifications_sdk:
 
     # Type: bool | str
 
-    verify: True
+    verify: False
 
   # Type: NotificationsClientConfig
   notification_client:
     adapter:
       type: "REST"
       config:
-        base_url: "http://127.0.0.1:50011"
+        #base_url: "http://127.0.0.1:50011"
+        base_url: "https://zrnotifications.zr.internal"

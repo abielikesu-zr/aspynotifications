@@ -4,6 +4,7 @@ import pytest
 from aspypolicies.services.policy_service import PolicyService
 
 from aspynotifications.entities.notification_policy import NotificationPolicy
+from aspynotifications.entities.exceptions import NotificationPolicyAlreadyExistsError
 from aspynotifications.ports.policies_store import NotificationPolicyStore
 from aspynotifications.services.policy_service import NotificationPolicyService
 from aspynotifications.services.subject_trie import SubjectTrie
@@ -85,3 +86,23 @@ async def test_inactive_policy_is_excluded_from_subscriptions() -> None:
     subscriptions = await _service(store).get_subscriptions()
 
     assert subscriptions == []
+
+
+@pytest.mark.asyncio
+async def test_create_notification_policy_rejects_duplicate_name() -> None:
+    store = _store(_policy())
+
+    with pytest.raises(
+        NotificationPolicyAlreadyExistsError,
+        match="Notification policy name already exists",
+    ):
+        await _service(store).create_notification_policy(
+            name="tenant-created",
+            subject="tenant.created",
+            envelope_policies=[],
+            destination_policies=[],
+            destinations=["tenant-destination"],
+        )
+
+    store.get_notification_policy_by_name.assert_awaited_once_with("tenant-created")
+    store.save_notification_policy.assert_not_awaited()

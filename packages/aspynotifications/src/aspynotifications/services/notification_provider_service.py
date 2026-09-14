@@ -8,6 +8,7 @@ from aspynotifications.config.notification_provider_config import (
 )
 from aspynotifications.entities.delivery_result import DeliveryResult
 from aspynotifications.entities.destination import Destination
+from aspynotifications.entities.exceptions import NotificationProviderAlreadyExistsError
 from aspynotifications.entities.notification_provider import NotificationProvider
 from aspynotifications.factories.notification_provider_sender_factory import (
     NotificationProviderSenderFactory,
@@ -91,6 +92,12 @@ class NotificationProviderService:
         """
         Creates a new notification provider.
         """
+        existing = await self.get_notification_provider_by_name(name)
+        if existing is not None:
+            raise NotificationProviderAlreadyExistsError(
+                f"Notification provider name already exists: {name}"
+            )
+
         provider = NotificationProvider.model_validate(
             {
                 "id": str(uuid4()),

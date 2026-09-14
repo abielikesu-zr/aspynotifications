@@ -9,6 +9,7 @@ from aspynotifications.entities.notification_provider import (
     SlackProvider,
     ZeptoMailProvider,
 )
+from aspynotifications.entities.exceptions import NotificationProviderAlreadyExistsError
 from aspynotifications.ports.notification_provider_store import (
     NotificationProviderStore,
 )
@@ -80,6 +81,39 @@ async def test_create_provider_rejects_invalid_config() -> None:
             config={},
         )
 
+    store.save_notification_provider.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_create_provider_rejects_duplicate_name() -> None:
+    store = _store()
+    store.get_notification_provider_by_name.return_value = NotificationProvider.model_validate(
+        {
+            "id": "provider-001",
+            "name": "slack-production",
+            "provider": {
+                "type": "SLACK",
+                "config": {"webhook_url": "https://hooks.slack.com/services/existing"},
+            },
+        }
+    )
+    service = NotificationProviderService(
+        notification_provider_store=store,
+        config={},
+        sender_factory=_sender_factory(),
+    )
+
+    with pytest.raises(
+        NotificationProviderAlreadyExistsError,
+        match="Notification provider name already exists",
+    ):
+        await service.create_notification_provider(
+            name="slack-production",
+            provider_type="SLACK",
+            config={"webhook_url": "https://hooks.slack.com/services/new"},
+        )
+
+    store.get_notification_provider_by_name.assert_awaited_once_with("slack-production")
     store.save_notification_provider.assert_not_called()
 
 

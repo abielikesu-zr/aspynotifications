@@ -10,7 +10,10 @@ from aspynotifications.config.destination_config import (
     SlackChannelDestinationConfig,
 )
 from aspynotifications.entities.destination import Destination
-from aspynotifications.entities.exceptions import DestinationAlreadyExistsError
+from aspynotifications.entities.exceptions import (
+    DestinationAlreadyExistsError,
+    DestinationProviderTemplateAlreadyExistsError,
+)
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 from aspynotifications.services.destinations_service import DestinationsService
 
@@ -127,6 +130,27 @@ async def test_create_destination_rejects_duplicate_name(
         )
 
     store.get_destination_by_name.assert_called_once_with("email-alerts")
+    store.save_destination.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_create_destination_rejects_duplicate_provider_template_combination() -> None:
+    store = _store()
+    store.list_destinations.return_value = [_destination()]
+
+    with pytest.raises(
+        DestinationProviderTemplateAlreadyExistsError,
+        match="Destination provider and template combination already exists",
+    ):
+        await _service(store).create_destination(
+            name="another-email-alerts",
+            provider="email",
+            template="incident-template",
+            config=_email_config(),
+        )
+
+    store.get_destination_by_name.assert_awaited_once_with("another-email-alerts")
+    store.list_destinations.assert_awaited_once_with()
     store.save_destination.assert_not_called()
 
 
@@ -251,6 +275,26 @@ async def test_update_destination_rejects_duplicate_name() -> None:
 
     store.get_destination.assert_called_once_with(destination.id)
     store.get_destination_by_name.assert_called_once_with(destination.name)
+    store.save_destination.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_update_destination_rejects_duplicate_provider_template_combination() -> None:
+    store = _store()
+    destination = _destination()
+    duplicate = _destination("other-id").model_copy(
+        update={"name": "other-destination"}
+    )
+    store.get_destination.return_value = destination
+    store.get_destination_by_name.return_value = destination
+    store.list_destinations.return_value = [destination, duplicate]
+
+    with pytest.raises(
+        ValueError,
+        match="Destination provider and template combination already exists",
+    ):
+        await _service(store).update_destination(destination)
+
     store.save_destination.assert_not_called()
 
 

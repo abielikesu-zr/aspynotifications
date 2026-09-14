@@ -3,7 +3,10 @@ import uuid
 from aspynotifications.config.app_config import DestinationsServiceConfig
 from aspynotifications.config.destination_config import DestinationConfig
 from aspynotifications.entities.destination import Destination
-from aspynotifications.entities.exceptions import DestinationAlreadyExistsError
+from aspynotifications.entities.exceptions import (
+    DestinationAlreadyExistsError,
+    DestinationProviderTemplateAlreadyExistsError,
+)
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
 
 
@@ -39,6 +42,16 @@ class DestinationsService:
                 f"Destination name already exists: {name}"
             )
 
+        duplicate_provider_template = await self._get_destination_by_provider_and_template(
+            provider,
+            template,
+        )
+        if duplicate_provider_template is not None:
+            raise DestinationProviderTemplateAlreadyExistsError(
+                "Destination provider and template combination already exists: "
+                f"{provider}, {template}"
+            )
+
         await self._store.save_destination(destination)
         return destination
 
@@ -63,6 +76,17 @@ class DestinationsService:
         if duplicate is not None and duplicate.id != destination.id:
             raise ValueError(f"Destination name already exists: {destination.name}")
 
+        duplicate_provider_template = await self._get_destination_by_provider_and_template(
+            destination.provider,
+            destination.template,
+            exclude_destination_id=destination.id,
+        )
+        if duplicate_provider_template is not None:
+            raise ValueError(
+                "Destination provider and template combination already exists: "
+                f"{destination.provider}, {destination.template}"
+            )
+
         await self._store.save_destination(destination)
         return destination
 
@@ -72,3 +96,23 @@ class DestinationsService:
             raise ValueError(f"Destination not found: {destination_id}")
 
         await self._store.delete_destination(destination_id)
+
+    async def _get_destination_by_provider_and_template(
+        self,
+        provider: str,
+        template: str,
+        exclude_destination_id: str | None = None,
+    ) -> Destination | None:
+        destinations = await self.list_destinations()
+        return next(
+            (
+                destination
+                for destination in destinations
+                if (
+                    destination.id != exclude_destination_id
+                    and destination.provider == provider
+                    and destination.template == template
+                )
+            ),
+            None,
+        )

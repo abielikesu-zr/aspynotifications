@@ -10,6 +10,7 @@ from aspypolicies.entities.eval_result import PolicyEvaluationResult
 from aspypolicies.services.policy_service import PolicyService
 
 from aspynotifications.config.notification_config import NotificationPolicyServiceConfig
+from aspynotifications.entities.exceptions import NotificationPolicyAlreadyExistsError
 from aspynotifications.entities.notification_policy import NotificationPolicy
 from aspynotifications.ports.policies_store import NotificationPolicyStore
 from aspynotifications.services.subject_trie import SubjectTrie
@@ -91,6 +92,12 @@ class NotificationPolicyService:
         """
         Creates a new notification policy.
         """
+        existing = await self.get_notification_policy_by_name(name)
+        if existing is not None:
+            raise NotificationPolicyAlreadyExistsError(
+                f"Notification policy name already exists: {name}"
+            )
+
         policy = NotificationPolicy(
             id=str(uuid4()),
             name=name,

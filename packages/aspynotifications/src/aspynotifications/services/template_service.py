@@ -1,6 +1,7 @@
 import structlog
 
 from aspynotifications.config.cloud_template import TemplateServiceConfig
+from aspynotifications.entities.exceptions import TemplateAlreadyExistsError
 from aspynotifications.entities.template import Template
 from aspynotifications.ports.template_port import ITemplateStorePort
 
@@ -15,6 +16,12 @@ class TemplateService:
     async def create_template(self, template: Template) -> Template:
         log = logger.bind(function="create_template")
         try:
+            existing_template = await self.get_template_by_name(template.name)
+            if existing_template is not None:
+                raise TemplateAlreadyExistsError(
+                    f"Template name already exists: {template.name}"
+                )
+
             await self._store.save_template(template)
 
             log.debug("Template created", name=template.name)
