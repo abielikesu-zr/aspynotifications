@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        🚀 *Ingestion started:* `{{ context.run_id }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Sources: `{{ event.total_kb_sources }}`

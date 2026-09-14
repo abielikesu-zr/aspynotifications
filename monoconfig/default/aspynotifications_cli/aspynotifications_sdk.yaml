@@ -1,9 +1,7 @@
 # Type: NotificationsSdkParams
 notifications_sdk:
-
   # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
   http_client:
-
     # Maximum time in seconds to wait for an HTTP request to complete.
 
     # Type: float
@@ -36,42 +34,39 @@ notifications_sdk:
 
   # Type: NotificationClientConfig
   notification_client:
-
     # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
     # Switch Variable: g_app_ns_notification_client_adapter_type
     adapter:
+      type: "REST"
 
-      
+      # # Type: NatsClientConfig
+      config:
+        base_url: "http://127.0.0.1:50011"
+        #base_url: "https://zrnotifications.zr.internal"
+      #   # Name of the JetStream stream used to store CloudEvents.
 
-        type: 'REST'
+      #   # Type: NatsConnectionConfig
+      #   connection:
 
-        # # Type: NatsClientConfig
-        config:
-          base_url: "http://127.0.0.1:50011"
-        #   # Name of the JetStream stream used to store CloudEvents.
+      #     # URL of the NATS server to connect to.
 
-        #   # Type: NatsConnectionConfig
-        #   connection:
+      #     # Type: str
 
-        #     # URL of the NATS server to connect to.
+      #     nats_url: "nats://127.0.0.1:4222"
 
-        #     # Type: str
+      #   # Subject pattern used by the stream to capture CloudEvents.
 
-        #     nats_url: "nats://127.0.0.1:4222"
+      #   # Type: NatsStreamConfig
+      #   stream:
 
-        #   # Subject pattern used by the stream to capture CloudEvents.
+      #     # Name of the JetStream stream used to store CloudEvents.
 
-        #   # Type: NatsStreamConfig
-        #   stream:
+      #     # Type: str
 
-        #     # Name of the JetStream stream used to store CloudEvents.
+      #     name: "EVENTS"
 
-        #     # Type: str
+      #     # Subject pattern used by the stream to capture CloudEvents.
 
-        #     name: "EVENTS"
+      #     # Type: str
 
-        #     # Subject pattern used by the stream to capture CloudEvents.
-
-        #     # Type: str
-
-        #     subject: "events.>"
+      #     subject: "events.>"

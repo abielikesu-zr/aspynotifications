@@ -9,7 +9,7 @@ notify create-slack-provider \
 
 notify create-template \
   --name entity-created-slack-template \
-  --slack-blocks-inline "$(cat /Users/zeroramp/Documents/zeroramp/Workspace/aspynotifications/var/notification-templates/entity.created-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/entity.created-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -42,7 +42,7 @@ notify create-policy --name entity-accepted-notification-policy --subject "*.acc
 
 notify create-template \
   --name bot-installed-slack-template \
-  --slack-blocks-inline "$(cat /Users/zeroramp/Documents/zeroramp/Workspace/aspynotifications/var/notification-templates/bot.installed-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/bot.installed-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -61,7 +61,7 @@ notify create-policy \
 
 notify create-template \
   --name ingestion-started-slack-template \
-  --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/ingestion.started-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/ingestion.started-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -80,7 +80,7 @@ notify create-policy \
 
 notify create-template \
   --name ingestion-completed-slack-template \
-  --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/ingestion.completed-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/ingestion.completed-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -99,7 +99,7 @@ notify create-policy \
 
 notify create-template \
   --name ingestion-failed-slack-template \
-  --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/ingestion.failed-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/ingestion.failed-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -118,7 +118,7 @@ notify create-policy \
 
 notify create-template \
   --name document-changed-slack-template \
-  --slack-blocks-inline "$(cat /Volumes/DDEXT/Zeroramp/ws/Workspace/aspynotifications/var/notification-templates/document.changed-slack.yaml)" \
+  --slack-blocks-inline "$(cat tests/notification-templates/document.changed-slack.yaml)" \
   --output-format json
 
 notify create-slack-channel-destination \
@@ -131,4 +131,23 @@ notify create-policy \
   --name document-changed-notification-policy \
   --subject "document.changed" \
   --destination document-changed-slack-destination \
+  --output-format json
+
+# ---
+
+notify create-template \
+  --name ci-slack-template \
+  --slack-blocks-inline "$(cat tests/notification-templates/ci-slack.yaml)" \
+  --output-format json
+
+notify create-slack-channel-destination \
+  --name ci-slack-destination \
+  --provider slack-provider \
+  --template ci-slack-template \
+  --output-format json
+
+notify create-policy \
+  --name ci-notification-policy \
+  --subject "ci.>" \
+  --destination ci-slack-destination \
   --output-format json

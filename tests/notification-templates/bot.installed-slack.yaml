@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        🤖 *Bot installed:* `{{ envelope.subject }}` · Installation: `{{ event.installation_id }}` · Platform: `{{ event.platform }}` · Tenant: `{{ context.tenant_id }}` · Owner tenant: `{{ context.owner_tenant_id }}`

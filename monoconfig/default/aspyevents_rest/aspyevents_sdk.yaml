@@ -1,9 +1,7 @@
 # Type: EventsSdkParams
 events_sdk:
-
   # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
   http_client:
-
     # Maximum time in seconds to wait for an HTTP request to complete.
 
     # Type: float
@@ -36,18 +34,16 @@ events_sdk:
 
   # Type: EventClientConfig
   events_client:
-
     # Type: aspyevents_sdk.entities.config.NoopClientAdapterConfig | aspyevents_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
     # Switch Variable: g_app_es_events_client_adapter_type
     adapter:
+      type: "NATS"
 
-      
+      # Type: NatsClientConfig
+      config:
+        connection:
+          nats_url: "nats://127.0.0.1:4222"
 
-        type: 'REST'
-
-        # Type: RestClientConfig
-        config:
-
-          # Type: HttpUrl
-
-          base_url: "REPLACE_ME"
+        stream:
+          name: "EVENTS"
+          subject: "events.>"

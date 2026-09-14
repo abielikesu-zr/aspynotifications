@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        ❌ *Ingestion failed:* `{{ context.run_id }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Failure: `{{ event.failure_type }}` · Reason: `{{ event.reason }}`
