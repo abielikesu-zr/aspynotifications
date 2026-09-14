@@ -1,0 +1,21 @@
+{
+  "event": {
+    "id": "ingestion-failed-completion-test-run-001",
+    "source": "ingestion-service",
+    "type": "ingestion.failed",
+    "subject": "ingestion/run-001",
+    "data": {
+      "event": {
+        "status": "failed",
+        "failure_type": "completion_failure",
+        "reason": "Post-ingestion commit failed",
+        "rollback_performed": true
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "run_id": "run-001"
+      }
+    }
+  }
+}

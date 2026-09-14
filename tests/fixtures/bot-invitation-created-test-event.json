@@ -1,0 +1,17 @@
+{
+  "event": {
+    "id": "bot-invitation-created-test-bot-001",
+    "source": "tenant-service",
+    "type": "bot_invitation.created",
+    "subject": "bot/bot-001/invitation",
+    "data": {
+      "event": {
+        "platform": "slack"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "bot_id": "bot-001"
+      }
+    }
+  }
+}

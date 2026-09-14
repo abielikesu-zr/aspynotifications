@@ -1,0 +1,23 @@
+{
+  "event": {
+    "id": "ingestion-failed-worker-test-run-001",
+    "source": "ingestion-service",
+    "type": "ingestion.failed",
+    "subject": "ingestion/run-001",
+    "data": {
+      "event": {
+        "status": "failed",
+        "failure_type": "worker_failure",
+        "failed_worker": "source-downloaded-worker",
+        "failed_subject": "ingestion.source.downloaded",
+        "source_id": "source-001",
+        "reason": "Unable to download source document"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "run_id": "run-001"
+      }
+    }
+  }
+}

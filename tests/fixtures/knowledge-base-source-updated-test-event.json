@@ -1,0 +1,20 @@
+{
+  "event": {
+    "id": "knowledge-base-source-updated-test-source-001",
+    "source": "tenant-service",
+    "type": "knowledge_base_source.updated",
+    "subject": "kb/kb-001/source/source-001",
+    "data": {
+      "event": {
+        "name": "Updated product documentation",
+        "type": "file",
+        "status": "active"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "source_id": "source-001"
+      }
+    }
+  }
+}

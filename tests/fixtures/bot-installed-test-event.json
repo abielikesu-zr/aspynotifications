@@ -1,0 +1,18 @@
+{
+  "event": {
+    "id": "bot-installed-test-bot-001",
+    "source": "tenant-service",
+    "type": "bot.installed",
+    "subject": "bot/bot-001",
+    "data": {
+      "event": {
+        "installation_id": "installation-001",
+        "platform": "slack"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "owner_tenant_id": "tenant-owner-001"
+      }
+    }
+  }
+}

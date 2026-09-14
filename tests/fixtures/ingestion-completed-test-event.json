@@ -1,0 +1,19 @@
+{
+  "event": {
+    "id": "ingestion-completed-test-run-001",
+    "source": "ingestion-service",
+    "type": "ingestion.completed",
+    "subject": "ingestion/run-001",
+    "data": {
+      "event": {
+        "status": "completed",
+        "completed_at": "2026-09-14T12:00:00Z"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "run_id": "run-001"
+      }
+    }
+  }
+}

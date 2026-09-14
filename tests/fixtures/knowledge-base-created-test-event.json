@@ -1,0 +1,19 @@
+{
+  "event": {
+    "id": "knowledge-base-created-test-kb-001",
+    "source": "tenant-service",
+    "type": "knowledge_base.created",
+    "subject": "kb/kb-001",
+    "data": {
+      "event": {
+        "name": "Product Knowledge Base",
+        "description": "Knowledge base for product documentation",
+        "status": "active"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001"
+      }
+    }
+  }
+}

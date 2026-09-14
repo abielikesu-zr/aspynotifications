@@ -1,0 +1,23 @@
+{
+  "event": {
+    "id": "document-changed-test-document-001",
+    "source": "ingestion-service",
+    "type": "document.changed",
+    "subject": "document/document-001",
+    "data": {
+      "event": {
+        "document_id": "document-001",
+        "document_name": "architecture.pdf",
+        "document_path": "/documents/architecture.pdf",
+        "change_type": "modified",
+        "last_updated_at": "2026-09-14T12:00:00Z"
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "run_id": "run-001",
+        "source_id": "source-001"
+      }
+    }
+  }
+}

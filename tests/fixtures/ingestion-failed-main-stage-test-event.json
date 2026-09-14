@@ -1,0 +1,20 @@
+{
+  "event": {
+    "id": "ingestion-failed-main-stage-test-run-001",
+    "source": "ingestion-service",
+    "type": "ingestion.failed",
+    "subject": "ingestion/run-001",
+    "data": {
+      "event": {
+        "status": "failed",
+        "failure_type": "main_stage_failure",
+        "reason": "Run has failed main stages; commit skipped."
+      },
+      "context": {
+        "tenant_id": "tenant-001",
+        "kb_id": "kb-001",
+        "run_id": "run-001"
+      }
+    }
+  }
+}
