@@ -10,8 +10,10 @@ logger = structlog.get_logger(__name__)
 
 
 @register_plugin("cloud_event_store", "LOCALFS")
-class CloudEventFileStoreAdapter(ICloudEventStorePort, GenericLocalFSAdapter):
-    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
+class CloudEventFileStoreAdapter(
+    ICloudEventStorePort, GenericLocalFSAdapter[CloudEvent]
+):
+    def get_model_class(self) -> type[BaseModel]:
         return CloudEvent
 
     async def save_cloud_event(self, cloud_event: CloudEvent) -> None:

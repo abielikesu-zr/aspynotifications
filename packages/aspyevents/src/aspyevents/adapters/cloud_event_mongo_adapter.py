@@ -13,8 +13,10 @@ logger = structlog.get_logger(__name__)
 
 
 @register_plugin("cloud_event_store", "MONGODB")
-class CloudEventMongoStoreAdapter(ICloudEventStorePort, GenericMongoAdapter):
-    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
+class CloudEventMongoStoreAdapter(
+    ICloudEventStorePort, GenericMongoAdapter[CloudEvent]
+):
+    def get_model_class(self) -> type[BaseModel]:
         return CloudEvent
 
     def get_collection_name(self) -> str:
