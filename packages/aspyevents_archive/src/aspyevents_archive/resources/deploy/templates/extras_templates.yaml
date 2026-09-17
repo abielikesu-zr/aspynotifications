@@ -1,4 +1,4 @@
-events_archive_worker:
+aspyevents_archive:
   deploy:
     templates:
       - src: aspyevents_archive_extra.yaml.j2

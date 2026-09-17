@@ -27,6 +27,10 @@ post_package_install: []
 
 templates:
 
+  - src: aspyevents_archive_extra.yaml.j2
+    dest: /opt/apps/aspyevents_archive/config/aspyevents_archive_extra.yaml
+    permissions: "0600"
+
   - src: aspyevents.yaml.j2
     dest: /opt/apps/aspyevents_archive/config/aspyevents.yaml
     permissions: "0600"
