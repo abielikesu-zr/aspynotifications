@@ -18,6 +18,7 @@ skip_config:
   - connection_tls_ca_file
   - connection_tls_cert_file
   - connection_tls_key_file
+  - nats_worker_subscriptions
 
 placeholders:
   localfs_data_dir: "{{ data_dir }}/<parent>"

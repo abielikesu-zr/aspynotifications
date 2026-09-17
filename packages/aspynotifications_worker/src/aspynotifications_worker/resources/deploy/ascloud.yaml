@@ -27,6 +27,10 @@ post_package_install: []
 
 templates:
 
+  - src: aspynotifications_worker_extra.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/config/aspynotifications_worker_extra.yaml
+    permissions: "0600"
+
   - src: aspynotifications.yaml.j2
     dest: /opt/apps/aspynotifications_worker/config/aspynotifications.yaml
     permissions: "0600"
