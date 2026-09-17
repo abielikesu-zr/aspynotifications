@@ -16,7 +16,7 @@ logger = structlog.get_logger(__name__)
 class CloudEventMongoStoreAdapter(
     ICloudEventStorePort, GenericMongoAdapter[CloudEvent]
 ):
-    def get_model_class(self) -> type[BaseModel]:
+    def get_model_class(self) -> type[CloudEvent]:
         return CloudEvent
 
     def get_collection_name(self) -> str:

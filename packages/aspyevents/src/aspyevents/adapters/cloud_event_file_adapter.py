@@ -13,7 +13,7 @@ logger = structlog.get_logger(__name__)
 class CloudEventFileStoreAdapter(
     ICloudEventStorePort, GenericLocalFSAdapter[CloudEvent]
 ):
-    def get_model_class(self) -> type[BaseModel]:
+    def get_model_class(self) -> type[CloudEvent]:
         return CloudEvent
 
     async def save_cloud_event(self, cloud_event: CloudEvent) -> None:
