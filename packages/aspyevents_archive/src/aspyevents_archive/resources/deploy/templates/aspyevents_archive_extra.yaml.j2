@@ -1,0 +1,6 @@
+# Type: AspynotificationsWorkerParams
+events_archive_worker:
+
+  # Type: CloudEventsWorkerConfig
+  nats_worker:
+    subscriptions: {{ (g_app_aw_nats_worker_subscriptions | default('')).split(',') if (g_app_aw_nats_worker_subscriptions | default('')) != '' else [] }}

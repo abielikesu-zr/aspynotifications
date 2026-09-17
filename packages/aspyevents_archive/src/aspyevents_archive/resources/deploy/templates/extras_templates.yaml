@@ -1,0 +1,6 @@
+events_archive_worker:
+  deploy:
+    templates:
+      - src: aspyevents_archive_extra.yaml.j2
+        dest: "{{ install_dir }}/config/aspyevents_archive_extra.yaml"
+        permissions: "0600"

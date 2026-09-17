@@ -1,18 +1,14 @@
 # Type: ArchiveWorkerParams
 events_archive_worker:
+
   # Type: CloudEventsWorkerConfig
   nats_worker:
+
     # Unique name identifying the CloudEvents worker.
 
     # Type: str
 
     name: "events_worker"
-
-    # List of NATS subjects to which the worker subscribes for CloudEvents.
-
-    # Type: list[str]
-
-    subscriptions: []
 
     # Maximum number of CloudEvents processed in a single batch.
 
@@ -34,10 +30,12 @@ events_archive_worker:
 
   # Type: NatsClientConfig
   nats_client:
+
     # Name of the JetStream stream used to store CloudEvents.
 
     # Type: NatsConnectionConfig
     connection:
+
       # URL of the NATS server to connect to.
 
       # Type: str
@@ -48,6 +46,7 @@ events_archive_worker:
 
     # Type: NatsStreamConfig
     stream:
+
       # Name of the JetStream stream used to store CloudEvents.
 
       # Type: str

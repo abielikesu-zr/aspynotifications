@@ -10,12 +10,6 @@ events_archive_worker:
 
     name: "{{  g_app_eaw_nats_worker_name | default(None)   }}"
 
-    # List of NATS subjects to which the worker subscribes for CloudEvents.
-
-    # Type: list[str]
-
-    subscriptions: "{{  g_app_eaw_nats_worker_subscriptions | default() | list  }}"
-
     # Maximum number of CloudEvents processed in a single batch.
 
     # Type: int
