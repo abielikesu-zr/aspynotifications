@@ -6,6 +6,7 @@ from aspyplugs.z_plug_resolver import PluginDependencyResolver
 from aspypolicies import get_policy_service
 from dependency_injector import containers, providers
 
+from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.factories.destinations_store_factory import (
     create_destinations_store,
 )
@@ -20,7 +21,6 @@ from aspynotifications.factories.provider_store_factory import (
     create_notification_provider_store,
 )
 from aspynotifications.factories.template_store_factory import create_template_store
-from aspynotifications.adapters.notify_renderer_jinja import Jinja2TemplateRenderer
 from aspynotifications.services.admin_url_generator import AdminUrlGenerator
 from aspynotifications.services.destinations_service import DestinationsService
 from aspynotifications.services.notification_provider_service import (

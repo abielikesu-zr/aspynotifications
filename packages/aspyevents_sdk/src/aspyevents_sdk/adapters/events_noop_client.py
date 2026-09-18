@@ -5,7 +5,6 @@ from aspyevents_dtos.publish_event_request import PublishEventRequest
 from aspyplugs.registry import register_plugin
 
 from aspyevents_sdk.entities.config import NoopClientConfig
-
 from aspyevents_sdk.ports.events_client_port import (
     IEventsClientPort,
 )
