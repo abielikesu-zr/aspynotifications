@@ -42,6 +42,16 @@ class UpdateNotificationPolicyRequest(BaseModel):
     destinations: list[str] = Field(..., min_length=1)
 
 
+class UpdateNotificationPolicyByNameRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(..., min_length=1)
+    subject: str = Field(..., min_length=1)
+    envelope_policies: list[PolicyExpressionDTO] = Field(default_factory=list)
+    destination_policies: list[PolicyExpressionDTO] = Field(default_factory=list)
+    destinations: list[str] = Field(..., min_length=1)
+
+
 class ActivateNotificationPolicyRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -73,12 +83,21 @@ class SlackTemplateDTO(BaseModel):
     blocks: TemplateSourceDTO | None = None
 
 
+class VSCodeTemplateDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    title: TemplateSourceDTO
+    message: TemplateSourceDTO
+    severity: Literal["info", "warning", "error"] = "info"
+
+
 class CreateTemplateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str = Field(..., min_length=1)
     email: EmailTemplateDTO | None = None
     slack: SlackTemplateDTO | None = None
+    vscode: VSCodeTemplateDTO | None = None
     output_hole: BHoleTemplateDTO | None = None
 
 
@@ -105,9 +124,43 @@ class SlackChannelDestinationConfigDTO(BaseModel):
     type: Literal["slack_channel"] = "slack_channel"
 
 
+class VSCodeUserAudienceDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["user"] = "user"
+    recipient_user_id: str = Field(..., min_length=1)
+
+
+class VSCodeGroupAudienceDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["group"] = "group"
+    group_id: str = Field(..., min_length=1)
+
+
+class VSCodeAllAudienceDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["all"] = "all"
+
+
+VSCodeAudienceDTO = Annotated[
+    VSCodeUserAudienceDTO | VSCodeGroupAudienceDTO | VSCodeAllAudienceDTO,
+    Field(discriminator="type"),
+]
+
+
+class VSCodeDestinationConfigDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["vscode"] = "vscode"
+    audience: VSCodeAudienceDTO
+
+
 DestinationConfigDTO = Annotated[
     EmailDestinationConfigDTO
     | SlackChannelDestinationConfigDTO
+    | VSCodeDestinationConfigDTO
     | OutputHoleDestinationConfigDTO,
     Field(discriminator="type"),
 ]
@@ -133,4 +186,4 @@ class UpdateDestinationRequest(BaseModel):
 
 class DestinationDTO(CreateDestinationRequest):
     id: str = Field(..., min_length=1)
-    type: Literal["email", "slack_channel", "output_hole"]
+    type: Literal["email", "slack_channel", "vscode", "output_hole"]

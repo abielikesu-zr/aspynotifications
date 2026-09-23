@@ -1,6 +1,6 @@
 import asyncio
 from collections.abc import Callable
-from typing import Any
+from typing import Any, Literal
 
 import click
 from aspylogger.services.logging_setup import bootstrap_logging
@@ -23,6 +23,15 @@ from aspynotifications_cli.cli.create_shole_provider_handler import (
 from aspynotifications_cli.cli.create_slack_provider_handler import (
     create_slack_provider_handler,
 )
+from aspynotifications_cli.cli.create_vscode_destination_handler import (
+    create_vscode_destination_handler,
+)
+from aspynotifications_cli.cli.create_vscode_provider_handler import (
+    create_vscode_provider_handler,
+)
+from aspynotifications_cli.cli.create_vscode_template_handler import (
+    create_vscode_template_handler,
+)
 from aspynotifications_cli.cli.create_zeptomail_provider_handler import (
     create_zeptomail_provider_handler,
 )
@@ -31,6 +40,9 @@ from aspynotifications_cli.cli.send_event_handler import send_event_handler
 from aspynotifications_cli.cli.update_template_handler import update_template_handler
 from aspynotifications_cli.cli.update_notification_policy_handler import (
     update_notification_policy_handler,
+)
+from aspynotifications_cli.cli.update_notification_policy_by_name_handler import (
+    update_notification_policy_by_name_handler,
 )
 from aspynotifications_cli.cli.activate_notification_policy_handler import (
     activate_notification_policy_handler,
@@ -55,6 +67,15 @@ from aspynotifications_cli.cli.update_zeptomail_provider_handler import (
 )
 from aspynotifications_cli.cli.update_slack_channel_destination_handler import (
     update_slack_channel_destination_handler,
+)
+from aspynotifications_cli.cli.update_vscode_destination_handler import (
+    update_vscode_destination_handler,
+)
+from aspynotifications_cli.cli.update_vscode_provider_handler import (
+    update_vscode_provider_handler,
+)
+from aspynotifications_cli.cli.update_vscode_template_handler import (
+    update_vscode_template_handler,
 )
 
 
@@ -133,6 +154,61 @@ def create_slack_provider(
     )
 
 
+@click.command("create-vscode-provider")
+@click.option("--name", required=True)
+@click.option("--relay-url", required=True)
+@common_logging_options
+def create_vscode_provider(
+    name: str,
+    relay_url: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        create_vscode_provider_handler(
+            name=name,
+            relay_url=relay_url,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("create-vscode-template")
+@click.option("--name", required=True)
+@click.option("--title-inline", required=True)
+@click.option("--message-inline", required=True)
+@click.option(
+    "--severity",
+    type=click.Choice(["info", "warning", "error"]),
+    default="info",
+    show_default=True,
+)
+@common_logging_options
+def create_vscode_template(
+    name: str,
+    title_inline: str,
+    message_inline: str,
+    severity: Literal["info", "warning", "error"],
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        create_vscode_template_handler(
+            name=name,
+            title_inline=title_inline,
+            message_inline=message_inline,
+            severity=severity,
+            output_format=output_format,
+        )
+    )
+
+
 @click.command("create-zeptomail-provider")
 @click.option("--name", required=True)
 @click.option("--from-address", required=True)
@@ -203,6 +279,61 @@ def update_slack_provider(
         update_slack_provider_handler(
             provider_id=provider_id,
             webhook_url=webhook_url,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-vscode-provider")
+@click.option("--id", "provider_id", required=True)
+@click.option("--relay-url", required=True)
+@common_logging_options
+def update_vscode_provider(
+    provider_id: str,
+    relay_url: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_vscode_provider_handler(
+            provider_id=provider_id,
+            relay_url=relay_url,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-vscode-template")
+@click.option("--name", required=True)
+@click.option("--title-inline", required=True)
+@click.option("--message-inline", required=True)
+@click.option(
+    "--severity",
+    type=click.Choice(["info", "warning", "error"]),
+    default="info",
+    show_default=True,
+)
+@common_logging_options
+def update_vscode_template(
+    name: str,
+    title_inline: str,
+    message_inline: str,
+    severity: Literal["info", "warning", "error"],
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_vscode_template_handler(
+            name=name,
+            title_inline=title_inline,
+            message_inline=message_inline,
+            severity=severity,
             output_format=output_format,
         )
     )
@@ -376,6 +507,34 @@ def create_slack_channel_destination(
     )
 
 
+@click.command("create-vscode-destination")
+@click.option("--name", required=True)
+@click.option("--provider", required=True)
+@click.option("--template", required=True)
+@click.option("--recipient-user-id", required=True)
+@common_logging_options
+def create_vscode_destination(
+    name: str,
+    provider: str,
+    template: str,
+    recipient_user_id: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        create_vscode_destination_handler(
+            name=name,
+            provider=provider,
+            template=template,
+            recipient_user_id=recipient_user_id,
+            output_format=output_format,
+        )
+    )
+
+
 @click.command("create-output-hole-destination")
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
@@ -455,6 +614,34 @@ def update_slack_channel_destination(
             destination_id=destination_id,
             provider=provider,
             template=template,
+            output_format=output_format,
+        )
+    )
+
+
+@click.command("update-vscode-destination")
+@click.option("--id", "destination_id", required=True)
+@click.option("--provider", required=True)
+@click.option("--template", required=True)
+@click.option("--recipient-user-id", required=True)
+@common_logging_options
+def update_vscode_destination(
+    destination_id: str,
+    provider: str,
+    template: str,
+    recipient_user_id: str,
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_vscode_destination_handler(
+            destination_id=destination_id,
+            provider=provider,
+            template=template,
+            recipient_user_id=recipient_user_id,
             output_format=output_format,
         )
     )
@@ -559,6 +746,43 @@ def update_policy(
     )
 
 
+@click.command("update-policy-by-name")
+@click.option("--name", required=True)
+@click.option("--subject", required=True)
+@click.option("--destination", "destinations", multiple=True, required=True)
+@click.option("--envelope-policy", type=(str, str, str), multiple=True)
+@click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
+@click.option("--destination-policy", type=(str, str, str), multiple=True)
+@click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@common_logging_options
+def update_policy_by_name(
+    name: str,
+    subject: str,
+    destinations: tuple[str, ...],
+    envelope_policy: tuple[tuple[str, str, str], ...],
+    negative_envelope_policy: tuple[tuple[str, str, str], ...],
+    destination_policy: tuple[tuple[str, str, str], ...],
+    negative_destination_policy: tuple[tuple[str, str, str], ...],
+    output_format: str,
+    verbose: int,
+    quiet: int,
+    log_format: str,
+) -> None:
+    bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
+    asyncio.run(
+        update_notification_policy_by_name_handler(
+            name=name,
+            subject=subject,
+            destinations=destinations,
+            envelope_policy=envelope_policy,
+            negative_envelope_policy=negative_envelope_policy,
+            destination_policy=destination_policy,
+            negative_destination_policy=negative_destination_policy,
+            output_format=output_format,
+        )
+    )
+
+
 @click.command("activate-policy")
 @click.option("--id", "policy_id", required=True)
 @common_logging_options
@@ -598,21 +822,28 @@ def deactivate_policy(
 
 
 cli.add_command(create_slack_provider)
+cli.add_command(create_vscode_provider)
+cli.add_command(create_vscode_template)
 cli.add_command(create_zeptomail_provider)
 cli.add_command(create_shole_provider)
 cli.add_command(update_slack_provider)
+cli.add_command(update_vscode_provider)
+cli.add_command(update_vscode_template)
 cli.add_command(update_zeptomail_provider)
 cli.add_command(update_shole_provider)
 cli.add_command(create_template)
 cli.add_command(update_template)
 cli.add_command(create_email_destination)
 cli.add_command(create_slack_channel_destination)
+cli.add_command(create_vscode_destination)
 cli.add_command(create_output_hole_destination)
 cli.add_command(update_email_destination)
 cli.add_command(update_slack_channel_destination)
+cli.add_command(update_vscode_destination)
 cli.add_command(update_output_hole_destination)
 cli.add_command(create_policy)
 cli.add_command(update_policy)
+cli.add_command(update_policy_by_name)
 cli.add_command(activate_policy)
 cli.add_command(deactivate_policy)
 

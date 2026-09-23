@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from aspynotifications.entities.noop import AHoleProvider
 
@@ -62,6 +62,25 @@ class SlackProvider(BaseModel):
     )
 
 
+class VSCodeProviderSettings(BaseModel):
+    """Configuration for the HTTP relay consumed by VS Code clients."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    relay_url: str = Field(..., min_length=1, description="VS Code SSE relay URL")
+
+
+class VSCodeProvider(BaseModel):
+    """Wrapper for VS Code notification provider configuration."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["VSCODE"] = Field("VSCODE", description="Provider type")
+    config: VSCodeProviderSettings = Field(
+        ..., description="VS Code-specific configuration"
+    )
+
+
 class NotificationProvider(BaseModel):
     """
     Configured notification provider.
@@ -70,7 +89,7 @@ class NotificationProvider(BaseModel):
     id: str = Field(..., description="Unique provider identifier")
     name: str = Field(..., description="Provider name")
 
-    provider: ZeptoMailProvider | SlackProvider | AHoleProvider = Field(
+    provider: ZeptoMailProvider | SlackProvider | VSCodeProvider | AHoleProvider = Field(
         ...,
         discriminator="type",
         description="Notification provider configuration",

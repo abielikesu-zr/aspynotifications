@@ -4,6 +4,7 @@ import pytest
 
 from aspynotifications_dtos.base_dtos import TemplateSourceDTO
 from aspynotifications_dtos.notifications_dtos import (
+    UpdateNotificationPolicyByNameRequest,
     SlackTemplateDTO,
     UpdateTemplateRequest,
 )
@@ -23,6 +24,41 @@ class _Response:
 
     def json(self) -> dict:
         return self._payload
+
+
+@pytest.mark.asyncio
+async def test_update_policy_by_name_uses_put_with_the_policy_name() -> None:
+    request = UpdateNotificationPolicyByNameRequest(
+        name="entity-created-notification-policy",
+        subject="*.created",
+        destinations=["entity-vscode-destination"],
+    )
+    http_client = MagicMock()
+    http_client.put = AsyncMock(
+        return_value=_Response(
+            {
+                "id": "policy-001",
+                "name": request.name,
+                "subject": request.subject,
+                "destinations": request.destinations,
+                "envelope_policies": [],
+                "destination_policies": [],
+                "is_active": True,
+            }
+        )
+    )
+    client = NotificationsRestClient(
+        config={"base_url": "http://notifications.example"},
+        http_client=http_client,
+    )
+
+    result = await client.update_notification_policy_by_name(request)
+
+    assert result.name == request.name
+    http_client.put.assert_awaited_once_with(
+        "http://notifications.example/api/v1/policies/by-name/entity-created-notification-policy",
+        payload=request.model_dump(mode="json"),
+    )
 
 
 @pytest.mark.asyncio

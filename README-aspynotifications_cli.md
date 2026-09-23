@@ -9,23 +9,57 @@ The package exposes the `send-event` command and administrative commands for not
 ```text
 send-event --from-file PATH [--output-format print|json] [-v|-q] [--log-format plain|json]
 create-slack-provider --name NAME --webhook-url URL
+create-vscode-provider --name NAME --relay-url URL
 create-zeptomail-provider --name NAME --from-address ADDRESS --send-mail-token TOKEN
 create-shole-provider --name NAME
 update-slack-provider --id PROVIDER_ID --webhook-url URL
+update-vscode-provider --id PROVIDER_ID --relay-url URL
 update-zeptomail-provider --id PROVIDER_ID --from-address ADDRESS --send-mail-token TOKEN
 update-shole-provider --id PROVIDER_ID
 create-template --name NAME [--slack-blocks-inline BLOCKS]
+create-vscode-template --name NAME --title-inline TITLE --message-inline MESSAGE [--severity info|warning|error]
 update-template --name NAME --slack-blocks-inline BLOCKS
 create-email-destination --name NAME --provider PROVIDER --template TEMPLATE
 create-slack-channel-destination --name NAME --provider PROVIDER --template TEMPLATE
+create-vscode-destination --name NAME --provider PROVIDER --template TEMPLATE --recipient-user-id USER_ID
 create-output-hole-destination --name NAME --provider PROVIDER --template TEMPLATE
 update-email-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 update-slack-channel-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
+update-vscode-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE --recipient-user-id USER_ID
 update-output-hole-destination --id DESTINATION_ID --provider PROVIDER --template TEMPLATE
 create-policy --name NAME --subject SUBJECT --destination DESTINATION
 update-policy --id POLICY_ID --subject SUBJECT --destination DESTINATION
 activate-policy --id POLICY_ID
 deactivate-policy --id POLICY_ID
+```
+
+## VS Code notifications
+
+The `VSCODE` Provider publishes the rendered payload to the HTTP SSE relay. The
+Destination defines the audience; the initial CLI command creates `user`
+audiences. The REST contract also supports `group` and `all` for future relay
+resolution. For `user`, it also preserves top-level `recipient_user_id` for
+compatibility with the current SSE relay.
+
+```bash
+notify create-vscode-provider \
+  --name vscode-provider \
+  --relay-url "http://127.0.0.1:8000/notifications" \
+  --output-format json
+
+notify create-vscode-template \
+  --name entity-created-vscode-template \
+  --title-inline "Entity created" \
+  --message-inline "Created {{ context.entity_id }}" \
+  --severity info \
+  --output-format json
+
+notify create-vscode-destination \
+  --name entity-created-vscode-destination \
+  --provider vscode-provider \
+  --template entity-created-vscode-template \
+  --recipient-user-id user@example.com \
+  --output-format json
 ```
 
 It reads a JSON file, validates it as `CreateNotifyRequest`, loads the SDK configuration, obtains the configured `NotificationsSDK`, and calls `notify`.

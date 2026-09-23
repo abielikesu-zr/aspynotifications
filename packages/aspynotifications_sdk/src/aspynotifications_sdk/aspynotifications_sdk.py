@@ -9,6 +9,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyByNameRequest,
     UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
@@ -47,6 +48,16 @@ class NotificationsSDK:
     ) -> NotificationPolicyDTO:
         logger.debug("update notification policy sdk request", request=request)
         return await self._client.update_notification_policy(request)
+
+    async def update_notification_policy_by_name(
+        self,
+        request: UpdateNotificationPolicyByNameRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug(
+            "update_notification_policy_by_name_sdk_requested",
+            name=request.name,
+        )
+        return await self._client.update_notification_policy_by_name(request)
 
     async def activate_notification_policy(
         self,

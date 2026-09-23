@@ -5,6 +5,7 @@ import pytest
 
 from aspynotifications_rest.api.notification_administration_handlers import (
     update_template,
+    update_notification_policy_by_name,
     update_notification_provider,
 )
 from aspynotifications_dtos.providers_dtos import (
@@ -15,8 +16,10 @@ from aspynotifications_dtos.providers_dtos import (
 )
 from aspynotifications_dtos.base_dtos import TemplateSourceDTO
 from aspynotifications_dtos.notifications_dtos import (
+    NotificationPolicyDTO,
     SlackTemplateDTO,
     TemplateDTO,
+    UpdateNotificationPolicyByNameRequest,
     UpdateTemplateRequest,
 )
 
@@ -67,3 +70,33 @@ async def test_update_provider_calls_the_facade_and_returns_the_provider() -> No
 
     assert response.status_code == 200
     facade.update_notification_provider.assert_awaited_once_with(body)
+
+
+@pytest.mark.asyncio
+async def test_update_policy_by_name_calls_the_facade_and_returns_the_policy() -> None:
+    body = UpdateNotificationPolicyByNameRequest(
+        name="entity-created-notification-policy",
+        subject="*.created",
+        destinations=["entity-vscode-destination"],
+    )
+    facade = SimpleNamespace(
+        update_notification_policy_by_name=AsyncMock(
+            return_value=NotificationPolicyDTO(
+                id="policy-001",
+                name=body.name,
+                subject=body.subject,
+                destinations=body.destinations,
+                envelope_policies=[],
+                destination_policies=[],
+                is_active=True,
+            )
+        )
+    )
+    request = SimpleNamespace(
+        app=SimpleNamespace(state=SimpleNamespace(notifications_facade=facade))
+    )
+
+    response = await update_notification_policy_by_name(body.name, body, request)
+
+    assert response.status_code == 200
+    facade.update_notification_policy_by_name.assert_awaited_once_with(body)

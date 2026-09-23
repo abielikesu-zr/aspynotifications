@@ -11,7 +11,7 @@ def main() -> None:
     parser.add_argument("--message", required=True, help="Mensaje que mostrará VS Code.")
     parser.add_argument("--user-id", required=True, help="Usuario destinatario de la notificación.")
     parser.add_argument("--severity", choices=("info", "warning", "error"), default="info")
-    parser.add_argument("--url", default="http://127.0.0.1:8000/notifications")
+    parser.add_argument("--url", default="http://127.0.0.1:8001/notifications")
     arguments = parser.parse_args()
 
     payload = json.dumps(

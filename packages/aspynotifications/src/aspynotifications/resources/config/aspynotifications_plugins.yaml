@@ -38,6 +38,9 @@ aspyplugs_static:
         - type: slack_channel
           module: aspynotifications.adapters.notify_renderer_slack
           eager: false
+        - type: vscode
+          module: aspynotifications.adapters.notify_renderer_vscode
+          eager: false
       - name: notification_sender
         adapters:
         - type: SHOLE
@@ -45,6 +48,9 @@ aspyplugs_static:
           eager: false
         - type: SLACK
           module: aspynotifications.adapters.notification_senders.slack_sender
+          eager: false
+        - type: VSCODE
+          module: aspynotifications.adapters.notification_senders.vscode_sender
           eager: false
         - type: ZEPTOMAIL
           module: aspynotifications.adapters.notification_senders.zeptomail_sender

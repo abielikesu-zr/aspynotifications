@@ -54,8 +54,21 @@ class SlackProviderDTO(BaseModel):
     config: SlackProviderSettingsDTO
 
 
+class VSCodeProviderSettingsDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    relay_url: str = Field(..., min_length=1, description="VS Code SSE relay URL")
+
+
+class VSCodeProviderDTO(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["VSCODE"] = "VSCODE"
+    config: VSCodeProviderSettingsDTO
+
+
 NotificationProviderConfigDTO = Annotated[
-    ZeptoMailProviderDTO | SlackProviderDTO | AHoleProviderDTO,
+    ZeptoMailProviderDTO | SlackProviderDTO | VSCodeProviderDTO | AHoleProviderDTO,
     Field(discriminator="type"),
 ]
 

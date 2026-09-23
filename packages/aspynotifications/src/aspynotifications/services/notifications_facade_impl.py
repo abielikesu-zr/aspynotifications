@@ -15,6 +15,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationSubscriptionsDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyByNameRequest,
     UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
@@ -296,6 +297,33 @@ class NotificationsFacadeImpl(NotificationsFacade):
     ) -> NotificationPolicyDTO:
         policy = await self._notification_policy_service.update_notification_policy(
             policy_id=request.id,
+            subject=request.subject,
+            envelope_policies=[
+                AspyPolicy.model_validate(policy.model_dump())
+                for policy in request.envelope_policies
+            ],
+            destination_policies=[
+                AspyPolicy.model_validate(policy.model_dump())
+                for policy in request.destination_policies
+            ],
+            destinations=request.destinations,
+        )
+        return NotificationPolicyDTO.model_validate(policy.model_dump())
+
+    async def update_notification_policy_by_name(
+        self,
+        request: UpdateNotificationPolicyByNameRequest,
+    ) -> NotificationPolicyDTO:
+        existing_policy = (
+            await self._notification_policy_service.get_notification_policy_by_name(
+                request.name
+            )
+        )
+        if existing_policy is None:
+            raise LookupError(f"Notification policy not found: {request.name}")
+
+        policy = await self._notification_policy_service.update_notification_policy(
+            policy_id=existing_policy.id,
             subject=request.subject,
             envelope_policies=[
                 AspyPolicy.model_validate(policy.model_dump())

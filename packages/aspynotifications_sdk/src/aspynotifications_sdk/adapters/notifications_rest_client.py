@@ -22,6 +22,7 @@ from aspynotifications_dtos.notifications_dtos import (
     NotificationPolicyDTO,
     TemplateDTO,
     UpdateDestinationRequest,
+    UpdateNotificationPolicyByNameRequest,
     UpdateNotificationPolicyRequest,
     UpdateTemplateRequest,
 )
@@ -116,6 +117,21 @@ class NotificationsRestClient(INotificationsClientPort):
         resp = await self._handle_request(
             "PUT",
             f"/api/v1/policies/{request.id}",
+            payload=request.model_dump(mode="json"),
+        )
+        return NotificationPolicyDTO.model_validate(resp.json())
+
+    async def update_notification_policy_by_name(
+        self,
+        request: UpdateNotificationPolicyByNameRequest,
+    ) -> NotificationPolicyDTO:
+        logger.debug(
+            "update_notification_policy_by_name_rest_client_requested",
+            name=request.name,
+        )
+        resp = await self._handle_request(
+            "PUT",
+            f"/api/v1/policies/by-name/{request.name}",
             payload=request.model_dump(mode="json"),
         )
         return NotificationPolicyDTO.model_validate(resp.json())
