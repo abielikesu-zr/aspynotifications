@@ -1,7 +1,7 @@
 import structlog
 from aspyadapters.adapters.generic_local_fs import GenericLocalFSAdapter
 from aspyplugs.registry import register_plugin
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
@@ -10,10 +10,12 @@ logger = structlog.get_logger(__name__)
 
 
 @register_plugin("destinations_store", "LOCALFS")
-class DestinationsStoreAdapter(IDestinationStorePort, GenericLocalFSAdapter):
+class DestinationsStoreAdapter(
+    IDestinationStorePort, GenericLocalFSAdapter[Destination]
+):
     """Local-file persistence adapter for destinations."""
 
-    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
+    def get_model_class(self) -> type[Destination]:
         return Destination
 
     def get_index_declarations(self) -> dict[str, list[str]]:

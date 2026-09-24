@@ -4,7 +4,7 @@ from aspyadapters.adapters.generic_mongo_db_adapter import (
     NotFoundError,
 )
 from aspyplugs.registry import register_plugin
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from aspynotifications.entities.destination import Destination
 from aspynotifications.ports.destinations_store_port import IDestinationStorePort
@@ -13,10 +13,12 @@ logger = structlog.get_logger(__name__)
 
 
 @register_plugin("destinations_store", "MONGODB")
-class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
+class DestinationsMongoStoreAdapter(
+    IDestinationStorePort, GenericMongoAdapter[Destination]
+):
     """MongoDB persistence adapter for destinations."""
 
-    def get_model_class(self) -> type[BaseModel]:  # type: ignore[override]
+    def get_model_class(self) -> type[Destination]:  # type: ignore[override]
         return Destination
 
     def get_collection_name(self) -> str:
@@ -83,7 +85,7 @@ class DestinationsMongoStoreAdapter(IDestinationStorePort, GenericMongoAdapter):
                 "Persistence error retrieving destination by name from MongoDB",
                 destination_name=destination_name,
                 error=str(error),
-               exc_info=error,
+                exc_info=error,
             )
             raise Exception(  # noqa: TRY002
                 "Error retrieving destination by name from MongoDB"
