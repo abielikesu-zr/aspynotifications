@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        🧹 *Bot response cache invalidated:* Document: `{{ event.document_id }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Run: `{{ context.run_id }}`

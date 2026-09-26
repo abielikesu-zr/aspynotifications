@@ -33,7 +33,7 @@ notify create-policy --name entity-feedback-negative-notification-policy --subje
 notify create-policy --name entity-from-cache-notification-policy --subject "*.from_cache" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-regenerated-notification-policy --subject "*.regenerated" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-cached-notification-policy --subject "*.cached" --destination entity-slack-destination --output-format json
-notify create-policy --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-slack-destination --output-format json
+notify create-policy --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-slack-destination --negative-envelope-policy "exclude-bot-response-cache-invalidated" "envelope.type == 'bot_response.cache_invalidated'" "Bot response cache invalidation has its own Slack destination" --output-format json
 notify create-policy --name entity-generated-notification-policy --subject "*.generated" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-activated-notification-policy --subject "*.activated" --destination entity-slack-destination --output-format json
 notify create-policy --name entity-accepted-notification-policy --subject "*.accepted" --destination entity-slack-destination --output-format json
@@ -131,6 +131,25 @@ notify create-policy \
   --name document-changed-notification-policy \
   --subject "document.changed" \
   --destination document-changed-slack-destination \
+  --output-format json
+
+# ---
+
+notify create-template \
+  --name bot-response-cache-invalidated-slack-template \
+  --slack-blocks-inline "$(cat tests/notification-templates/bot_response.cache_invalidated-slack.yaml)" \
+  --output-format json
+
+notify create-slack-channel-destination \
+  --name bot-response-cache-invalidated-slack-destination \
+  --provider slack-provider \
+  --template bot-response-cache-invalidated-slack-template \
+  --output-format json
+
+notify create-policy \
+  --name bot-response-cache-invalidated-notification-policy \
+  --subject "bot_response.cache_invalidated" \
+  --destination bot-response-cache-invalidated-slack-destination \
   --output-format json
 
 # ---

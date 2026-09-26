@@ -41,6 +41,9 @@ notify create-vscode-destination --name ingestion-failed-vscode-destination --pr
 notify create-vscode-template --name document-changed-vscode-template --title-inline '📄 Document changed' --message-inline 'Document: {{ event.document_name }} · ID: {{ event.document_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Updated at: {{ event.last_updated_at }}' --severity info --output-format json
 notify create-vscode-destination --name document-changed-vscode-destination --provider vscode-provider --template document-changed-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
 
+notify create-vscode-template --name bot-response-cache-invalidated-vscode-template --title-inline '🧹 Bot response cache invalidated' --message-inline 'Document: {{ event.document_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Run: {{ context.run_id }}' --severity info --output-format json
+notify create-vscode-destination --name bot-response-cache-invalidated-vscode-destination --provider vscode-provider --template bot-response-cache-invalidated-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
+
 notify create-vscode-template --name ci-vscode-template --title-inline '🏗️ CI {{ envelope.type }}' --message-inline 'Run: {{ event.run_id }} · Status: {{ event.status }} · Duration: {{ event.duration_seconds }} seconds · Target package: {{ event.target_package }} · Packages rebuilt: {{ event.packages_rebuilt | join(", ") }}' --severity info --output-format json
 notify create-vscode-destination --name ci-vscode-destination --provider vscode-provider --template ci-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
 
@@ -53,7 +56,7 @@ notify create-policy --name entity-feedback-negative-notification-policy --subje
 notify create-policy --name entity-from-cache-notification-policy --subject "*.from_cache" --destination entity-vscode-destination --output-format json
 notify create-policy --name entity-regenerated-notification-policy --subject "*.regenerated" --destination entity-vscode-destination --output-format json
 notify create-policy --name entity-cached-notification-policy --subject "*.cached" --destination entity-vscode-destination --output-format json
-notify create-policy --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-vscode-destination --output-format json
+notify create-policy --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-vscode-destination --negative-envelope-policy "exclude-bot-response-cache-invalidated" "envelope.type == 'bot_response.cache_invalidated'" "Bot response cache invalidation has its own VSCode destination" --output-format json
 notify create-policy --name entity-generated-notification-policy --subject "*.generated" --destination entity-vscode-destination --output-format json
 notify create-policy --name entity-activated-notification-policy --subject "*.activated" --destination entity-vscode-destination --output-format json
 notify create-policy --name entity-accepted-notification-policy --subject "*.accepted" --destination entity-vscode-destination --output-format json
@@ -62,6 +65,7 @@ notify create-policy --name ingestion-started-notification-policy --subject "ing
 notify create-policy --name ingestion-completed-notification-policy --subject "ingestion.completed" --destination ingestion-completed-vscode-destination --output-format json
 notify create-policy --name ingestion-failed-notification-policy --subject "ingestion.failed" --destination ingestion-failed-vscode-destination --output-format json
 notify create-policy --name document-changed-notification-policy --subject "document.changed" --destination document-changed-vscode-destination --output-format json
+notify create-policy --name bot-response-cache-invalidated-notification-policy --subject "bot_response.cache_invalidated" --destination bot-response-cache-invalidated-vscode-destination --output-format json
 notify create-policy --name ci-notification-policy --subject "ci.>" --destination ci-vscode-destination --output-format json
 
 notify update-policy-by-name --name entity-created-notification-policy --subject "*.created" --destination entity-vscode-destination --output-format json
@@ -73,7 +77,7 @@ notify update-policy-by-name --name entity-feedback-negative-notification-policy
 notify update-policy-by-name --name entity-from-cache-notification-policy --subject "*.from_cache" --destination entity-vscode-destination --output-format json
 notify update-policy-by-name --name entity-regenerated-notification-policy --subject "*.regenerated" --destination entity-vscode-destination --output-format json
 notify update-policy-by-name --name entity-cached-notification-policy --subject "*.cached" --destination entity-vscode-destination --output-format json
-notify update-policy-by-name --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-vscode-destination --output-format json
+notify update-policy-by-name --name entity-cache-invalidated-notification-policy --subject "*.cache_invalidated" --destination entity-vscode-destination --negative-envelope-policy "exclude-bot-response-cache-invalidated" "envelope.type == 'bot_response.cache_invalidated'" "Bot response cache invalidation has its own VSCode destination" --output-format json
 notify update-policy-by-name --name entity-generated-notification-policy --subject "*.generated" --destination entity-vscode-destination --output-format json
 notify update-policy-by-name --name entity-activated-notification-policy --subject "*.activated" --destination entity-vscode-destination --output-format json
 notify update-policy-by-name --name entity-accepted-notification-policy --subject "*.accepted" --destination entity-vscode-destination --output-format json
@@ -82,4 +86,5 @@ notify update-policy-by-name --name ingestion-started-notification-policy --subj
 notify update-policy-by-name --name ingestion-completed-notification-policy --subject "ingestion.completed" --destination ingestion-completed-vscode-destination --output-format json
 notify update-policy-by-name --name ingestion-failed-notification-policy --subject "ingestion.failed" --destination ingestion-failed-vscode-destination --output-format json
 notify update-policy-by-name --name document-changed-notification-policy --subject "document.changed" --destination document-changed-vscode-destination --output-format json
+notify update-policy-by-name --name bot-response-cache-invalidated-notification-policy --subject "bot_response.cache_invalidated" --destination bot-response-cache-invalidated-vscode-destination --output-format json
 notify update-policy-by-name --name ci-notification-policy --subject "ci.>" --destination ci-vscode-destination --output-format json
