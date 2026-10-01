@@ -11,11 +11,13 @@ from aspyplugs.registry import register_plugin
 from nats.aio.client import Client as NATS
 from nats.js import JetStreamContext
 
+from aspyevents_sdk.ports.events_client_port import IEventsClientPort
+
 logger = structlog.get_logger(__name__)
 
 
 @register_plugin("events_client", "NATS")
-class EveentsNatsClient:
+class EveentsNatsClient(IEventsClientPort):
     def __init__(self, config: dict[str, Any]):
         self._config = NatsClientConfig.model_validate(config)
         self._nats_url = self._config.connection.nats_url
