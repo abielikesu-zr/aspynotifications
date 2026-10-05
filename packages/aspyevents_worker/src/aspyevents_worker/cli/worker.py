@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from pathlib import Path
 
 import click
 import structlog
@@ -63,6 +64,13 @@ async def run_worker(
     help="Logging format: json or console. Defaults to console.",
 )
 @click.option(
+    "--log-file",
+    "-l",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Log file path.",
+)
+@click.option(
     "--nats-url",
     default=None,
     help="NATS server URL.",
@@ -85,6 +93,7 @@ def start_worker(
     verbose: int,
     quiet: int,
     log_format: str | None,
+    log_file: Path | None,
     config_file: str | None,
     nats_url: str | None = None,
     stream_name: str | None = None,
@@ -105,10 +114,13 @@ def start_worker(
     my_package_name = (PACKAGE_NAME or "").split(".")[0]
     root_packages = [root_package, my_package_name]
 
+    log_file_str = str(log_file) if log_file else None
+
     bootstrap_logging(
         verbose=verbose,
         quiet=quiet,
         log_format=log_format,
+        log_file=log_file_str,
         root_package=root_packages,
     )
 
