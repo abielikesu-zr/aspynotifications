@@ -1,11 +1,12 @@
-import structlog
-
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+
+import structlog
 from aspyevents_dtos.exceptions import ResourceAlreadyExistsError
-from aspyevents_rest.api.error_handlers import resource_already_exists_handler
 from aspyevents_sdk import get_events_sdk
 from aspyevents_sdk.aspyevents_sdk import EventsSDK
+from fastapi import FastAPI
+
+from aspyevents_rest.api.error_handlers import resource_already_exists_handler
 from aspyevents_rest.api.events_handlers import events_router
 
 logger = structlog.get_logger(__name__)
