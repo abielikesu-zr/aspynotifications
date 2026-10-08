@@ -43,10 +43,18 @@ templates:
     dest: /opt/apps/aspynotifications_worker/config/aspytracing.yaml
     permissions: "0600"
 
+  - src: aspyflags.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/config/aspyflags.yaml
+    permissions: "0600"
+
+  - src: app_context.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/config/app_context.yaml
+    permissions: "0600"
+
   - src: python_service.env.j2
     dest: /opt/apps/aspynotifications_worker/config/aspynotifications_worker.env
     permissions: "0600"
-    
+
   - src: python_service.system.j2
     dest: /etc/systemd/system/aspynotifications_worker.service
     owner: root
