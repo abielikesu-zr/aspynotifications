@@ -1,0 +1,323 @@
+commands:
+  - action: create-vscode-provider
+    options:
+      name: vscode-provider
+      relay-url: http://127.0.0.1:8000/notifications
+  - action: create-vscode-template
+    options:
+      name: entity-vscode-template
+      title-inline: ✨ {{ envelope.type.split(".")[0] | capitalize }} {{ envelope.type.split(".")[1] }}
+      message-inline: '{% if context.admin_url is defined %}{{ event.name }} · {{ envelope.subject }} · {{ context.admin_url }}{% else %}{{ event.name }} · {{ envelope.subject }}{% endif %}'
+      severity: info
+  - action: update-vscode-template
+    options:
+      name: entity-vscode-template
+      title-inline: ✨ {{ envelope.type.split(".")[0] | capitalize }} {{ envelope.type.split(".")[1] }}
+      message-inline: '{% if context.admin_url is defined %}{{ event.name }} · {{ envelope.subject }} · {{ context.admin_url }}{% else %}{{ event.name }} · {{ envelope.subject }}{% endif %}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: entity-vscode-destination
+      provider: vscode-provider
+      template: entity-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: bot-installed-vscode-template
+      title-inline: "\U0001F916 Bot installed"
+      message-inline: 'Bot: {{ envelope.subject }} · Installation: {{ event.installation_id }} · Platform: {{ event.platform }} · Tenant: {{ context.tenant_id }} · Owner tenant: {{ context.owner_tenant_id }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: bot-installed-vscode-destination
+      provider: vscode-provider
+      template: bot-installed-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: ingestion-started-vscode-template
+      title-inline: "\U0001F680 Ingestion started"
+      message-inline: 'Run: {{ context.run_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Sources: {{ event.total_kb_sources }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: ingestion-started-vscode-destination
+      provider: vscode-provider
+      template: ingestion-started-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: ingestion-completed-vscode-template
+      title-inline: ✅ Ingestion completed
+      message-inline: 'Run: {{ context.run_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Completed at: {{ event.completed_at }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: ingestion-completed-vscode-destination
+      provider: vscode-provider
+      template: ingestion-completed-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: ingestion-failed-vscode-template
+      title-inline: ❌ Ingestion failed
+      message-inline: 'Run: {{ context.run_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Failure: {{ event.failure_type }} · Reason: {{ event.reason }}'
+      severity: error
+  - action: create-vscode-destination
+    options:
+      name: ingestion-failed-vscode-destination
+      provider: vscode-provider
+      template: ingestion-failed-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: document-changed-vscode-template
+      title-inline: "\U0001F4C4 Document changed"
+      message-inline: 'Document: {{ event.document_name }} · ID: {{ event.document_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Updated at: {{ event.last_updated_at }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: document-changed-vscode-destination
+      provider: vscode-provider
+      template: document-changed-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: bot-response-cache-invalidated-vscode-template
+      title-inline: "\U0001F9F9 Bot response cache invalidated"
+      message-inline: 'Document: {{ event.document_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Run: {{ context.run_id }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: bot-response-cache-invalidated-vscode-destination
+      provider: vscode-provider
+      template: bot-response-cache-invalidated-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-vscode-template
+    options:
+      name: ci-vscode-template
+      title-inline: '🏗️ CI {{ envelope.type }}'
+      message-inline: 'Run: {{ event.run_id }} · Status: {{ event.status }} · Duration: {{ event.duration_seconds }} seconds · Target package: {{ event.target_package }} · Packages rebuilt: {{ event.packages_rebuilt | join(", ") }}'
+      severity: info
+  - action: create-vscode-destination
+    options:
+      name: ci-vscode-destination
+      provider: vscode-provider
+      template: ci-vscode-template
+      recipient-user-id: afranio.solano@zeroramp.com
+  - action: create-policy
+    options:
+      name: entity-created-notification-policy
+      subject: '*.created'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-updated-notification-policy
+      subject: '*.updated'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-deleted-notification-policy
+      subject: '*.deleted'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-started-notification-policy
+      subject: '*.started'
+      destination: entity-vscode-destination
+      negative-envelope-policy:
+        - exclude-ingestion-started
+        - envelope.type == 'ingestion.started'
+        - Ingestion started has its own Slack destination
+  - action: create-policy
+    options:
+      name: entity-feedback-positive-notification-policy
+      subject: '*.feedback_positive'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-feedback-negative-notification-policy
+      subject: '*.feedback_negative'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-from-cache-notification-policy
+      subject: '*.from_cache'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-regenerated-notification-policy
+      subject: '*.regenerated'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-cached-notification-policy
+      subject: '*.cached'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-cache-invalidated-notification-policy
+      subject: '*.cache_invalidated'
+      destination: entity-vscode-destination
+      negative-envelope-policy:
+        - exclude-bot-response-cache-invalidated
+        - envelope.type == 'bot_response.cache_invalidated'
+        - Bot response cache invalidation has its own VSCode destination
+  - action: create-policy
+    options:
+      name: entity-generated-notification-policy
+      subject: '*.generated'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-activated-notification-policy
+      subject: '*.activated'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: entity-accepted-notification-policy
+      subject: '*.accepted'
+      destination: entity-vscode-destination
+  - action: create-policy
+    options:
+      name: bot-installed-notification-policy
+      subject: bot.installed
+      destination: bot-installed-vscode-destination
+  - action: create-policy
+    options:
+      name: ingestion-started-notification-policy
+      subject: ingestion.started
+      destination: ingestion-started-vscode-destination
+  - action: create-policy
+    options:
+      name: ingestion-completed-notification-policy
+      subject: ingestion.completed
+      destination: ingestion-completed-vscode-destination
+  - action: create-policy
+    options:
+      name: ingestion-failed-notification-policy
+      subject: ingestion.failed
+      destination: ingestion-failed-vscode-destination
+  - action: create-policy
+    options:
+      name: document-changed-notification-policy
+      subject: document.changed
+      destination: document-changed-vscode-destination
+  - action: create-policy
+    options:
+      name: bot-response-cache-invalidated-notification-policy
+      subject: bot_response.cache_invalidated
+      destination: bot-response-cache-invalidated-vscode-destination
+  - action: create-policy
+    options:
+      name: ci-notification-policy
+      subject: ci.>
+      destination: ci-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-created-notification-policy
+      subject: '*.created'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-updated-notification-policy
+      subject: '*.updated'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-deleted-notification-policy
+      subject: '*.deleted'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-started-notification-policy
+      subject: '*.started'
+      destination: entity-vscode-destination
+      negative-envelope-policy:
+        - exclude-ingestion-started
+        - envelope.type == 'ingestion.started'
+        - Ingestion started has its own Slack destination
+  - action: update-policy-by-name
+    options:
+      name: entity-feedback-positive-notification-policy
+      subject: '*.feedback_positive'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-feedback-negative-notification-policy
+      subject: '*.feedback_negative'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-from-cache-notification-policy
+      subject: '*.from_cache'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-regenerated-notification-policy
+      subject: '*.regenerated'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-cached-notification-policy
+      subject: '*.cached'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-cache-invalidated-notification-policy
+      subject: '*.cache_invalidated'
+      destination: entity-vscode-destination
+      negative-envelope-policy:
+        - exclude-bot-response-cache-invalidated
+        - envelope.type == 'bot_response.cache_invalidated'
+        - Bot response cache invalidation has its own Slack destination
+  - action: update-policy-by-name
+    options:
+      name: entity-generated-notification-policy
+      subject: '*.generated'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-activated-notification-policy
+      subject: '*.activated'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: entity-accepted-notification-policy
+      subject: '*.accepted'
+      destination: entity-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: bot-installed-notification-policy
+      subject: bot.installed
+      destination: bot-installed-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: ingestion-started-notification-policy
+      subject: ingestion.started
+      destination: ingestion-started-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: ingestion-completed-notification-policy
+      subject: ingestion.completed
+      destination: ingestion-completed-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: ingestion-failed-notification-policy
+      subject: ingestion.failed
+      destination: ingestion-failed-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: document-changed-notification-policy
+      subject: document.changed
+      destination: document-changed-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: bot-response-cache-invalidated-notification-policy
+      subject: bot_response.cache_invalidated
+      destination: bot-response-cache-invalidated-vscode-destination
+  - action: update-policy-by-name
+    options:
+      name: ci-notification-policy
+      subject: ci.>
+      destination: ci-vscode-destination

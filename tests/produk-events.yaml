@@ -1,0 +1,193 @@
+commands:
+  - action: create-slack-provider
+    options:
+      name: slack-provider
+      webhook-url: XXX
+  - action: create-template
+    options:
+      name: entity-created-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/entity.created-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: entity-slack-destination
+      provider: slack-provider
+      template: entity-created-slack-template
+  - action: create-policy
+    options:
+      name: entity-created-notification-policy
+      subject: "*.created"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-updated-notification-policy
+      subject: "*.updated"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-deleted-notification-policy
+      subject: "*.deleted"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-started-notification-policy
+      subject: "*.started"
+      destination: entity-slack-destination
+      negative-envelope-policy:
+        - exclude-ingestion-started
+        - envelope.type == 'ingestion.started'
+        - Ingestion started has its own Slack destination
+  - action: create-policy
+    options:
+      name: entity-feedback-positive-notification-policy
+      subject: "*.feedback_positive"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-feedback-negative-notification-policy
+      subject: "*.feedback_negative"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-from-cache-notification-policy
+      subject: "*.from_cache"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-regenerated-notification-policy
+      subject: "*.regenerated"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-cached-notification-policy
+      subject: "*.cached"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-cache-invalidated-notification-policy
+      subject: "*.cache_invalidated"
+      destination: entity-slack-destination
+      negative-envelope-policy:
+        - exclude-bot-response-cache-invalidated
+        - envelope.type == 'bot_response.cache_invalidated'
+        - Bot response cache invalidation has its own Slack destination
+  - action: create-policy
+    options:
+      name: entity-generated-notification-policy
+      subject: "*.generated"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-activated-notification-policy
+      subject: "*.activated"
+      destination: entity-slack-destination
+  - action: create-policy
+    options:
+      name: entity-accepted-notification-policy
+      subject: "*.accepted"
+      destination: entity-slack-destination
+  - action: create-template
+    options:
+      name: bot-installed-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/bot.installed-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: bot-installed-slack-destination
+      provider: slack-provider
+      template: bot-installed-slack-template
+  - action: create-policy
+    options:
+      name: bot-installed-notification-policy
+      subject: bot.installed
+      destination: bot-installed-slack-destination
+  - action: create-template
+    options:
+      name: ingestion-started-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/ingestion.started-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: ingestion-started-slack-destination
+      provider: slack-provider
+      template: ingestion-started-slack-template
+  - action: create-policy
+    options:
+      name: ingestion-started-notification-policy
+      subject: ingestion.started
+      destination: ingestion-started-slack-destination
+  - action: create-template
+    options:
+      name: ingestion-completed-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/ingestion.completed-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: ingestion-completed-slack-destination
+      provider: slack-provider
+      template: ingestion-completed-slack-template
+  - action: create-policy
+    options:
+      name: ingestion-completed-notification-policy
+      subject: ingestion.completed
+      destination: ingestion-completed-slack-destination
+  - action: create-template
+    options:
+      name: ingestion-failed-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/ingestion.failed-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: ingestion-failed-slack-destination
+      provider: slack-provider
+      template: ingestion-failed-slack-template
+  - action: create-policy
+    options:
+      name: ingestion-failed-notification-policy
+      subject: ingestion.failed
+      destination: ingestion-failed-slack-destination
+  - action: create-template
+    options:
+      name: document-changed-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/document.changed-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: document-changed-slack-destination
+      provider: slack-provider
+      template: document-changed-slack-template
+  - action: create-policy
+    options:
+      name: document-changed-notification-policy
+      subject: document.changed
+      destination: document-changed-slack-destination
+  - action: create-template
+    options:
+      name: bot-response-cache-invalidated-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/bot_response.cache_invalidated-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: bot-response-cache-invalidated-slack-destination
+      provider: slack-provider
+      template: bot-response-cache-invalidated-slack-template
+  - action: create-policy
+    options:
+      name: bot-response-cache-invalidated-notification-policy
+      subject: bot_response.cache_invalidated
+      destination: bot-response-cache-invalidated-slack-destination
+  - action: create-template
+    options:
+      name: ci-slack-template
+    file_options:
+      slack-blocks-inline: tests/notification-templates/ci-slack.yaml
+  - action: create-slack-channel-destination
+    options:
+      name: ci-slack-destination
+      provider: slack-provider
+      template: ci-slack-template
+  - action: create-policy
+    options:
+      name: ci-notification-policy
+      subject: ci.>
+      destination: ci-slack-destination
