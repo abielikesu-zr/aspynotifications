@@ -16,22 +16,22 @@ commands:
   - action: create-policy
     options:
       name: entity-created-notification-policy
-      subject: '*.created'
+      subject: "*.created"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-updated-notification-policy
-      subject: '*.updated'
+      subject: "*.updated"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-deleted-notification-policy
-      subject: '*.deleted'
+      subject: "*.deleted"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-started-notification-policy
-      subject: '*.started'
+      subject: "*.started"
       destination: entity-slack-destination
       negative-envelope-policy:
         - exclude-ingestion-started
@@ -40,32 +40,32 @@ commands:
   - action: create-policy
     options:
       name: entity-feedback-positive-notification-policy
-      subject: '*.feedback_positive'
+      subject: "*.feedback_positive"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-feedback-negative-notification-policy
-      subject: '*.feedback_negative'
+      subject: "*.feedback_negative"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-from-cache-notification-policy
-      subject: '*.from_cache'
+      subject: "*.from_cache"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-regenerated-notification-policy
-      subject: '*.regenerated'
+      subject: "*.regenerated"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-cached-notification-policy
-      subject: '*.cached'
+      subject: "*.cached"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-cache-invalidated-notification-policy
-      subject: '*.cache_invalidated'
+      subject: "*.cache_invalidated"
       destination: entity-slack-destination
       negative-envelope-policy:
         - exclude-bot-response-cache-invalidated
@@ -74,17 +74,17 @@ commands:
   - action: create-policy
     options:
       name: entity-generated-notification-policy
-      subject: '*.generated'
+      subject: "*.generated"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-activated-notification-policy
-      subject: '*.activated'
+      subject: "*.activated"
       destination: entity-slack-destination
   - action: create-policy
     options:
       name: entity-accepted-notification-policy
-      subject: '*.accepted'
+      subject: "*.accepted"
       destination: entity-slack-destination
   - action: create-template
     options:
