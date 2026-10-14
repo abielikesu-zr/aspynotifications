@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -uo pipefail
 
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
@@ -45,7 +45,10 @@ run_command() {
 
   while IFS=$'\t' read -r key type value; do
     if [[ "$type" == "array" ]]; then
-      mapfile -t values < <(jq -r --arg key "$key" '.[$key][] | tostring' <<<"$options_json")
+      values=()
+      while IFS= read -r value; do
+        values+=("$value")
+      done < <(jq -r --arg key "$key" '.[$key][] | tostring' <<<"$options_json")
       command+=("--$key" "${values[@]}")
     else
       command+=("--$key" "$value")
@@ -67,9 +70,19 @@ run_command() {
 
 cd "$PROJECT_DIR"
 
+failures=0
+
 while IFS= read -r command_json; do
   action="$(jq -r '.action' <<<"$command_json")"
   options_json="$(jq -c '.options' <<<"$command_json")"
   file_options_json="$(jq -c '.file_options // {}' <<<"$command_json")"
-  run_command "$action" "$options_json" "$file_options_json"
+  if ! run_command "$action" "$options_json" "$file_options_json"; then
+    echo "Command failed; continuing with the remaining commands: notify $action" >&2
+    failures=$((failures + 1))
+  fi
 done < <(jq -c '.commands[]' <<<"$CONFIG_JSON")
+
+if ((failures > 0)); then
+  echo "Bootstrap completed with $failures failed command(s)." >&2
+  exit 1
+fi

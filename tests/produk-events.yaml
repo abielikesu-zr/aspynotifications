@@ -2,7 +2,7 @@ commands:
   - action: create-slack-provider
     options:
       name: slack-provider
-      webhook-url: XXX
+      webhook-url: XXXX
   - action: create-template
     options:
       name: entity-created-slack-template
