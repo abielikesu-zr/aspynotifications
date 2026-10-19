@@ -170,3 +170,16 @@ notify create-policy \
   --subject "ci.>" \
   --destination ci-slack-destination \
   --output-format json
+
+
+#--- 2026-10-19
+
+notify create-vscode-template --name bot-response-cached-vscode-template --title-inline '🗃️ Bot response cached' --message-inline 'Cache: {{ event.cache_id }} · Documents ({{ event.document_count }}): {{ event.document_ids | join(", ") }} · Tenant: {{ context.tenant_id }} · Bot: {{ context.bot_id }}' --severity info --output-format json
+
+notify create-vscode-destination --name bot-response-cached-vscode-destination --provider vscode-provider --template bot-response-cached-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
+
+notify create-policy --name bot-response-cached-notification-policy --subject "bot_response.cached" --destination bot-response-cached-vscode-destination --output-format json
+
+notify update-policy-by-name --name entity-cached-notification-policy --subject "*.cached" --destination entity-vscode-destination --negative-envelope-policy "exclude-bot-response-cached" "envelope.type == 'bot_response.cached'" "Bot response cache creation has its own VSCode destination" --output-format json
+
+notify update-policy-by-name --name bot-response-cached-notification-policy --subject "bot_response.cached" --destination bot-response-cached-vscode-destination --output-format json
