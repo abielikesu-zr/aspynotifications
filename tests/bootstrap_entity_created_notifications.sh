@@ -155,6 +155,32 @@ notify create-policy \
 # ---
 
 notify create-template \
+  --name bot-response-cached-slack-template \
+  --slack-blocks-inline "$(cat tests/notification-templates/bot_response.cached-slack.yaml)" \
+  --output-format json
+
+notify create-slack-channel-destination \
+  --name bot-response-cached-slack-destination \
+  --provider slack-provider \
+  --template bot-response-cached-slack-template \
+  --output-format json
+
+notify create-policy \
+  --name bot-response-cached-notification-policy \
+  --subject "bot_response.cached" \
+  --destination bot-response-cached-slack-destination \
+  --output-format json
+
+notify update-policy-by-name \
+  --name entity-cached-notification-policy \
+  --subject "*.cached" \
+  --destination entity-slack-destination \
+  --negative-envelope-policy "exclude-bot-response-cached" "envelope.type == 'bot_response.cached'" "Bot response cache creation has its own Slack destination" \
+  --output-format json
+
+# ---
+
+notify create-template \
   --name ci-slack-template \
   --slack-blocks-inline "$(cat tests/notification-templates/ci-slack.yaml)" \
   --output-format json
