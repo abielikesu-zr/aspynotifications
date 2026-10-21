@@ -100,3 +100,13 @@ notify create-policy --name bot-response-cached-notification-policy --subject "b
 notify update-policy-by-name --name entity-cached-notification-policy --subject "*.cached" --destination entity-vscode-destination --negative-envelope-policy "exclude-bot-response-cached" "envelope.type == 'bot_response.cached'" "Bot response cache creation has its own VSCode destination" --output-format json
 
 notify update-policy-by-name --name bot-response-cached-notification-policy --subject "bot_response.cached" --destination bot-response-cached-vscode-destination --output-format json
+
+#--- 2026-10-21
+
+notify create-vscode-template --name ingestion-cancelling-vscode-template --title-inline '⏳ Ingestion cancellation requested' --message-inline 'Run: {{ context.run_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Cancellation requested by user' --severity info --output-format json
+notify create-vscode-destination --name ingestion-cancelling-vscode-destination --provider vscode-provider --template ingestion-cancelling-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
+notify create-policy --name ingestion-cancelling-notification-policy --subject "ingestion.cancelling" --destination ingestion-cancelling-vscode-destination --output-format json
+
+notify create-vscode-template --name ingestion-cancelled-vscode-template --title-inline '{% if event.cancellation_type == "kb_already_active" %}🚫 Ingestion not started: knowledge base busy{% else %}🛑 Ingestion cancelled by user{% endif %}' --message-inline 'Run: {{ context.run_id }} · Tenant: {{ context.tenant_id }} · Knowledge base: {{ context.kb_id }} · Completed at: {{ event.completed_at }} · Reason: {{ event.reason }}{% if event.cancellation_type == "kb_already_active" %} · Active run: {{ event.active_run_id }}{% endif %}' --severity info --output-format json
+notify create-vscode-destination --name ingestion-cancelled-vscode-destination --provider vscode-provider --template ingestion-cancelled-vscode-template --recipient-user-id "afranio.solano@zeroramp.com" --output-format json
+notify create-policy --name ingestion-cancelled-notification-policy --subject "ingestion.cancelled" --destination ingestion-cancelled-vscode-destination --output-format json
