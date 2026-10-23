@@ -1,0 +1,14 @@
+{
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.profiles.linux": {
+        "Bash workspace": {
+            "path": "/bin/bash",
+            "args": [
+                "--rcfile",
+                "${workspaceFolder}/.bashrc"
+            ]
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "Bash workspace",
+    "terminal.integrated.shellIntegration.enabled": false
+}
