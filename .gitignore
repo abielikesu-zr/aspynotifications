@@ -122,3 +122,4 @@ packages/*/build/
 **/pyproject.prod.toml
 **/requirements*.txt
 **/requirements*.in
+**/config/*_plugins.yaml
