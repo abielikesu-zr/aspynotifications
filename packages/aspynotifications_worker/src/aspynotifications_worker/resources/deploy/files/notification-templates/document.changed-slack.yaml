@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        📄 *Document changed:* `{{ event.document_name }}` · Document: `{{ event.document_id }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Updated at: `{{ event.last_updated_at }}`

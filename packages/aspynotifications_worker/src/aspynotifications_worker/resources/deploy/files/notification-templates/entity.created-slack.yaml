@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        ✨ *{{ envelope.type.split('.')[0] | capitalize }} {{ envelope.type.split('.')[1] }}:* {% if context.admin_url is defined %}<{{ context.admin_url }}|{{ event.name }}> (`<{{ context.admin_url }}|{{ envelope.subject }}>`){% else %}{{ event.name }} (`{{ envelope.subject }}`){% endif %}

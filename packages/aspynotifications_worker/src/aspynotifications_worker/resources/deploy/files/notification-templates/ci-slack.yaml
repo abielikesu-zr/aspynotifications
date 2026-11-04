@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        🏗️ *CI {{ envelope.type }}:* Run: `{{ event.run_id }}` · Status: `{{ event.status }}` · Duration: `{{ event.duration_seconds }}` seconds · Target package: `{{ event.target_package }}` · Packages rebuilt: `{{ event.packages_rebuilt | join(', ') }}`

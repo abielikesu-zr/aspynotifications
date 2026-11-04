@@ -1,0 +1,6 @@
+blocks:
+  - type: section
+    text:
+      type: mrkdwn
+      text: >-
+        🗃️ *Bot response cached:* Cache: `{{ event.cache_id }}` · Documents ({{ event.document_count }}): `{{ event.document_ids | join(", ") }}` · Tenant: `{{ context.tenant_id }}` · Bot: `{{ context.bot_id }}`

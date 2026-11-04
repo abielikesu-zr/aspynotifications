@@ -1,0 +1,108 @@
+# Type: AspypatchAppParams
+aspypatch:
+
+  # Type: StorageAdapterConfig
+  patch_record_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    # Switch Variable: g_app_a_patch_record_store_adapter_type
+    adapter:
+
+      {% if  g_app_a_patch_record_store_adapter_type | default('LOCALFS') == 'LOCALFS' %}
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "{{  g_app_a_patch_record_store_localfs_data_dir | default(None)   }}"
+
+      {% elif  g_app_a_patch_record_store_adapter_type == 'MONGODB' %}
+
+        type: 'MONGODB'
+
+        # MongoDB-specific configuration
+
+        # Type: MongoDBConfig
+        config:
+
+          # MongoDB connection URI
+
+          # Type: str
+
+          uri: "{{  g_app_a_patch_record_store_mongodb_uri | default(None)   }}"
+
+          # Database name
+
+          # Type: str
+
+          database: "{{  g_app_a_patch_record_store_mongodb_database | default(None)   }}"
+
+          # Username for authentication, if required
+
+          # Type: str | None
+
+          username: "{{  g_app_a_patch_record_store_mongodb_username | default(None)   }}"
+
+          # Password for authentication, if required
+
+          # Type: str | None
+
+          password: "{{  g_app_a_patch_record_store_mongodb_password | default(None)   }}"
+
+          # Authentication source database, if required
+
+          # Type: str | None
+
+          auth_source: "{{  g_app_a_patch_record_store_mongodb_auth_source | default(None)   }}"
+
+          # Use TLS/SSL connection
+
+          # Type: bool
+
+          tls: "{{  (g_app_a_patch_record_store_mongodb_tls | default(False)) is sameas true  }}"
+
+      {% endif %}
+
+  # Type: PatchRecordServiceConfig
+  patch_record_service:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_patch_record_service_keep | default('keep')   }}"
+
+  # Type: PatchRunnerServiceConfig
+  patch_runner_service:
+
+    # Directory path where patch subdirectories are located.
+
+    # Type: Path
+
+    patches_dir: "{{  g_app_a_patch_runner_service_patches_dir | default(None)   }}"
+
+    # Directory path where patch execution log files will be saved.
+
+    # Type: Path
+
+    logs_dir: "{{  g_app_a_patch_runner_service_logs_dir | default('/var/log/patches')   }}"
+
+    # Executable script name expected inside each patch directory.
+
+    # Type: str
+
+    script_name: "{{  g_app_a_patch_runner_service_script_name | default('apply.sh')   }}"
+
+  # Type: PatchApplicationFacadeConfig
+  patch_application_facade:
+
+    # Type: Literal['keep']
+
+    keep: "{{  g_app_a_patch_application_facade_keep | default('keep')   }}"

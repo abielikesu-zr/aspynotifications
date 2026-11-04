@@ -31,10 +31,18 @@ templates:
     dest: /opt/apps/aspyevents_worker/config/aspytracing.yaml
     permissions: "0600"
 
+  - src: aspyflags.yaml.j2
+    dest: /opt/apps/aspyevents_worker/config/aspyflags.yaml
+    permissions: "0600"
+
+  - src: app_context.yaml.j2
+    dest: /opt/apps/aspyevents_worker/config/app_context.yaml
+    permissions: "0600"
+
   - src: python_service.env.j2
     dest: /opt/apps/aspyevents_worker/config/aspyevents_worker.env
     permissions: "0600"
-    
+
   - src: python_service.system.j2
     dest: /etc/systemd/system/aspyevents_worker.service
     owner: root

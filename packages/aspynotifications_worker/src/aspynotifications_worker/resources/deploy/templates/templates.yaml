@@ -10,3 +10,6 @@ aspynotifications_worker:
     - src: aspytracing.yaml.j2
       dest: '{{ install_dir }}/config/aspytracing.yaml'
       permissions: '0600'
+    - src: aspypatch.yaml.j2
+      dest: '{{ install_dir }}/config/aspypatch.yaml'
+      permissions: '0600'

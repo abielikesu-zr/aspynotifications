@@ -27,3 +27,6 @@ placeholders:
   store_adapter_config_data_dir: "{{ data_dir }}/<parent>"
   aw_nats_worker_name: "events_worker"
   aw_nats_worker_subscriptions: []
+
+  patch_runner_service_patches_dir: "{{ data_dir }}/patches"
+  patch_runner_service_logs_dir: "{{ data_dir }}/patch-logs"
