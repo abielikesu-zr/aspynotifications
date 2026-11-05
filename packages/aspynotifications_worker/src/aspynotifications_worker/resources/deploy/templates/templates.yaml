@@ -7,9 +7,9 @@ aspynotifications_worker:
     - src: aspynotifications_worker.yaml.j2
       dest: '{{ install_dir }}/config/aspynotifications_worker.yaml'
       permissions: '0600'
-    - src: aspytracing.yaml.j2
-      dest: '{{ install_dir }}/config/aspytracing.yaml'
-      permissions: '0600'
     - src: aspypatch.yaml.j2
       dest: '{{ install_dir }}/config/aspypatch.yaml'
+      permissions: '0600'
+    - src: aspytracing.yaml.j2
+      dest: '{{ install_dir }}/config/aspytracing.yaml'
       permissions: '0600'

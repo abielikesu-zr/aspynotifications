@@ -1,11 +1,63 @@
+# Type: AspypatchAppParams
 aspypatch:
-  patch_record_store:
-    adapter:
-      type: LOCALFS
-      config:
-        data_dir: "/home/zrp0/Workspace/aspynotifications/tests/aspypatch-demo/historial"
 
+  # Type: StorageAdapterConfig
+  patch_record_store:
+
+    # Configuration for the storage adapter
+
+    # Type: aspyadapters.config.local_fs_config.LocalFSAdapterConfig | aspyadapters.config.mongo_db_config.MongoDBAdapterConfig
+    # Switch Variable: g_app_a_patch_record_store_adapter_type
+    adapter:
+
+      
+
+        type: 'LOCALFS'
+
+        # LocalFS-specific configuration
+
+        # Type: LocalFSConfig
+        config:
+
+          # Directory where JSON files will be stored
+
+          # Type: str
+
+          data_dir: "./var/all_stores/patch_record_store"
+
+      
+
+  # Type: PatchRecordServiceConfig
+  patch_record_service:
+
+    # Type: Literal['keep']
+
+    keep: "keep"
+
+  # Type: PatchRunnerServiceConfig
   patch_runner_service:
-    patches_dir: "/home/zrp0/Workspace/aspynotifications/tests/aspypatch-demo/patches"
-    logs_dir: "/home/zrp0/Workspace/aspynotifications/tests/aspypatch-demo/logs"
-    script_name: apply.sh
+
+    # Directory path where patch subdirectories are located.
+
+    # Type: Path
+
+    patches_dir: "./var/all_stores/patches"
+
+    # Directory path where patch execution log files will be saved.
+
+    # Type: Path
+
+    logs_dir: "./var/all_stores/patch-logs"
+
+    # Executable script name expected inside each patch directory.
+
+    # Type: str
+
+    script_name: "apply.sh"
+
+  # Type: PatchApplicationFacadeConfig
+  patch_application_facade:
+
+    # Type: Literal['keep']
+
+    keep: "keep"

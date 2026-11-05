@@ -3,6 +3,7 @@
         "../aspy/packages/aspyadapters/src",
         "../aspy/packages/aspycontext/src",
         "../aspy/packages/aspylogger/src",
+        "../aspy/packages/aspypatch/src",
         "../aspy/packages/aspyplugs/src",
         "../aspy/packages/aspypolicies/src",
         "../aspy/packages/aspyrest/src",

@@ -1,23 +1,7 @@
-aspyevents_worker:
+aspynotifications_worker:
   deploy:
     copy_files:
-      - src: notification-templates/bot.installed-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/bot_response.cache_invalidated-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/bot_response.cached-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/ci-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/document.changed-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/entity.created-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/ingestion.completed-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/ingestion.failed-slack.yaml
-        dest: "{{ install_dir }}/notification-templates/"
-      - src: notification-templates/ingestion.started-slack.yaml
+      - src: notification-templates
         dest: "{{ install_dir }}/notification-templates/"
     directories:
       - path: "{{ install_dir }}/notification-templates"

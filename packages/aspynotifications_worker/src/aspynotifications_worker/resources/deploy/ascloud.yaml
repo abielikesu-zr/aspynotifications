@@ -19,7 +19,13 @@ directories:
   - path: /var/log/aspynotifications_worker
     permissions: "0755"
 
-copy_files: []
+  - path: /opt/apps/aspynotifications_worker/notification-templates
+    permissions: 0700
+
+copy_files:
+
+  - src: notification-templates
+    dest: /opt/apps/aspynotifications_worker/notification-templates/
 
 pre_package_install: []
 
@@ -37,6 +43,10 @@ templates:
 
   - src: aspynotifications_worker.yaml.j2
     dest: /opt/apps/aspynotifications_worker/config/aspynotifications_worker.yaml
+    permissions: "0600"
+
+  - src: aspypatch.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/config/aspypatch.yaml
     permissions: "0600"
 
   - src: aspytracing.yaml.j2
