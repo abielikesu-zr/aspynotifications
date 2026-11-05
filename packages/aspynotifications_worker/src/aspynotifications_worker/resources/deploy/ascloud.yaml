@@ -19,17 +19,19 @@ directories:
   - path: /var/log/aspynotifications_worker
     permissions: "0755"
 
-  - path: /opt/apps/aspynotifications_worker/notification-templates
-    permissions: 0700
-
 copy_files:
 
   - src: notification-templates
     dest: /opt/apps/aspynotifications_worker/notification-templates/
 
+  - src: bootstrap
+    dest: /opt/apps/aspynotifications_worker/bootstrap/
+
 pre_package_install: []
 
-post_package_install: []
+post_package_install:
+
+  - bootstrap.sh
 
 templates:
 
