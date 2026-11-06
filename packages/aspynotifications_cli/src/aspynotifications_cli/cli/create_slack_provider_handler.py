@@ -1,11 +1,11 @@
 import json
 
 import structlog
+import yaml
 from aspylogger.services.logging_setup import configure_logging
 from aspynotifications_dtos.providers_dtos import (
     CreateNotificationProviderRequest,
     SlackProviderDTO,
-    SlackProviderSettingsDTO,
 )
 from aspynotifications_sdk import get_notifications_sdk
 
@@ -15,8 +15,7 @@ logger = structlog.get_logger(__name__)
 
 
 async def create_slack_provider_handler(
-    name: str,
-    webhook_url: str,
+    file_path: str,
     output_format: str,
     config_files: list[str] | None = None,
 ) -> None:
@@ -25,14 +24,14 @@ async def create_slack_provider_handler(
     load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
-    result = await get_notifications_sdk().create_notification_provider(
-        CreateNotificationProviderRequest(
-            name=name,
-            provider=SlackProviderDTO(
-                config=SlackProviderSettingsDTO(webhook_url=webhook_url)
-            ),
-        )
-    )
+    with open(file_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    request = CreateNotificationProviderRequest.model_validate(data)
+    if not isinstance(request.provider, SlackProviderDTO):
+        raise ValueError("Provider type must be SLACK.")
+
+    result = await get_notifications_sdk().create_notification_provider(request)
     data = result.model_dump(mode="json")
     log.info("create_slack_provider_handler")
     if output_format == "json":

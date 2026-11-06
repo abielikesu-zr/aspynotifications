@@ -134,13 +134,16 @@ cli.add_command(send_event)
 
 
 @click.command("create-slack-provider")
-@click.option("--name", required=True)
-@click.option("--webhook-url", required=True)
+@click.option(
+    "--from-file",
+    "file_path",
+    type=click.Path(exists=True, dir_okay=False),
+    required=True,
+)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_slack_provider(
-    name: str,
-    webhook_url: str,
+    file_path: str,
     config_file: tuple[Path, ...],
     output_format: str,
     verbose: int,
@@ -150,8 +153,7 @@ def create_slack_provider(
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         create_slack_provider_handler(
-            name=name,
-            webhook_url=webhook_url,
+            file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
         )
