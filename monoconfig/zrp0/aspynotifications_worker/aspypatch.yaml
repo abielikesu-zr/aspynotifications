@@ -41,13 +41,13 @@ aspypatch:
 
     # Type: Path
 
-    patches_dir: "./var/all_stores/patches"
+    patches_dir: "./packages/aspynotifications_worker/src/aspynotifications_worker/resources/deploy/files/bootstrap"
 
     # Directory path where patch execution log files will be saved.
 
     # Type: Path
 
-    logs_dir: "./var/all_stores/patch-logs"
+    logs_dir: "./var/logs/patch-logs"
 
     # Executable script name expected inside each patch directory.
 

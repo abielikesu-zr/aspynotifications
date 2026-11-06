@@ -18,10 +18,11 @@ async def create_slack_provider_handler(
     name: str,
     webhook_url: str,
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="create_slack_provider_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     result = await get_notifications_sdk().create_notification_provider(

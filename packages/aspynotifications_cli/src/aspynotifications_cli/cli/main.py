@@ -1,4 +1,5 @@
 import asyncio
+from pathlib import Path
 from collections.abc import Callable
 from typing import Any, Literal
 
@@ -135,10 +136,12 @@ cli.add_command(send_event)
 @click.command("create-slack-provider")
 @click.option("--name", required=True)
 @click.option("--webhook-url", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_slack_provider(
     name: str,
     webhook_url: str,
+    config_file: tuple[Path, ...],
     output_format: str,
     verbose: int,
     quiet: int,
@@ -150,6 +153,7 @@ def create_slack_provider(
             name=name,
             webhook_url=webhook_url,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 

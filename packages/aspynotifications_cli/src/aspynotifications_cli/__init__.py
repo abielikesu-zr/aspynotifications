@@ -6,11 +6,14 @@ PACKAGE_NAME = __package__ or ""
 
 def load_aspynotifications_cli_config(
     config_file: str | None = None,
+    config_files: list[str] | None = None,
 ) -> None:
     package_name = (PACKAGE_NAME or "").split(".")[0]
     user_config_paths = [f"monoconfig/default/{package_name}"]
     if config_file:
         user_config_paths.append(config_file)
+    if config_files:
+        user_config_paths.extend(config_files)
 
     local_config_paths = []
     local_config_name = get_os_username()
