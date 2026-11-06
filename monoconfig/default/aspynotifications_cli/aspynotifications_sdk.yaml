@@ -49,4 +49,4 @@ notifications_sdk:
 
         # Type: HttpUrl
 
-        base_url: "REPLACE_ME"
+        base_url: "http://127.0.0.1:50011"

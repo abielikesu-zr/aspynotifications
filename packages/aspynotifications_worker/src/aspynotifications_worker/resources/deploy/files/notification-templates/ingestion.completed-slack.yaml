@@ -1,6 +1,0 @@
-blocks:
-  - type: section
-    text:
-      type: mrkdwn
-      text: >-
-        ✅ *Ingestion completed:* `{{ context.run_id }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Completed at: `{{ event.completed_at }}`
