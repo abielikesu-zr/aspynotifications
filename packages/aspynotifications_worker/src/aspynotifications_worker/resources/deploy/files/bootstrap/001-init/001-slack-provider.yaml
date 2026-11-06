@@ -1,5 +1,0 @@
-name: slack-provider
-provider:
-  type: SLACK
-  config:
-    webhook_url: "XXX"
