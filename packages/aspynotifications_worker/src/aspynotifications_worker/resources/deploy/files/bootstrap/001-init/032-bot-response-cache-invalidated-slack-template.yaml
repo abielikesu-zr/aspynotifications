@@ -1,0 +1,7 @@
+name: bot-response-cache-invalidated-slack-template
+slack:
+  blocks:
+    inline: "blocks:\n  - type: section\n    text:\n      type: mrkdwn\n      text:
+      >-\n        \U0001F9F9 *Bot response cache invalidated:* Document: `{{ event.document_id
+      }}` · Tenant: `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id
+      }}` · Run: `{{ context.run_id }}`"

@@ -1,0 +1,4 @@
+name: bot-installed-notification-policy
+subject: bot.installed
+destinations:
+- bot-installed-slack-destination

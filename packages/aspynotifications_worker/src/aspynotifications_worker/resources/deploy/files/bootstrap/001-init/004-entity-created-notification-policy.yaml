@@ -1,0 +1,4 @@
+name: entity-created-notification-policy
+subject: "*.created"
+destinations:
+- entity-slack-destination

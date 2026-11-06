@@ -1,0 +1,4 @@
+name: entity-feedback-negative-notification-policy
+subject: "*.feedback_negative"
+destinations:
+- entity-slack-destination

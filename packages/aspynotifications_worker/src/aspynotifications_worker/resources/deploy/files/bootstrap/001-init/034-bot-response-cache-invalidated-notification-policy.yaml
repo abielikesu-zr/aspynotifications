@@ -1,0 +1,4 @@
+name: bot-response-cache-invalidated-notification-policy
+subject: bot_response.cache_invalidated
+destinations:
+- bot-response-cache-invalidated-slack-destination

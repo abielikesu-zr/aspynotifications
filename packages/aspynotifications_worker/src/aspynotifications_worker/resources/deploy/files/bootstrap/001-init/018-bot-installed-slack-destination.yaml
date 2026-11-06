@@ -1,0 +1,5 @@
+name: bot-installed-slack-destination
+provider: slack-provider
+template: bot-installed-slack-template
+config:
+  type: slack_channel

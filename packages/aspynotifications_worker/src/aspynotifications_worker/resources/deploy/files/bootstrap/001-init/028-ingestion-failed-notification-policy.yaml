@@ -1,0 +1,4 @@
+name: ingestion-failed-notification-policy
+subject: ingestion.failed
+destinations:
+- ingestion-failed-slack-destination

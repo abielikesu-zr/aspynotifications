@@ -1,0 +1,4 @@
+name: entity-updated-notification-policy
+subject: "*.updated"
+destinations:
+- entity-slack-destination

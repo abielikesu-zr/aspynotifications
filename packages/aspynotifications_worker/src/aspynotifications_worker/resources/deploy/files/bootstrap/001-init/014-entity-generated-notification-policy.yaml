@@ -1,0 +1,4 @@
+name: entity-generated-notification-policy
+subject: "*.generated"
+destinations:
+- entity-slack-destination

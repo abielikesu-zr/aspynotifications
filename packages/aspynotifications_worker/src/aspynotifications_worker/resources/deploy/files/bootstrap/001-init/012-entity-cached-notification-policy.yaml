@@ -1,0 +1,9 @@
+name: entity-cached-notification-policy
+subject: "*.cached"
+destinations:
+- entity-slack-destination
+envelope_policies:
+- name: exclude-bot-response-cached
+  expression: envelope.type == 'bot_response.cached'
+  reason: Bot response cache creation has its own Slack destination
+  negative: true

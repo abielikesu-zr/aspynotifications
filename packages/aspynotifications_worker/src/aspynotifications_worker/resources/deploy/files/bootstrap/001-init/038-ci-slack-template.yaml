@@ -1,0 +1,8 @@
+name: ci-slack-template
+slack:
+  blocks:
+    inline: "blocks:\n  - type: section\n    text:\n      type: mrkdwn\n      text:
+      >-\n        \U0001F3D7️ *CI {{ envelope.type }}:* Run: `{{ event.run_id }}`
+      · Status: `{{ event.status }}` · Duration: `{{ event.duration_seconds }}` seconds
+      · Target package: `{{ event.target_package }}` · Packages rebuilt: `{{ event.packages_rebuilt
+      | join(', ') }}`"

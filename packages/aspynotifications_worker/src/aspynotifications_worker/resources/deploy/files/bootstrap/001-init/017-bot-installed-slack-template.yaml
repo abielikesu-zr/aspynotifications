@@ -1,0 +1,7 @@
+name: bot-installed-slack-template
+slack:
+  blocks:
+    inline: "blocks:\n  - type: section\n    text:\n      type: mrkdwn\n      text:
+      >-\n        \U0001F916 *Bot installed:* `{{ envelope.subject }}` · Installation:
+      `{{ event.installation_id }}` · Platform: `{{ event.platform }}` · Tenant: `{{
+      context.tenant_id }}` · Owner tenant: `{{ context.owner_tenant_id }}`"

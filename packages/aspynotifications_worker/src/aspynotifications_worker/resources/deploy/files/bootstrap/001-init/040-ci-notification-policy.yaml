@@ -1,0 +1,4 @@
+name: ci-notification-policy
+subject: ci.>
+destinations:
+- ci-slack-destination

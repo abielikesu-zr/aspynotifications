@@ -1,0 +1,5 @@
+name: document-changed-slack-destination
+provider: slack-provider
+template: document-changed-slack-template
+config:
+  type: slack_channel

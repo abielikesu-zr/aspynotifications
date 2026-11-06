@@ -1,0 +1,9 @@
+name: entity-started-notification-policy
+subject: "*.started"
+destinations:
+- entity-slack-destination
+envelope_policies:
+- name: exclude-ingestion-started
+  expression: envelope.type == 'ingestion.started'
+  reason: Ingestion started has its own Slack destination
+  negative: true

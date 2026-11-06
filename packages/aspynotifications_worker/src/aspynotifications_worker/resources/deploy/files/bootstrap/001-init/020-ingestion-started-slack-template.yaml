@@ -1,0 +1,7 @@
+name: ingestion-started-slack-template
+slack:
+  blocks:
+    inline: "blocks:\n  - type: section\n    text:\n      type: mrkdwn\n      text:
+      >-\n        \U0001F680 *Ingestion started:* `{{ context.run_id }}` · Tenant:
+      `{{ context.tenant_id }}` · Knowledge base: `{{ context.kb_id }}` · Sources:
+      `{{ event.total_kb_sources }}`"

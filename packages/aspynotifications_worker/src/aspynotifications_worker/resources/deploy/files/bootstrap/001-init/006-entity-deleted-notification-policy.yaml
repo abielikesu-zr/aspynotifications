@@ -1,0 +1,4 @@
+name: entity-deleted-notification-policy
+subject: "*.deleted"
+destinations:
+- entity-slack-destination

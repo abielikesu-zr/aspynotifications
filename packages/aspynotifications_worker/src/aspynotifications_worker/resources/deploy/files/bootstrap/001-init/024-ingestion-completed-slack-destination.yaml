@@ -1,0 +1,5 @@
+name: ingestion-completed-slack-destination
+provider: slack-provider
+template: ingestion-completed-slack-template
+config:
+  type: slack_channel

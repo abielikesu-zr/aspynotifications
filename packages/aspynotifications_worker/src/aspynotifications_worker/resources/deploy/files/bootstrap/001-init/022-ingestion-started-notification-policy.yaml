@@ -1,0 +1,4 @@
+name: ingestion-started-notification-policy
+subject: ingestion.started
+destinations:
+- ingestion-started-slack-destination

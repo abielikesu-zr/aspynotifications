@@ -1,0 +1,4 @@
+name: entity-activated-notification-policy
+subject: "*.activated"
+destinations:
+- entity-slack-destination

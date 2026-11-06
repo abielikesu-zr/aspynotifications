@@ -1,0 +1,4 @@
+name: entity-from-cache-notification-policy
+subject: "*.from_cache"
+destinations:
+- entity-slack-destination

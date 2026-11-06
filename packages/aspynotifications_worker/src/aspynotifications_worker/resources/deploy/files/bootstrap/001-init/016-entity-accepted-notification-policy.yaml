@@ -1,0 +1,4 @@
+name: entity-accepted-notification-policy
+subject: "*.accepted"
+destinations:
+- entity-slack-destination

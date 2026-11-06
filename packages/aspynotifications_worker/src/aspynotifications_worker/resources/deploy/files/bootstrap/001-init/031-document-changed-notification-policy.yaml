@@ -1,0 +1,4 @@
+name: document-changed-notification-policy
+subject: document.changed
+destinations:
+- document-changed-slack-destination

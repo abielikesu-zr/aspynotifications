@@ -429,21 +429,11 @@ def update_shole_provider(
 
 
 @click.command("create-template")
-@click.option("--name", required=True)
-@click.option("--email-subject-inline")
-@click.option("--email-html-inline")
-@click.option("--email-text-inline")
-@click.option("--slack-blocks-inline")
-@click.option("--output-hole-dumpster-inline")
+@click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_template(
-    name: str,
-    email_subject_inline: str | None,
-    email_html_inline: str | None,
-    email_text_inline: str | None,
-    slack_blocks_inline: str | None,
-    output_hole_dumpster_inline: str | None,
+    file_path: str,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -453,12 +443,7 @@ def create_template(
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         create_template_handler(
-            name=name,
-            email_subject_inline=email_subject_inline,
-            email_html_inline=email_html_inline,
-            email_text_inline=email_text_inline,
-            slack_blocks_inline=slack_blocks_inline,
-            output_hole_dumpster_inline=output_hole_dumpster_inline,
+            file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
         )
@@ -528,15 +513,11 @@ def create_email_destination(
 
 
 @click.command("create-slack-channel-destination")
-@click.option("--name", required=True)
-@click.option("--provider", required=True)
-@click.option("--template", required=True)
+@click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_slack_channel_destination(
-    name: str,
-    provider: str,
-    template: str,
+    file_path: str,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -546,9 +527,7 @@ def create_slack_channel_destination(
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         create_slack_channel_destination_handler(
-            name=name,
-            provider=provider,
-            template=template,
+            file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
         )
@@ -739,23 +718,11 @@ def update_output_hole_destination(
 
 
 @click.command("create-policy")
-@click.option("--name", required=True)
-@click.option("--subject", required=True)
-@click.option("--destination", "destinations", multiple=True, required=True)
-@click.option("--envelope-policy", type=(str, str, str), multiple=True)
-@click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
-@click.option("--destination-policy", type=(str, str, str), multiple=True)
-@click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_policy(
-    name: str,
-    subject: str,
-    destinations: tuple[str, ...],
-    envelope_policy: tuple[tuple[str, str, str], ...],
-    negative_envelope_policy: tuple[tuple[str, str, str], ...],
-    destination_policy: tuple[tuple[str, str, str], ...],
-    negative_destination_policy: tuple[tuple[str, str, str], ...],
+    file_path: str,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -765,13 +732,7 @@ def create_policy(
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         create_notification_policy_handler(
-            name=name,
-            subject=subject,
-            destinations=destinations,
-            envelope_policy=envelope_policy,
-            negative_envelope_policy=negative_envelope_policy,
-            destination_policy=destination_policy,
-            negative_destination_policy=negative_destination_policy,
+            file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
         )

@@ -1,0 +1,4 @@
+name: ingestion-completed-notification-policy
+subject: ingestion.completed
+destinations:
+- ingestion-completed-slack-destination

@@ -1,0 +1,5 @@
+name: bot-response-cache-invalidated-slack-destination
+provider: slack-provider
+template: bot-response-cache-invalidated-slack-template
+config:
+  type: slack_channel

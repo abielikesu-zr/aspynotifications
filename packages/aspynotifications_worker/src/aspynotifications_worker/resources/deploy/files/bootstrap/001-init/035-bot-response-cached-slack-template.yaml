@@ -1,0 +1,7 @@
+name: bot-response-cached-slack-template
+slack:
+  blocks:
+    inline: "blocks:\n  - type: section\n    text:\n      type: mrkdwn\n      text:
+      >-\n        \U0001F5C3️ *Bot response cached:* Cache: `{{ event.cache_id }}`
+      · Documents ({{ event.document_count }}): `{{ event.document_ids | join(\",
+      \") }}` · Tenant: `{{ context.tenant_id }}` · Bot: `{{ context.bot_id }}`"

@@ -1,0 +1,4 @@
+name: entity-regenerated-notification-policy
+subject: "*.regenerated"
+destinations:
+- entity-slack-destination

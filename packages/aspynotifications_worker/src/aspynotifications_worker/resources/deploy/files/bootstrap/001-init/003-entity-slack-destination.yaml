@@ -1,0 +1,5 @@
+name: entity-slack-destination
+provider: slack-provider
+template: entity-created-slack-template
+config:
+  type: slack_channel

@@ -1,0 +1,5 @@
+name: ci-slack-destination
+provider: slack-provider
+template: ci-slack-template
+config:
+  type: slack_channel

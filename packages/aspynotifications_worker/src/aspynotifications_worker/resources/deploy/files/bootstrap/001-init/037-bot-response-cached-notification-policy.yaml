@@ -1,0 +1,4 @@
+name: bot-response-cached-notification-policy
+subject: bot_response.cached
+destinations:
+- bot-response-cached-slack-destination

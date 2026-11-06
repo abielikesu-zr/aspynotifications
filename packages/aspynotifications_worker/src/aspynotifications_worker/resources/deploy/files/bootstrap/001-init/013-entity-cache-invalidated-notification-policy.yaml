@@ -1,0 +1,9 @@
+name: entity-cache-invalidated-notification-policy
+subject: "*.cache_invalidated"
+destinations:
+- entity-slack-destination
+envelope_policies:
+- name: exclude-bot-response-cache-invalidated
+  expression: envelope.type == 'bot_response.cache_invalidated'
+  reason: Bot response cache invalidation has its own Slack destination
+  negative: true
