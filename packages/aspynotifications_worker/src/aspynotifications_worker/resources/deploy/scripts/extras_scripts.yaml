@@ -1,5 +1,5 @@
-#aspynotifications_worker:
-#  deploy:
-#    post_package_install:
-#      - name: bootstrap.sh
-#        position: 1
+aspynotifications_worker:
+  deploy:
+    post_package_install:
+      - name: bootstrap.sh
+        position: 1
