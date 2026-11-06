@@ -37,8 +37,9 @@ async def update_notification_policy_by_name_handler(
     destination_policy: tuple[tuple[str, str, str], ...],
     negative_destination_policy: tuple[tuple[str, str, str], ...],
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     request = UpdateNotificationPolicyByNameRequest(

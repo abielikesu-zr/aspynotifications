@@ -21,8 +21,9 @@ async def create_vscode_template_handler(
     message_inline: str,
     severity: Literal["info", "warning", "error"],
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     result = await get_notifications_sdk().create_template(

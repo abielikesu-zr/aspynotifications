@@ -13,10 +13,11 @@ logger = structlog.get_logger(__name__)
 async def deactivate_notification_policy_handler(
     policy_id: str,
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="deactivate_notification_policy_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
     result = await get_notifications_sdk().deactivate_notification_policy(
         DeactivateNotificationPolicyRequest(policy_id=policy_id)

@@ -18,10 +18,11 @@ async def update_template_handler(
     name: str,
     slack_blocks_inline: str,
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="update_template_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     request = UpdateTemplateRequest(

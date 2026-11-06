@@ -108,6 +108,7 @@ def common_logging_options(func: Callable[..., Any]) -> Callable[..., Any]:
     type=click.Path(exists=True, dir_okay=False),
     required=True,
 )
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def send_event(
     file_path: str,
@@ -115,6 +116,7 @@ def send_event(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(
         verbose=verbose,
@@ -126,6 +128,7 @@ def send_event(
         send_event_handler(
             file_path=file_path,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -163,6 +166,7 @@ def create_slack_provider(
 @click.command("create-vscode-provider")
 @click.option("--name", required=True)
 @click.option("--relay-url", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_vscode_provider(
     name: str,
@@ -171,6 +175,7 @@ def create_vscode_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -178,6 +183,7 @@ def create_vscode_provider(
             name=name,
             relay_url=relay_url,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -192,6 +198,7 @@ def create_vscode_provider(
     default="info",
     show_default=True,
 )
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_vscode_template(
     name: str,
@@ -202,6 +209,7 @@ def create_vscode_template(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -211,6 +219,7 @@ def create_vscode_template(
             message_inline=message_inline,
             severity=severity,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -220,6 +229,7 @@ def create_vscode_template(
 @click.option("--from-address", required=True)
 @click.option("--from-name")
 @click.option("--send-mail-token", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_zeptomail_provider(
     name: str,
@@ -230,6 +240,7 @@ def create_zeptomail_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -239,6 +250,7 @@ def create_zeptomail_provider(
             from_name=from_name,
             send_mail_token=send_mail_token,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -247,6 +259,7 @@ def create_zeptomail_provider(
 @click.option("--name", required=True)
 @click.option("--level", default="WARN", show_default=True)
 @click.option("--cows/--no-cows", default=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_shole_provider(
     name: str,
@@ -256,6 +269,7 @@ def create_shole_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -264,6 +278,7 @@ def create_shole_provider(
             level=level,
             cows=cows,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -271,6 +286,7 @@ def create_shole_provider(
 @click.command("update-slack-provider")
 @click.option("--id", "provider_id", required=True)
 @click.option("--webhook-url", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_slack_provider(
     provider_id: str,
@@ -279,6 +295,7 @@ def update_slack_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -286,6 +303,7 @@ def update_slack_provider(
             provider_id=provider_id,
             webhook_url=webhook_url,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -293,6 +311,7 @@ def update_slack_provider(
 @click.command("update-vscode-provider")
 @click.option("--id", "provider_id", required=True)
 @click.option("--relay-url", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_vscode_provider(
     provider_id: str,
@@ -301,6 +320,7 @@ def update_vscode_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -308,6 +328,7 @@ def update_vscode_provider(
             provider_id=provider_id,
             relay_url=relay_url,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -322,6 +343,7 @@ def update_vscode_provider(
     default="info",
     show_default=True,
 )
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_vscode_template(
     name: str,
@@ -332,6 +354,7 @@ def update_vscode_template(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -341,6 +364,7 @@ def update_vscode_template(
             message_inline=message_inline,
             severity=severity,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -350,6 +374,7 @@ def update_vscode_template(
 @click.option("--from-address", required=True)
 @click.option("--from-name")
 @click.option("--send-mail-token", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_zeptomail_provider(
     provider_id: str,
@@ -360,6 +385,7 @@ def update_zeptomail_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -369,6 +395,7 @@ def update_zeptomail_provider(
             from_name=from_name,
             send_mail_token=send_mail_token,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -377,6 +404,7 @@ def update_zeptomail_provider(
 @click.option("--id", "provider_id", required=True)
 @click.option("--level", default="WARN", show_default=True)
 @click.option("--cows/--no-cows", default=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_shole_provider(
     provider_id: str,
@@ -386,6 +414,7 @@ def update_shole_provider(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -394,6 +423,7 @@ def update_shole_provider(
             level=level,
             cows=cows,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -405,6 +435,7 @@ def update_shole_provider(
 @click.option("--email-text-inline")
 @click.option("--slack-blocks-inline")
 @click.option("--output-hole-dumpster-inline")
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_template(
     name: str,
@@ -417,6 +448,7 @@ def create_template(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -428,6 +460,7 @@ def create_template(
             slack_blocks_inline=slack_blocks_inline,
             output_hole_dumpster_inline=output_hole_dumpster_inline,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -435,6 +468,7 @@ def create_template(
 @click.command("update-template")
 @click.option("--name", required=True)
 @click.option("--slack-blocks-inline", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_template(
     name: str,
@@ -443,6 +477,7 @@ def update_template(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -450,6 +485,7 @@ def update_template(
             name=name,
             slack_blocks_inline=slack_blocks_inline,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -461,6 +497,7 @@ def update_template(
 @click.option("--to", multiple=True)
 @click.option("--cc", multiple=True)
 @click.option("--bcc", multiple=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_email_destination(
     name: str,
@@ -473,6 +510,7 @@ def create_email_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -484,6 +522,7 @@ def create_email_destination(
             cc=cc,
             bcc=bcc,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -492,6 +531,7 @@ def create_email_destination(
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_slack_channel_destination(
     name: str,
@@ -501,6 +541,7 @@ def create_slack_channel_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -509,6 +550,7 @@ def create_slack_channel_destination(
             provider=provider,
             template=template,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -518,6 +560,7 @@ def create_slack_channel_destination(
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
 @click.option("--recipient-user-id", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_vscode_destination(
     name: str,
@@ -528,6 +571,7 @@ def create_vscode_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -537,6 +581,7 @@ def create_vscode_destination(
             template=template,
             recipient_user_id=recipient_user_id,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -545,6 +590,7 @@ def create_vscode_destination(
 @click.option("--name", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_output_hole_destination(
     name: str,
@@ -554,6 +600,7 @@ def create_output_hole_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -562,6 +609,7 @@ def create_output_hole_destination(
             provider=provider,
             template=template,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -573,6 +621,7 @@ def create_output_hole_destination(
 @click.option("--to", multiple=True)
 @click.option("--cc", multiple=True)
 @click.option("--bcc", multiple=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_email_destination(
     destination_id: str,
@@ -585,6 +634,7 @@ def update_email_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -596,6 +646,7 @@ def update_email_destination(
             cc=cc,
             bcc=bcc,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -604,6 +655,7 @@ def update_email_destination(
 @click.option("--id", "destination_id", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_slack_channel_destination(
     destination_id: str,
@@ -613,6 +665,7 @@ def update_slack_channel_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -621,6 +674,7 @@ def update_slack_channel_destination(
             provider=provider,
             template=template,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -630,6 +684,7 @@ def update_slack_channel_destination(
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
 @click.option("--recipient-user-id", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_vscode_destination(
     destination_id: str,
@@ -640,6 +695,7 @@ def update_vscode_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -649,6 +705,7 @@ def update_vscode_destination(
             template=template,
             recipient_user_id=recipient_user_id,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -657,6 +714,7 @@ def update_vscode_destination(
 @click.option("--id", "destination_id", required=True)
 @click.option("--provider", required=True)
 @click.option("--template", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_output_hole_destination(
     destination_id: str,
@@ -666,6 +724,7 @@ def update_output_hole_destination(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -674,6 +733,7 @@ def update_output_hole_destination(
             provider=provider,
             template=template,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -686,6 +746,7 @@ def update_output_hole_destination(
 @click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
 @click.option("--destination-policy", type=(str, str, str), multiple=True)
 @click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def create_policy(
     name: str,
@@ -699,6 +760,7 @@ def create_policy(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -711,6 +773,7 @@ def create_policy(
             destination_policy=destination_policy,
             negative_destination_policy=negative_destination_policy,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -723,6 +786,7 @@ def create_policy(
 @click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
 @click.option("--destination-policy", type=(str, str, str), multiple=True)
 @click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_policy(
     policy_id: str,
@@ -736,6 +800,7 @@ def update_policy(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -748,6 +813,7 @@ def update_policy(
             destination_policy=destination_policy,
             negative_destination_policy=negative_destination_policy,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
@@ -760,6 +826,7 @@ def update_policy(
 @click.option("--negative-envelope-policy", type=(str, str, str), multiple=True)
 @click.option("--destination-policy", type=(str, str, str), multiple=True)
 @click.option("--negative-destination-policy", type=(str, str, str), multiple=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def update_policy_by_name(
     name: str,
@@ -773,6 +840,7 @@ def update_policy_by_name(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
@@ -785,12 +853,14 @@ def update_policy_by_name(
             destination_policy=destination_policy,
             negative_destination_policy=negative_destination_policy,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
 
 @click.command("activate-policy")
 @click.option("--id", "policy_id", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def activate_policy(
     policy_id: str,
@@ -798,18 +868,21 @@ def activate_policy(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         activate_notification_policy_handler(
             policy_id=policy_id,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 
 
 @click.command("deactivate-policy")
 @click.option("--id", "policy_id", required=True)
+@click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
 @common_logging_options
 def deactivate_policy(
     policy_id: str,
@@ -817,12 +890,14 @@ def deactivate_policy(
     verbose: int,
     quiet: int,
     log_format: str,
+    config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
     asyncio.run(
         deactivate_notification_policy_handler(
             policy_id=policy_id,
             output_format=output_format,
+            config_files=[str(path) for path in config_file] if config_file else None,
         )
     )
 

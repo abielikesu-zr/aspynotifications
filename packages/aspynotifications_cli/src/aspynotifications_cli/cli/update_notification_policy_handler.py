@@ -37,10 +37,11 @@ async def update_notification_policy_handler(
     destination_policy: tuple[tuple[str, str, str], ...],
     negative_destination_policy: tuple[tuple[str, str, str], ...],
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="update_notification_policy_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     request = UpdateNotificationPolicyRequest(

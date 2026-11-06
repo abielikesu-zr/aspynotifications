@@ -18,8 +18,9 @@ async def create_vscode_provider_handler(
     name: str,
     relay_url: str,
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     result = await get_notifications_sdk().create_notification_provider(

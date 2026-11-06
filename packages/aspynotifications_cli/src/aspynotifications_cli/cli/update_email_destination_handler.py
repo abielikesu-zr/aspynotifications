@@ -21,10 +21,11 @@ async def update_email_destination_handler(
     cc: tuple[str, ...],
     bcc: tuple[str, ...],
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="update_email_destination_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
     result = await get_notifications_sdk().update_destination(
         UpdateDestinationRequest(

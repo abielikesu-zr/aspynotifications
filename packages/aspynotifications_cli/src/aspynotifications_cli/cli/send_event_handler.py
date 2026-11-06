@@ -10,10 +10,10 @@ from aspynotifications_cli import load_aspynotifications_cli_config
 logger = structlog.get_logger(__name__)
 
 
-async def send_event_handler(file_path: str, output_format: str) -> None:
+async def send_event_handler(file_path: str, output_format: str, config_files: list[str] | None = None) -> None:
     log = logger.bind(function="send_event_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     with open(file_path, "r", encoding="utf-8") as f:

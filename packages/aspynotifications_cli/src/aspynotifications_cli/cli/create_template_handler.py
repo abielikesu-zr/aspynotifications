@@ -24,10 +24,11 @@ async def create_template_handler(
     slack_blocks_inline: str | None,
     output_hole_dumpster_inline: str | None,
     output_format: str,
+    config_files: list[str] | None = None,
 ) -> None:
     log = logger.bind(function="create_template_handler")
 
-    load_aspynotifications_cli_config()
+    load_aspynotifications_cli_config(config_files=config_files)
     configure_logging()
 
     email = None

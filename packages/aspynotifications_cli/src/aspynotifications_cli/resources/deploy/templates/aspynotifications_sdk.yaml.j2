@@ -37,54 +37,16 @@ notifications_sdk:
   # Type: NotificationClientConfig
   notification_client:
 
-    # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynats.config.nats_client_config.NatsClientAdapterConfig
-    # Switch Variable: g_app_ns_notification_client_adapter_type
+    # Type: RestClientAdapterConfig
     adapter:
 
-      {% if  g_app_ns_notification_client_adapter_type | default('REST') == 'REST' %}
+      # Type: Literal['REST']
 
-        type: 'REST'
+      type: "{{  g_app_ns_notification_client_adapter_type | default('REST')   }}"
 
-        # Type: RestClientConfig
-        config:
+      # Type: RestClientConfig
+      config:
 
-          # Type: HttpUrl
+        # Type: HttpUrl
 
-          base_url: "{{  g_app_ns_notification_client_rest_base_url | default(None)   }}"
-
-      {% elif  g_app_ns_notification_client_adapter_type == 'NATS' %}
-
-        type: 'NATS'
-
-        # Type: NatsClientConfig
-        config:
-
-          # Name of the JetStream stream used to store CloudEvents.
-
-          # Type: NatsConnectionConfig
-          connection:
-
-            # URL of the NATS server to connect to.
-
-            # Type: str
-
-            nats_url: "{{  g_app_ns_notification_client_nats_connection_nats_url | default('nats://127.0.0.1:4222')   }}"
-
-          # Subject pattern used by the stream to capture CloudEvents.
-
-          # Type: NatsStreamConfig
-          stream:
-
-            # Name of the JetStream stream used to store CloudEvents.
-
-            # Type: str
-
-            name: "{{  g_app_ns_notification_client_nats_stream_name | default('EVENTS')   }}"
-
-            # Subject pattern used by the stream to capture CloudEvents.
-
-            # Type: str
-
-            subject: "{{  g_app_ns_notification_client_nats_stream_subject | default('events.>')   }}"
-
-      {% endif %}
+        base_url: "{{  g_app_ns_notification_client_adapter_config_base_url | default(None)   }}"
