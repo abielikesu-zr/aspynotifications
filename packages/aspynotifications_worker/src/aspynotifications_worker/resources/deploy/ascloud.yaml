@@ -19,10 +19,7 @@ directories:
   - path: /var/log/aspynotifications_worker
     permissions: "0755"
 
-  - path: /opt/apps/aspynotifications_worker/bootstrap
-    permissions: 0700
-
-  - path: /opt/apps/aspynotifications_worker/bootstrap/config
+  - path: /opt/apps/aspynotifications_worker/bootstrap/001-init/config
     permissions: 0700
 
   - path: /var/log/aspynotifications_worker/patches
