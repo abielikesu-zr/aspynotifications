@@ -5,7 +5,7 @@ aspynotifications_worker:
         dest: "{{ install_dir }}/config/aspynotifications_worker_extra.yaml"
         permissions: "0600"
       - src: 001-slack-provider.yaml.j2
-        dest: "{{ install_dir }}/bootstrap/001-slack-provider.yaml"
+        dest: "{{ install_dir }}/bootstrap/001-init/001-slack-provider.yaml"
         permissions: "0600"
 
       - src: aspytracing.yaml.j2

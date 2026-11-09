@@ -43,7 +43,7 @@ templates:
     permissions: "0600"
 
   - src: 001-slack-provider.yaml.j2
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-slack-provider.yaml
+    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/001-slack-provider.yaml
     permissions: "0600"
 
   - src: aspytracing.yaml.j2
