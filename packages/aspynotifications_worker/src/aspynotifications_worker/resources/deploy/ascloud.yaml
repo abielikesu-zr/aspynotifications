@@ -22,6 +22,9 @@ directories:
   - path: /opt/apps/aspynotifications_worker/bootstrap
     permissions: 0700
 
+  - path: /opt/apps/aspynotifications_worker/bootstrap/config
+    permissions: 0700
+
   - path: /var/log/aspynotifications_worker/patches
     permissions: 0700
 
