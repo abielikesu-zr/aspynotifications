@@ -6,5 +6,7 @@ aspynotifications_worker:
     directories:
       - path: "{{ install_dir }}/bootstrap"
         permissions: "0700"
+      - path: "{{ install_dir }}/bootstrap/config"
+        permissions: "0700"
       - path: "/var/log/aspynotifications_worker/patches"
         permissions: "0700"  
