@@ -1,0 +1,38 @@
+# Type: NotificationsSdkParams
+notifications_sdk:
+  # Type: HttpClientConfig
+  http_client:
+    # Request timeout in seconds
+
+    # Type: float
+
+    timeout: "5.0"
+
+    # Number of retries on failure
+
+    # Type: int
+
+    max_retries: "2"
+
+    # Base backoff for retries
+
+    # Type: float
+
+    backoff_base: "0.15"
+
+    # Maximum backoff for retries
+
+    # Type: float
+
+    backoff_max: "1.0"
+
+    # Type: bool | str
+
+    verify: False
+
+  # Type: NotificationsClientConfig
+  notification_client:
+    adapter:
+      type: "FACADE"
+      config:
+        keep: "keep"

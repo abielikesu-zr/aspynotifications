@@ -1,0 +1,4 @@
+---
+# automanifest_aspyflags.yaml.j2 -> aspyflags.yaml.j2
+aspyfeatures:
+    enabled_flags: {{ (g_app_features_enabled | default('', true)).split(',') if (g_app_features_enabled | default('', true)) else [] }}

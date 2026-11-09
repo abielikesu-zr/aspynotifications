@@ -19,9 +19,6 @@ directories:
   - path: /var/log/aspynotifications_worker
     permissions: "0755"
 
-  - path: /opt/apps/aspynotifications_worker/notification-templates
-    permissions: 0700
-
   - path: /opt/apps/aspynotifications_worker/bootstrap
     permissions: 0700
 
@@ -29,9 +26,6 @@ directories:
     permissions: 0700
 
 copy_files:
-
-  - src: notification-templates
-    dest: /opt/apps/aspynotifications_worker/notification-templates/
 
   - src: bootstrap
     dest: /opt/apps/aspynotifications_worker/bootstrap/
@@ -46,6 +40,18 @@ templates:
 
   - src: aspynotifications_worker_extra.yaml.j2
     dest: /opt/apps/aspynotifications_worker/config/aspynotifications_worker_extra.yaml
+    permissions: "0600"
+
+  - src: 001-slack-provider.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/bootstrap/001-slack-provider.yaml
+    permissions: "0600"
+
+  - src: aspytracing.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/config/aspytracing.yaml
+    permissions: "0600"
+
+  - src: aspynotifications.yaml.j2
+    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/config/aspynotifications.yaml
     permissions: "0600"
 
   - src: aspynotifications.yaml.j2

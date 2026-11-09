@@ -13,8 +13,21 @@ class RestClientAdapterConfig(BaseModel):
     config: RestClientConfig = Field(...)
 
 
+class FacadeClientConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    keep: Literal["keep"] = "keep"
+
+
+class FacadeClientAdapterConfig(BaseModel):
+    type: Literal["FACADE"] = "FACADE"
+    config: FacadeClientConfig = Field(default_factory=FacadeClientConfig)
+
+
 class NotificationClientConfig(BaseModel):
-    adapter: RestClientAdapterConfig
+    adapter: RestClientAdapterConfig | FacadeClientAdapterConfig = Field(
+        ..., discriminator="type"
+    )
 
 
 class NotificationsSdkParams(BaseModel):

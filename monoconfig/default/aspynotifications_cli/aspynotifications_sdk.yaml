@@ -37,16 +37,17 @@ notifications_sdk:
   # Type: NotificationClientConfig
   notification_client:
 
-    # Type: RestClientAdapterConfig
+    # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynotifications_sdk.entities.config.FacadeClientAdapterConfig
+    # Switch Variable: g_app_ns_notification_client_adapter_type
     adapter:
 
-      # Type: Literal['REST']
+      
 
-      type: "REST"
+        type: 'REST'
 
-      # Type: RestClientConfig
-      config:
+        # Type: RestClientConfig
+        config:
 
-        # Type: HttpUrl
+          # Type: HttpUrl
 
-        base_url: "http://127.0.0.1:50011"
+          base_url: "REPLACE_ME"

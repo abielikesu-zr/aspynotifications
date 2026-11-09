@@ -1,0 +1,4 @@
+aspynotifications_cli:
+  deploy:
+    pre_package_install: []
+    post_package_install: []

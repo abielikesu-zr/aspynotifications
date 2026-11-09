@@ -1,7 +1,7 @@
 # Type: NotificationsSdkParams
 notifications_sdk:
 
-  # Type: Optional[HttpClientConfig]
+  # Type: aspyadapters.adapters.http_client_config.HttpClientConfig | None
   http_client:
 
     # Maximum time in seconds to wait for an HTTP request to complete.
@@ -37,16 +37,30 @@ notifications_sdk:
   # Type: NotificationClientConfig
   notification_client:
 
-    # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig
+    # Type: aspynotifications_sdk.entities.config.RestClientAdapterConfig | aspynotifications_sdk.entities.config.FacadeClientAdapterConfig
+    # Switch Variable: g_app_ns_notification_client_adapter_type
     adapter:
 
-      # Type: Literal['REST']
+      {% if  g_app_ns_notification_client_adapter_type | default('REST') == 'REST' %}
 
-      type: "{{  g_app_ns_notification_client_adapter_type | default('REST')   }}"
+        type: 'REST'
 
-      # Type: RestClientConfig
-      config:
+        # Type: RestClientConfig
+        config:
 
-        # Type: HttpUrl
+          # Type: HttpUrl
 
-        base_url: "{{  g_app_ns_notification_client_adapter_config_base_url | default(None)   }}"
+          base_url: "{{  g_app_ns_notification_client_rest_base_url | default(None)   }}"
+
+      {% elif  g_app_ns_notification_client_adapter_type == 'FACADE' %}
+
+        type: 'FACADE'
+
+        # Type: FacadeClientConfig
+        config:
+
+          # Type: Literal['keep']
+
+          keep: "{{  g_app_ns_notification_client_facade_keep | default('keep')   }}"
+
+      {% endif %}

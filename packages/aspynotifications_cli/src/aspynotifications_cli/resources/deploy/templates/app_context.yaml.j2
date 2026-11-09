@@ -1,0 +1,9 @@
+---
+# automanifest_app_context.yaml.j2 -> app_context.yaml.j2
+{% if appcontext is defined and appcontext is mapping %}
+aspycontext:
+  app:
+{% for key, value in appcontext.items() %}
+    {{ key }}: {{ value }}
+{% endfor %}
+{% endif %}
