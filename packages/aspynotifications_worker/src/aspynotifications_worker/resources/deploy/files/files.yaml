@@ -3,7 +3,7 @@ aspynotifications_worker:
     copy_files:
       - src: bootstrap
         dest: "{{ install_dir }}/bootstrap/"
-      - src: bootstrap/aspynotifications_sdk.yaml
+      - src: aspynotifications_sdk.yaml
         dest: "{{ install_dir }}/config/aspynotifications_sdk.yaml"
     directories:
       - path: "{{ install_dir }}/bootstrap/001-init"

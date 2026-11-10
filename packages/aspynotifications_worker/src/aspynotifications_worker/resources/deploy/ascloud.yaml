@@ -30,7 +30,7 @@ copy_files:
   - src: bootstrap
     dest: /opt/apps/aspynotifications_worker/bootstrap/
 
-  - src: bootstrap/aspynotifications_sdk.yaml
+  - src: aspynotifications_sdk.yaml
     dest: /opt/apps/aspynotifications_worker/config/aspynotifications_sdk.yaml
 
 pre_package_install: []
