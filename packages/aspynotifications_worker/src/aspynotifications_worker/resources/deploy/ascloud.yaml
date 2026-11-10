@@ -19,7 +19,7 @@ directories:
   - path: /var/log/aspynotifications_worker
     permissions: "0755"
 
-  - path: /opt/apps/aspynotifications_worker/bootstrap/001-init/config
+  - path: /opt/apps/aspynotifications_worker/bootstrap/001-init
     permissions: 0700
 
   - path: /var/log/aspynotifications_worker/patches
@@ -27,128 +27,11 @@ directories:
 
 copy_files:
 
-  - src: bootstrap/001-init/002-entity-created-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/002-entity-created-slack-template.yaml
+  - src: bootstrap
+    dest: /opt/apps/aspynotifications_worker/bootstrap/
 
-  - src: bootstrap/001-init/003-entity-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/003-entity-slack-destination.yaml
-
-  - src: bootstrap/001-init/004-entity-created-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/004-entity-created-notification-policy.yaml
-
-  - src: bootstrap/001-init/005-entity-updated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/005-entity-updated-notification-policy.yaml
-
-  - src: bootstrap/001-init/006-entity-deleted-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/006-entity-deleted-notification-policy.yaml
-
-  - src: bootstrap/001-init/007-entity-started-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/007-entity-started-notification-policy.yaml
-
-  - src: bootstrap/001-init/008-entity-feedback-positive-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/008-entity-feedback-positive-notification-policy.yaml
-
-  - src: bootstrap/001-init/009-entity-feedback-negative-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/009-entity-feedback-negative-notification-policy.yaml
-
-  - src: bootstrap/001-init/010-entity-from-cache-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/010-entity-from-cache-notification-policy.yaml
-
-  - src: bootstrap/001-init/011-entity-regenerated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/011-entity-regenerated-notification-policy.yaml
-
-  - src: bootstrap/001-init/012-entity-cached-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/012-entity-cached-notification-policy.yaml
-
-  - src: bootstrap/001-init/013-entity-cache-invalidated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/013-entity-cache-invalidated-notification-policy.yaml
-
-  - src: bootstrap/001-init/014-entity-generated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/014-entity-generated-notification-policy.yaml
-
-  - src: bootstrap/001-init/015-entity-activated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/015-entity-activated-notification-policy.yaml
-
-  - src: bootstrap/001-init/016-entity-accepted-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/016-entity-accepted-notification-policy.yaml
-
-  - src: bootstrap/001-init/017-bot-installed-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/017-bot-installed-slack-template.yaml
-
-  - src: bootstrap/001-init/018-bot-installed-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/018-bot-installed-slack-destination.yaml
-
-  - src: bootstrap/001-init/019-bot-installed-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/019-bot-installed-notification-policy.yaml
-
-  - src: bootstrap/001-init/020-ingestion-started-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/020-ingestion-started-slack-template.yaml
-
-  - src: bootstrap/001-init/021-ingestion-started-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/021-ingestion-started-slack-destination.yaml
-
-  - src: bootstrap/001-init/022-ingestion-started-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/022-ingestion-started-notification-policy.yaml
-
-  - src: bootstrap/001-init/023-ingestion-completed-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/023-ingestion-completed-slack-template.yaml
-
-  - src: bootstrap/001-init/024-ingestion-completed-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/024-ingestion-completed-slack-destination.yaml
-
-  - src: bootstrap/001-init/025-ingestion-completed-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/025-ingestion-completed-notification-policy.yaml
-
-  - src: bootstrap/001-init/026-ingestion-failed-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/026-ingestion-failed-slack-template.yaml
-
-  - src: bootstrap/001-init/027-ingestion-failed-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/027-ingestion-failed-slack-destination.yaml
-
-  - src: bootstrap/001-init/028-ingestion-failed-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/028-ingestion-failed-notification-policy.yaml
-
-  - src: bootstrap/001-init/029-document-changed-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/029-document-changed-slack-template.yaml
-
-  - src: bootstrap/001-init/030-document-changed-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/030-document-changed-slack-destination.yaml
-
-  - src: bootstrap/001-init/031-document-changed-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/031-document-changed-notification-policy.yaml
-
-  - src: bootstrap/001-init/032-bot-response-cache-invalidated-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/032-bot-response-cache-invalidated-slack-template.yaml
-
-  - src: bootstrap/001-init/033-bot-response-cache-invalidated-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/033-bot-response-cache-invalidated-slack-destination.yaml
-
-  - src: bootstrap/001-init/034-bot-response-cache-invalidated-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/034-bot-response-cache-invalidated-notification-policy.yaml
-
-  - src: bootstrap/001-init/035-bot-response-cached-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/035-bot-response-cached-slack-template.yaml
-
-  - src: bootstrap/001-init/036-bot-response-cached-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/036-bot-response-cached-slack-destination.yaml
-
-  - src: bootstrap/001-init/037-bot-response-cached-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/037-bot-response-cached-notification-policy.yaml
-
-  - src: bootstrap/001-init/038-ci-slack-template.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/038-ci-slack-template.yaml
-
-  - src: bootstrap/001-init/039-ci-slack-destination.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/039-ci-slack-destination.yaml
-
-  - src: bootstrap/001-init/040-ci-notification-policy.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/040-ci-notification-policy.yaml
-
-  - src: bootstrap/001-init/apply.sh
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/apply.sh
-
-  - src: bootstrap/001-init/config/aspynotifications_sdk.yaml
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/config/aspynotifications_sdk.yaml
+  - src: bootstrap/aspynotifications_sdk.yaml
+    dest: /opt/apps/aspynotifications_worker/config/aspynotifications_sdk.yaml
 
 pre_package_install: []
 
@@ -164,14 +47,6 @@ templates:
 
   - src: 001-slack-provider.yaml.j2
     dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/001-slack-provider.yaml
-    permissions: "0600"
-
-  - src: aspytracing.yaml.j2
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/config/aspytracing.yaml
-    permissions: "0600"
-
-  - src: aspynotifications.yaml.j2
-    dest: /opt/apps/aspynotifications_worker/bootstrap/001-init/config/aspynotifications.yaml
     permissions: "0600"
 
   - src: aspynotifications.yaml.j2
