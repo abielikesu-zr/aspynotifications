@@ -5,6 +5,7 @@ from aspyadapters.adapters.http_client import AspyHttpClient
 from aspyadapters.adapters.http_exceptions import (
     HttpClientBadRequestError,
     HttpClientConnectionError,
+    HttpClientConflictError,
     HttpClientForbiddenError,
     HttpClientNotFoundError,
     HttpClientServerError,
@@ -35,6 +36,7 @@ from aspynotifications_dtos.providers_dtos import (
 from aspynotifications_sdk.entities.config import RestClientConfig
 from aspynotifications_sdk.errors import (
     BadRequestError,
+    ConflictError,
     NotFoundError,
     NotificationsClientError,
     ServerError,
@@ -77,6 +79,8 @@ class NotificationsRestClient(INotificationsClientPort):
             raise TimeoutError(f"Request to {path} timed out") from e
         except HttpClientConnectionError as e:
             raise TransportError(f"Connection error calling {path}") from e
+        except HttpClientConflictError as e:
+            raise ConflictError(str(e)) from e
         except HttpClientNotFoundError as e:
             raise NotFoundError(f"Resource not found: {e!s}") from e
         except HttpClientBadRequestError as e:

@@ -1,10 +1,11 @@
 import asyncio
+from collections.abc import Callable, Coroutine
 from pathlib import Path
-from collections.abc import Callable
 from typing import Any, Literal
 
 import click
 from aspylogger.services.logging_setup import bootstrap_logging
+from aspynotifications_sdk.errors import ConflictError
 
 from aspynotifications_cli.cli.create_email_destination_handler import (
     create_email_destination_handler,
@@ -136,6 +137,15 @@ def send_event(
 cli.add_command(send_event)
 
 
+def _run_create(coro: Coroutine[Any, Any, None], skip_if_exists: bool) -> None:
+    try:
+        asyncio.run(coro)
+    except ConflictError as exc:
+        if not skip_if_exists:
+            raise
+        click.echo(f"Resource already exists; skipping: {exc}", err=True)
+
+
 @click.command("create-slack-provider")
 @click.option(
     "--from-file",
@@ -144,9 +154,11 @@ cli.add_command(send_event)
     required=True,
 )
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
+@click.option("--skip-if-exists", is_flag=True)
 @common_logging_options
 def create_slack_provider(
     file_path: str,
+    skip_if_exists: bool,
     config_file: tuple[Path, ...],
     output_format: str,
     verbose: int,
@@ -154,12 +166,13 @@ def create_slack_provider(
     log_format: str,
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
-    asyncio.run(
+    _run_create(
         create_slack_provider_handler(
             file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
-        )
+        ),
+        skip_if_exists=skip_if_exists,
     )
 
 
@@ -431,9 +444,11 @@ def update_shole_provider(
 @click.command("create-template")
 @click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
+@click.option("--skip-if-exists", is_flag=True)
 @common_logging_options
 def create_template(
     file_path: str,
+    skip_if_exists: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -441,12 +456,13 @@ def create_template(
     config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
-    asyncio.run(
+    _run_create(
         create_template_handler(
             file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
-        )
+        ),
+        skip_if_exists=skip_if_exists,
     )
 
 
@@ -515,9 +531,11 @@ def create_email_destination(
 @click.command("create-slack-channel-destination")
 @click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
+@click.option("--skip-if-exists", is_flag=True)
 @common_logging_options
 def create_slack_channel_destination(
     file_path: str,
+    skip_if_exists: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -525,12 +543,13 @@ def create_slack_channel_destination(
     config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
-    asyncio.run(
+    _run_create(
         create_slack_channel_destination_handler(
             file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
-        )
+        ),
+        skip_if_exists=skip_if_exists,
     )
 
 
@@ -720,9 +739,11 @@ def update_output_hole_destination(
 @click.command("create-policy")
 @click.option("--from-file", "file_path", type=click.Path(exists=True, dir_okay=False), required=True)
 @click.option("--config-file", "-c", type=click.Path(path_type=Path), multiple=True)
+@click.option("--skip-if-exists", is_flag=True)
 @common_logging_options
 def create_policy(
     file_path: str,
+    skip_if_exists: bool,
     output_format: str,
     verbose: int,
     quiet: int,
@@ -730,12 +751,13 @@ def create_policy(
     config_file: tuple[Path, ...],
 ) -> None:
     bootstrap_logging(verbose=verbose, log_format=log_format, quiet=quiet)
-    asyncio.run(
+    _run_create(
         create_notification_policy_handler(
             file_path=file_path,
             output_format=output_format,
             config_files=[str(path) for path in config_file] if config_file else None,
-        )
+        ),
+        skip_if_exists=skip_if_exists,
     )
 
 

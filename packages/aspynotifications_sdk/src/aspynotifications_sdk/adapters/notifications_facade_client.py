@@ -1,4 +1,5 @@
 from aspynotifications.services.notifications_facade import NotificationsFacade
+from aspynotifications_dtos.exceptions import ResourceAlreadyExistsError
 from aspynotifications_dtos.notifications_dtos import (
     ActivateNotificationPolicyRequest,
     CreateDestinationRequest,
@@ -22,6 +23,7 @@ from aspynotifications_dtos.providers_dtos import (
 from aspyplugs.registry import register_plugin
 
 from aspynotifications_sdk.entities.config import FacadeClientConfig
+from aspynotifications_sdk.errors import ConflictError
 from aspynotifications_sdk.ports.notifications_client_port import (
     INotificationsClientPort,
 )
@@ -41,7 +43,10 @@ class NotificationsFacadeClient(INotificationsClientPort):
     async def create_notification_policy(
         self, request: CreateNotificationPolicyRequest
     ) -> NotificationPolicyDTO:
-        return await self._facade.create_notification_policy(request)
+        try:
+            return await self._facade.create_notification_policy(request)
+        except ResourceAlreadyExistsError as exc:
+            raise ConflictError(str(exc)) from exc
 
     async def update_notification_policy(
         self, request: UpdateNotificationPolicyRequest
@@ -64,7 +69,10 @@ class NotificationsFacadeClient(INotificationsClientPort):
         return await self._facade.deactivate_notification_policy(request)
 
     async def create_template(self, request: CreateTemplateRequest) -> TemplateDTO:
-        return await self._facade.create_template(request)
+        try:
+            return await self._facade.create_template(request)
+        except ResourceAlreadyExistsError as exc:
+            raise ConflictError(str(exc)) from exc
 
     async def update_template(self, request: UpdateTemplateRequest) -> TemplateDTO:
         return await self._facade.update_template(request)
@@ -72,7 +80,10 @@ class NotificationsFacadeClient(INotificationsClientPort):
     async def create_destination(
         self, request: CreateDestinationRequest
     ) -> DestinationDTO:
-        return await self._facade.create_destination(request)
+        try:
+            return await self._facade.create_destination(request)
+        except ResourceAlreadyExistsError as exc:
+            raise ConflictError(str(exc)) from exc
 
     async def update_destination(
         self, request: UpdateDestinationRequest
@@ -82,7 +93,10 @@ class NotificationsFacadeClient(INotificationsClientPort):
     async def create_notification_provider(
         self, request: CreateNotificationProviderRequest
     ) -> NotificationProviderDTO:
-        return await self._facade.create_notification_provider(request)
+        try:
+            return await self._facade.create_notification_provider(request)
+        except ResourceAlreadyExistsError as exc:
+            raise ConflictError(str(exc)) from exc
 
     async def update_notification_provider(
         self, request: UpdateNotificationProviderRequest
